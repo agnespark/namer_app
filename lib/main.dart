@@ -1,5 +1,8 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
+import "package:namer_app/components/custom_detail.dart";
+import "package:namer_app/components/favorite_detail.dart";
+import "package:namer_app/components/home_detail.dart";
 import "package:namer_app/controller.dart";
 import "package:get/get.dart";
 
@@ -15,6 +18,7 @@ class MyApp extends StatelessWidget {
     Get.put(MyController());
     return GetMaterialApp(
       title: "Namer App",
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
@@ -25,33 +29,79 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
+          key: _scaffoldKey,
+          endDrawer: Drawer(
+            width: 500,
+            shape:
+                const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            child: ClipRRect(
+              borderRadius: BorderRadius.zero,
+              child: Obx(
+                () {
+                  Widget drawerContent = Container(); // 기본적으로 빈 컨테이너
+
+                  switch (MyController.to.selectedIndex.value) {
+                    case 0: // Home 페이지의 디자인
+                      drawerContent = HomeDetail(); // Home 페이지용 Drawer 컨텐츠
+                      break;
+                    case 1: // Favorites 페이지의 디자인
+                      drawerContent =
+                          FavoriteDetail(); // Favorites 페이지용 Drawer 컨텐츠
+                      break;
+                  }
+
+                  return drawerContent;
+                },
+              ),
+            ),
+          ),
           body: Row(
             children: [
-              SafeArea(
-                child: Obx(() {
-                  return NavigationRail(
-                    extended: constraints.maxWidth >= 600,
-                    destinations: [
-                      NavigationRailDestination(
-                        icon: Icon(Icons.home),
-                        label: Text('Home'),
+              Container(
+                width: 200, // 네비게이션 바의 고정된 너비
+                color: Colors.blue,
+                child: Obx(
+                  () => ListView(
+                    children: [
+                      const SizedBox(height: 20),
+                      Center(child: Text("Query Stacker")),
+                      const SizedBox(height: 20), // 네비게이션 바 헤더의 높이만큼 여백 추가
+                      ListTile(
+                        title: Text(
+                          'Home',
+                          style: TextStyle(
+                            color: MyController.to.selectedIndex.value == 0
+                                ? Colors.white // 선택된 항목의 텍스트 색상 설정
+                                : Colors.black, // 선택되지 않은 항목의 텍스트 색상 설정
+                          ),
+                        ),
+                        onTap: () {
+                          MyController.to.changePage(0);
+                        },
                       ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.favorite),
-                        label: Text('Favorites'),
+                      ListTile(
+                        title: Text(
+                          'Favorite',
+                          style: TextStyle(
+                            color: MyController.to.selectedIndex.value == 1
+                                ? Colors.white // 선택된 항목의 텍스트 색상 설정
+                                : Colors.black, // 선택되지 않은 항목의 텍스트 색상 설정
+                          ),
+                        ),
+                        onTap: () {
+                          MyController.to.changePage(1);
+                        },
                       ),
                     ],
-                    selectedIndex: MyController.to.selectedIndex.value,
-                    onDestinationSelected: (value) {
-                      MyController.to.changePage(value);
-                    },
-                  );
-                }),
+                  ),
+                ),
               ),
               Expanded(
                 child: Container(
@@ -59,10 +109,12 @@ class MyHomePage extends StatelessWidget {
                   child: Obx(
                     () {
                       Widget currentPage = Container();
-                      if (MyController.to.selectedIndex.value == 1) {
-                        currentPage = FavoritePage();
-                      } else {
-                        currentPage = GeneratorPage();
+                      switch (MyController.to.selectedIndex.value) {
+                        case 1:
+                          currentPage = FavoritePage(_scaffoldKey);
+                          break;
+                        default:
+                          currentPage = GeneratorPage(_scaffoldKey);
                       }
                       return currentPage;
                     },
@@ -78,6 +130,10 @@ class MyHomePage extends StatelessWidget {
 }
 
 class GeneratorPage extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  GeneratorPage(this.scaffoldKey);
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -112,6 +168,23 @@ class GeneratorPage extends StatelessWidget {
                   MyController.to.getNext();
                 },
                 child: Text('Next'),
+              ),
+              SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  scaffoldKey.currentState!.openEndDrawer();
+                },
+                child: Text('Drawer Detail'),
+              ),
+              SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CustomDetail()),
+                  );
+                },
+                child: Text('Custom Detail'),
               ),
             ],
           ),
@@ -152,11 +225,25 @@ class BigCard extends StatelessWidget {
 }
 
 class FavoritePage extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  FavoritePage(this.scaffoldKey);
+
   @override
   Widget build(BuildContext context) {
     if (MyController.to.favorites.isEmpty) {
-      return Center(
-        child: Text('no favorites'),
+      return Column(
+        children: [
+          Center(
+            child: Text('no favorites'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              scaffoldKey.currentState!.openEndDrawer();
+            },
+            child: Text('Detail'),
+          ),
+        ],
       );
     }
 
