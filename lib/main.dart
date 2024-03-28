@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import "package:namer_app/components/detail/favorite_detail.dart";
 import "package:namer_app/components/detail/home_detail.dart";
-import "package:namer_app/components/favorite_detail.dart";
 import "package:namer_app/main_controller.dart";
-import "package:namer_app/pages/favorite/favorite.dart";
+import "package:namer_app/nav_controller.dart";
+import "package:namer_app/nav_model.dart";
 import "package:namer_app/pages/home/home.dart";
 
 void main() {
@@ -11,11 +12,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  List<Menu> data = [];
 
   @override
   Widget build(BuildContext context) {
-    Get.put(MyController());
     return GetMaterialApp(
       title: "Namer App",
       debugShowCheckedModeBanner: false,
@@ -29,14 +30,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    Get.put(MyController(
+        scaffoldKey,
+        Container(
+          child: HomePage(scaffoldKey),
+        ).obs));
+    Get.put(NavController());
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          key: _scaffoldKey,
+          key: scaffoldKey,
           endDrawer: Drawer(
             width: 500,
             shape:
@@ -62,69 +69,65 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-          body: Row(
-            children: [
-              Container(
-                width: 200, // 네비게이션 바의 고정된 너비
-                color: Colors.blue,
-                child: Obx(
-                  () => ListView(
-                    children: [
-                      const SizedBox(height: 20),
-                      Center(child: Text("Query Stacker")),
-                      const SizedBox(height: 20), // 네비게이션 바 헤더의 높이만큼 여백 추가
-                      ListTile(
-                        title: Text(
-                          'Home',
-                          style: TextStyle(
-                            color: MyController.to.selectedIndex.value == 0
-                                ? Colors.white // 선택된 항목의 텍스트 색상 설정
-                                : Colors.black, // 선택되지 않은 항목의 텍스트 색상 설정
-                          ),
-                        ),
-                        onTap: () {
-                          MyController.to.changePage(0);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          'Favorite',
-                          style: TextStyle(
-                            color: MyController.to.selectedIndex.value == 1
-                                ? Colors.white // 선택된 항목의 텍스트 색상 설정
-                                : Colors.black, // 선택되지 않은 항목의 텍스트 색상 설정
-                          ),
-                        ),
-                        onTap: () {
-                          MyController.to.changePage(1);
-                        },
-                      ),
-                    ],
+          body: Obx(
+            () => Row(
+              children: [
+                Container(
+                    width: 200, // 네비게이션 바의 고정된 너비
+                    color: Colors.blue,
+                    child: ListView.builder(
+                      itemCount: MyController.to.navList.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          _buildList(MyController.to.navList[index]),
+                    )),
+                Expanded(
+                  child: Container(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    child: MyController.to.currentWidget.value,
                   ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: Obx(
-                    () {
-                      Widget currentPage = Container();
-                      switch (MyController.to.selectedIndex.value) {
-                        case 1:
-                          currentPage = FavoritePage(_scaffoldKey);
-                          break;
-                        default:
-                          currentPage = HomePage(_scaffoldKey);
-                      }
-                      return currentPage;
-                    },
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
     );
+  }
+}
+
+Widget _buildList(Menu menu) {
+  if (menu.subMenu == null) {
+    return GestureDetector(
+      onTap: () {
+        MyController.to.changeWidget(menu.page);
+      },
+      child: ListTile(
+        leading: SizedBox(),
+        title: Text(menu.name),
+      ),
+    );
+  }
+
+  return ExpansionTile(
+    title: Text(
+      menu.name,
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    ),
+    children: menu.subMenu!.map(_buildList).toList(),
+  );
+}
+
+class SubCategory extends StatelessWidget {
+  String? name;
+  SubCategory(this.name, {Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(name ?? ""),
+        ),
+        body: Center(
+          child: Text("$name"),
+        ));
   }
 }
