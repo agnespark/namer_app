@@ -3,7 +3,6 @@ import "package:get/get.dart";
 import "package:namer_app/components/detail/favorite_detail.dart";
 import "package:namer_app/components/detail/home_detail.dart";
 import "package:namer_app/main_controller.dart";
-import "package:namer_app/nav_controller.dart";
 import "package:namer_app/nav_model.dart";
 import "package:namer_app/pages/home/home.dart";
 
@@ -39,7 +38,6 @@ class MainPage extends StatelessWidget {
         Container(
           child: HomePage(scaffoldKey),
         ).obs));
-    Get.put(NavController());
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
