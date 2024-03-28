@@ -12,6 +12,7 @@ class HomeDetail extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
+            // Get.snackbar("안녕", "ㅇㅇㅇㅇ");
             // 클릭 시 다이얼로그 띄우기
             Get.dialog(
               AlertDialog(
