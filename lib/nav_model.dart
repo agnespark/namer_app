@@ -19,21 +19,14 @@ List menuList = [
 class Menu {
   String name = "";
   List<Menu>? subMenu;
-  Widget page;
+  Widget? page;
+  Widget? detail;
+  double depth;
 
-  Menu({required this.name, this.subMenu, required this.page});
-
-  // Menu.fromJson(Map<String, dynamic> json) {
-  // name = json['name'];
-  // if (json['subMenu'] != null) {
-  //   subMenu.clear();
-  //   json['subMenu'].forEach((v) {
-  //     subMenu.add(new Menu.fromJson(v));
-  //   });
-  // }
-  // if (json['subMenu'] != null) {
-  //   subMenu =
-  //       json['subMenu'].map<Menu>((item) => Menu.fromJson(item)).toList();
-  // }
-  // }
+  Menu(
+      {required this.name,
+      this.subMenu,
+      this.page,
+      this.detail,
+      required this.depth});
 }

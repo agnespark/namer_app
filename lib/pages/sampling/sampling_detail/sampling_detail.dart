@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FavoriteDetail extends StatelessWidget {
+class SamplingDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(

@@ -1,13 +1,10 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
+import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
 
-class HomePage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
-
-  HomePage(this.scaffoldKey);
-
+class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -46,7 +43,7 @@ class HomePage extends StatelessWidget {
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  scaffoldKey.currentState!.openEndDrawer();
+                  GlobalScaffoldKey.key.currentState!.openEndDrawer();
                 },
                 child: Text('Drawer Detail'),
               ),

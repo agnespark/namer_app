@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
 
-class FavoritePage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
-
-  FavoritePage(this.scaffoldKey);
-
+class SamplingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (MyController.to.favorites.isEmpty) {
@@ -17,7 +14,7 @@ class FavoritePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              scaffoldKey.currentState!.openEndDrawer();
+              GlobalScaffoldKey.key.currentState!.openEndDrawer();
             },
             child: Text('Detail'),
           ),
