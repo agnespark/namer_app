@@ -21,6 +21,7 @@ class Menu {
   List<Menu>? subMenu;
   Widget? page;
   Widget? detail;
+  Widget? post;
   double depth;
 
   Menu(
@@ -28,5 +29,6 @@ class Menu {
       this.subMenu,
       this.page,
       this.detail,
+      this.post,
       required this.depth});
 }

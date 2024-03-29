@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
+import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
+import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -11,6 +13,7 @@ class DashboardPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
           SelectableText('random number'),
           BigCard(pair: MyController.to.current),
           SizedBox(height: 10),
@@ -43,19 +46,20 @@ class DashboardPage extends StatelessWidget {
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
+                  MyController.to
+                      .changeDetail(Container(child: DashboardDetail()));
                   GlobalScaffoldKey.key.currentState!.openEndDrawer();
                 },
-                child: Text('Drawer Detail'),
+                child: Text('Detail Page'),
               ),
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => CustomDetail()),
-                  // );
+                  MyController.to
+                      .changeDetail(Container(child: DashboardPost()));
+                  GlobalScaffoldKey.key.currentState!.openEndDrawer();
                 },
-                child: Text('Custom Detail'),
+                child: Text('Post Page'),
               ),
             ],
           ),
