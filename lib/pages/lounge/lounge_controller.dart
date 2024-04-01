@@ -11,20 +11,21 @@ class LoungeController extends GetxController {
 
   bool pageload = false;
 
+  // 현재, 전체 페이지 정보
   RxInt currentPage = 1.obs;
-  RxList<int> displayCount = [10, 50].obs; // display 메뉴
-  RxInt selectedDisplayCount = 10.obs; // 한 페이지에 보여질 데이터 수
-
   RxInt totalPage = 0.obs; // 전체 페이지수
+  RxInt startIndex = 0.obs; // 페이지내 데이터 시작 index
+  RxInt endIndex = 0.obs; // 페이지내 데이터 끝 index
+
+  // display 정보
+  RxList<int> displayCount = [10, 50].obs; // display 메뉴 리스트
+  RxInt selectedDisplayCount = 10.obs; // 한 페이지에 보여질 데이터 수
 
   // 페이지네이션 정보
   RxInt pageCount = 5.obs; // pagination 아래 1-5 숫자
   RxInt firstNumberPageCount = 1.obs; // pagination 첫번째 숫자
   RxInt lastNumberPageCount = 0.obs; // pagination 마지막 숫자
   RxList<int> pageCountList = RxList<int>(); // pagination 아래 1-5 업데이트 숫자
-
-  RxInt startIndex = 0.obs; // pagination 아래 1-5 숫자
-  RxInt endIndex = 0.obs;
 
   @override
   void onInit() {
@@ -44,7 +45,6 @@ class LoungeController extends GetxController {
       });
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
       setFistLastNumberPageCount();
-      setPageCountList();
       setDataIndexPerPage();
       status.value = 1;
     } catch (e) {
@@ -52,28 +52,27 @@ class LoungeController extends GetxController {
     }
   }
 
-  // Future<void> loadPage(int currentPage) async {
-  //   this.currentPage.value = currentPage;
-
-  //   try {
-  //     firstNumberPageCount.value = 1;
-  //     lastNumberPageCount.value =
-  //         pageCount.value > totalPage.value ? pageCount.value : totalPage.value;
-  //     var result = await LoungeInterface.getList(currentPage);
-  //     result['results'].forEach((e) {
-  //       loungeList.add(LoungePostModel.fromJson(e));
-  //     });
-  //     status.value = 1;
-  //   } catch (e) {
-  //     status.value = 2;
-  //   }
-  // }
+  Future<void> loadMoreData(int nextPage) async {
+    try {
+      var result = await LoungeInterface.getList(nextPage);
+      result['results'].forEach((e) {
+        loungeList.add(LoungePostModel.fromJson(e));
+      });
+      totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
+      print(result);
+      status.value = 1;
+    } catch (e) {
+      status.value = 2;
+    }
+  }
 
   void prevButtonClicked() {
     if (currentPage == 1) {
       return;
     }
     currentPage.value = currentPage.value - 1;
+    setFistLastNumberPageCount();
+    setDataIndexPerPage();
   }
 
   void nextButtonClicked() {
@@ -81,6 +80,8 @@ class LoungeController extends GetxController {
       return;
     }
     currentPage.value = currentPage.value + 1;
+    setFistLastNumberPageCount();
+    setDataIndexPerPage();
   }
 
   void setFistLastNumberPageCount() {
@@ -90,9 +91,11 @@ class LoungeController extends GetxController {
 
     firstNumberPageCount.value = newFirstNumber;
     lastNumberPageCount.value = newLastNumber;
+    setPageCountList();
   }
 
   void setPageCountList() {
+    pageCountList.clear();
     for (int i = firstNumberPageCount.value;
         i <= lastNumberPageCount.value;
         i++) {
@@ -108,5 +111,14 @@ class LoungeController extends GetxController {
 
   void pageClicked(int page) {
     currentPage.value = page;
+    if (currentPage.value > (totalPage.value * 1 / 2) && !pageload) {
+      print('here');
+      // pageload가 false이고 현재 페이지가 전체 페이지의 1/2보다 큰 경우에만 실행
+      pageload = true; // 한 번만 데이터를 불러오기 위해 pageload 값을 true로 설정
+      // 현재 불러온 페이지의 다음 페이지를 불러오기 (현재 length의 기본데이터 150 나누기)
+      var nextPageParams = (loungeList.length / 150).ceil() + 1;
+      loadMoreData(nextPageParams);
+    }
+    setDataIndexPerPage();
   }
 }

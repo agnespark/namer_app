@@ -91,12 +91,18 @@ class LoungePage extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       // 숫자버튼
-                      // 숫자버튼
                       for (int i in LoungeController.to.pageCountList)
                         ElevatedButton(
                           onPressed: () {
                             LoungeController.to.pageClicked(i);
                           },
+                          style: ButtonStyle(
+                            backgroundColor: i ==
+                                    LoungeController.to.currentPage.value
+                                ? MaterialStateProperty.all<Color>(
+                                    Colors.blue) // 현재 선택된 페이지의 버튼에 파란색 배경색 적용
+                                : null,
+                          ),
                           child: Text('$i'),
                         ),
                       const SizedBox(width: 16),
