@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/model/lounge_model.dart';
 import 'package:namer_app/pages/lounge/lounge_controller.dart';
 
 class LoungePage extends StatelessWidget {
@@ -41,53 +42,39 @@ class LoungePage extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: (LoungeController.to.loungeList.length /
-                              LoungeController.to.selectedDisplayCount.value)
-                          .ceil(),
+                      itemCount: LoungeController.to.endIndex.value -
+                          LoungeController.to.startIndex.value,
                       itemBuilder: (context, index) {
-                        final startIndex = index *
-                            LoungeController.to.selectedDisplayCount.value;
-                        final endIndex = startIndex +
-                            LoungeController.to.selectedDisplayCount.value;
-                        print(endIndex);
-                        final sublist = LoungeController.to.loungeList.sublist(
-                          startIndex,
-                          endIndex > LoungeController.to.loungeList.length
-                              ? LoungeController.to.loungeList.length
-                              : endIndex,
-                        );
-                        print(sublist);
-                        return Column(
-                          children: sublist.map((lounge) {
-                            return Row(
-                              children: [
-                                if (lounge.imageUrl != '')
-                                  SizedBox(
-                                    width: 48,
-                                    height: 48,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        lounge.imageUrl,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                Expanded(
-                                  child: ListTile(
-                                    title: SelectableText(lounge.title),
-                                    subtitle: SelectableText(
-                                      lounge.content,
-                                      style:
-                                          const TextStyle(color: Colors.blue),
-                                    ),
+                        final int itemIndex =
+                            LoungeController.to.startIndex.value + index;
+                        final LoungePostModel lounge =
+                            LoungeController.to.loungeList[itemIndex];
+                        return Row(
+                          children: [
+                            if (lounge.imageUrl != '')
+                              SizedBox(
+                                width: 48,
+                                height: 48,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    lounge.imageUrl,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              ],
-                            );
-                          }).toList(),
+                              ),
+                            Expanded(
+                              child: ListTile(
+                                title: SelectableText(lounge.title),
+                                subtitle: SelectableText(
+                                  lounge.content,
+                                  style: const TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
@@ -95,43 +82,30 @@ class LoungePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // prev 버튼
                       IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: () {
-                          if (LoungeController.to.currentPage.value > 0) {
-                            LoungeController.to.currentPage.value--;
-                            // LoungeController.to.loadData();
-                          }
+                          LoungeController.to.prevButtonClicked();
                         },
                       ),
                       const SizedBox(width: 16),
-                      for (int i = 1;
-                          i <=
-                              (LoungeController.to.loungeList.length /
-                                      LoungeController
-                                          .to.selectedDisplayCount.value)
-                                  .ceil();
-                          i++)
+                      // 숫자버튼
+                      // 숫자버튼
+                      for (int i in LoungeController.to.pageCountList)
                         ElevatedButton(
                           onPressed: () {
-                            LoungeController.to.currentPage.value = i - 1;
-                            // LoungeController.to.loadData();
+                            LoungeController.to.pageClicked(i);
                           },
                           child: Text('$i'),
                         ),
                       const SizedBox(width: 16),
+                      // next 버튼
                       IconButton(
                         icon: const Icon(Icons.arrow_forward),
                         onPressed: () {
-                          if (LoungeController.to.currentPage.value <
-                              (LoungeController.to.loungeList.length /
-                                          LoungeController
-                                              .to.selectedDisplayCount.value)
-                                      .ceil() -
-                                  1) {
-                            LoungeController.to.currentPage.value++;
-                            // LoungeController.to.loadData();
-                          }
+                          LoungeController.to.nextButtonClicked();
+                          // LoungeController.to.loadData();
                         },
                       ),
                     ],
