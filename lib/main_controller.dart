@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
+import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
 import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 
@@ -29,12 +30,7 @@ class MyController extends GetxController {
 
   void setNav() {
     navList = [
-      Menu(
-          name: "Dashboard",
-          page: DashboardPage(),
-          detail: DashboardDetail(),
-          post: DashboardPost(),
-          depth: 0),
+      Menu(name: "Dashboard", page: DashboardPage(), depth: 0),
       Menu(
         name: "PLC",
         depth: 0,
@@ -46,6 +42,7 @@ class MyController extends GetxController {
           ]),
         ],
       ),
+      Menu(name: "Lounge", page: LoungePage(), depth: 0),
     ].obs;
   }
 

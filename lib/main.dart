@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 import "package:namer_app/global_scaffold_key.dart";
-import "package:namer_app/pages/dashboard/dashboard.dart";
 import "package:namer_app/main_controller.dart";
 import "package:namer_app/nav_model.dart";
-import "package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart";
 
 void main() {
   runApp(MyApp());
