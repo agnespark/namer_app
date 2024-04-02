@@ -51,20 +51,20 @@ class LoungePage extends StatelessWidget {
                             LoungeController.to.loungeList[itemIndex];
                         return Row(
                           children: [
-                            if (lounge.imageUrl != '')
-                              SizedBox(
-                                width: 48,
-                                height: 48,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(
-                                    lounge.imageUrl,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                            // if (lounge.imageUrl != '')
+                            //   SizedBox(
+                            //     width: 48,
+                            //     height: 48,
+                            //     child: ClipRRect(
+                            //       borderRadius: BorderRadius.circular(8),
+                            //       child: Image.network(
+                            //         lounge.imageUrl,
+                            //         width: double.infinity,
+                            //         height: double.infinity,
+                            //         fit: BoxFit.cover,
+                            //       ),
+                            //     ),
+                            //   ),
                             Expanded(
                               child: ListTile(
                                 title: SelectableText(lounge.title),
