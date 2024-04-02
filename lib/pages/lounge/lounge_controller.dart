@@ -16,16 +16,14 @@ class LoungeController extends GetxController {
   RxInt totalPage = 0.obs; // 전체 페이지수
   RxInt startIndex = 0.obs; // 페이지내 데이터 시작 index
   RxInt endIndex = 0.obs; // 페이지내 데이터 끝 index
-  int dataCount = 0; // 백에서 잘라서 보내주는 데이터 갯수
+  int dataCount = 0; // 백엔드에서 잘라서 보내주는 데이터 갯수
 
-  // display 정보
+  // displayCount 정보
   RxList<int> displayCount = [10, 50].obs; // display 메뉴 리스트
   RxInt selectedDisplayCount = 10.obs; // 한 페이지에 보여질 데이터 수
 
-  // 페이지네이션 정보
-  RxInt pageCount = 5.obs; // pagination 아래 1-5 숫자
-  RxInt firstNumberPageCount = 1.obs; // pagination 첫번째 숫자
-  RxInt lastNumberPageCount = 0.obs; // pagination 마지막 숫자
+  // Pagination 정보
+  int pageCount = 5; // pagination 아래 1-5 숫자
   RxList<int> pageCountList = RxList<int>(); // pagination 아래 1-5 업데이트 숫자
 
   @override
@@ -36,7 +34,6 @@ class LoungeController extends GetxController {
 
   Future<void> loadData() async {
     status.value = 0;
-
     try {
       loungeList.clear();
       currentPage.value = 1;
@@ -44,6 +41,7 @@ class LoungeController extends GetxController {
       result['results'].forEach((e) {
         loungeList.add(LoungePostModel.fromJson(e));
       });
+      dataCount = loungeList.length;
       if (selectedDisplayCount.value == 50) {
         await loadMoreData(currentPage.value + 1);
         result['results'].forEach((e) {
@@ -51,8 +49,7 @@ class LoungeController extends GetxController {
         });
       }
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
-      dataCount = loungeList.length;
-      setFistLastNumberPageCount();
+      setPageCountList();
       setDataIndexPerPage();
       status.value = 1;
     } catch (e) {
@@ -80,7 +77,7 @@ class LoungeController extends GetxController {
       return;
     }
     currentPage.value = currentPage.value - 1;
-    setFistLastNumberPageCount();
+    setPageCountList();
     setDataIndexPerPage();
   }
 
@@ -99,32 +96,22 @@ class LoungeController extends GetxController {
       pageload = true;
       await loadMoreData(nextPageParams + 2);
       await loadMoreData(nextPageParams + 3);
-    } else {
+    } else if (currentPage.value % 10 == 1 && !pageload) {
       // pageload가 false이고 현재 페이지가 전체 페이지의 10배수 + 1인 경우에만 실행
-      if (currentPage.value % 10 == 1 && !pageload) {
-        pageload = true;
-        await loadMoreData(nextPageParams);
-      }
+      pageload = true;
+      await loadMoreData(nextPageParams);
     }
-    setFistLastNumberPageCount();
+    setPageCountList();
     setDataIndexPerPage();
   }
 
-  void setFistLastNumberPageCount() {
-    var currentGroup = (currentPage.value / pageCount.value).ceil();
-    var newFirstNumber = (currentGroup - 1) * pageCount.value + 1;
-    var newLastNumber = min(currentGroup * pageCount.value, totalPage.value);
-
-    firstNumberPageCount.value = newFirstNumber;
-    lastNumberPageCount.value = newLastNumber;
-    setPageCountList();
-  }
-
   void setPageCountList() {
+    var currentGroup = (currentPage.value / pageCount).ceil();
+    var newFirstNumber = (currentGroup - 1) * pageCount + 1;
+    var newLastNumber = min(currentGroup * pageCount, totalPage.value);
+
     pageCountList.clear();
-    for (int i = firstNumberPageCount.value;
-        i <= lastNumberPageCount.value;
-        i++) {
+    for (int i = newFirstNumber; i <= newLastNumber; i++) {
       pageCountList.add(i);
     }
   }

@@ -111,7 +111,6 @@ class LoungePage extends StatelessWidget {
                         icon: const Icon(Icons.arrow_forward),
                         onPressed: () {
                           LoungeController.to.nextButtonClicked();
-                          // LoungeController.to.loadData();
                         },
                       ),
                     ],
