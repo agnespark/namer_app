@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeDetail extends StatelessWidget {
+class DashboardDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(

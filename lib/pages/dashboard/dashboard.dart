@@ -1,19 +1,19 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
+import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
+import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
+import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 
-class HomePage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
-
-  HomePage(this.scaffoldKey);
-
+class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
           SelectableText('random number'),
           BigCard(pair: MyController.to.current),
           SizedBox(height: 10),
@@ -46,19 +46,20 @@ class HomePage extends StatelessWidget {
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  scaffoldKey.currentState!.openEndDrawer();
+                  MyController.to
+                      .changeDetail(Container(child: DashboardDetail()));
+                  GlobalScaffoldKey.key.currentState!.openEndDrawer();
                 },
-                child: Text('Drawer Detail'),
+                child: Text('Detail Page'),
               ),
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => CustomDetail()),
-                  // );
+                  MyController.to
+                      .changeDetail(Container(child: DashboardPost()));
+                  GlobalScaffoldKey.key.currentState!.openEndDrawer();
                 },
-                child: Text('Custom Detail'),
+                child: Text('Post Page'),
               ),
             ],
           ),

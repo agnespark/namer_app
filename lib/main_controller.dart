@@ -1,45 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
-import 'package:namer_app/pages/favorite/favorite.dart';
+import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
+import 'package:namer_app/pages/lounge/lounge.dart';
+import 'package:namer_app/pages/sampling/sampling.dart';
+import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 
 import 'nav_model.dart';
-import 'pages/home/home.dart';
+import 'pages/dashboard/dashboard.dart';
 
 class MyController extends GetxController {
   static MyController get to => Get.find<MyController>();
 
-  MyController(this.scaffoldKey, this.currentWidget);
-
-  RxInt selectedIndex = 0.obs;
-
   Rx<WordPair> current = WordPair.random().obs;
   RxList<WordPair> favorites = <WordPair>[].obs;
 
-  GlobalKey<ScaffoldState> scaffoldKey;
-
-  Rx<Widget> currentWidget;
+  Rx<Widget> currentWidget = Container(child: DashboardPage()).obs;
+  Rx<Widget> currentDetail = Container(child: DashboardDetail()).obs;
+  late Rx<Widget> currentPost;
+  Rx<String> currentMenu = "".obs;
 
   RxList navList = RxList();
 
   @override
   void onInit() {
-    setNave();
+    setNav();
     super.onInit();
   }
 
-  void setNave() {
-    // Menu Object Create
+  void setNav() {
     navList = [
+      Menu(name: "Dashboard", page: DashboardPage(), depth: 0),
       Menu(
-        name: "Dashboard",
-        page: HomePage(scaffoldKey),
+        name: "PLC",
+        depth: 0,
+        subMenu: [
+          Menu(name: "Sampling", depth: 1, subMenu: [
+            Menu(name: "구매단가", page: SamplingPage(), depth: 2),
+            Menu(name: "BOM", page: SamplingPage(), depth: 2),
+            Menu(name: "거래처", page: SamplingPage(), depth: 2),
+          ]),
+        ],
       ),
-      Menu(
-        name: "Favorite",
-        page: FavoritePage(scaffoldKey),
-      ),
+      Menu(name: "Lounge", page: LoungePage(), depth: 0),
     ].obs;
+  }
+
+  void changePage(Widget? widget, String name) {
+    currentWidget.value = Container(child: widget);
+    currentMenu.value = name;
+  }
+
+  void changeDetail(widget) {
+    currentDetail.value = widget;
   }
 
   void getNext() {
@@ -52,10 +65,5 @@ class MyController extends GetxController {
     } else {
       favorites.add(current.value);
     }
-  }
-
-  void changeWidget(widget) {
-    currentWidget.value = Container(child: widget);
-    update();
   }
 }
