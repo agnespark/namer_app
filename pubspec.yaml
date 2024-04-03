@@ -40,6 +40,8 @@ dependencies:
   get:
   dio:
   flutter_svg: ^2.0.7
+  syncfusion_flutter_datagrid:
+  intl:
 
 dev_dependencies:
   flutter_test:
