@@ -41,95 +41,60 @@ class LoungePage extends StatelessWidget {
                     ],
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: List.generate(
-                          LoungeController.to.endIndex.value -
-                              LoungeController.to.startIndex.value,
-                          (index) {
-                            final nextPageParams =
-                                (LoungeController.to.loungeList.length /
-                                            LoungeController.to.dataCount.value)
-                                        .ceil() +
-                                    1;
+                    child: ListView.builder(
+                        itemCount: LoungeController.to.endIndex.value -
+                            LoungeController.to.startIndex.value,
+                        itemBuilder: (context, index) {
+                          // 현재 아이템의 인덱스 계산
+                          final int itemIndex =
+                              LoungeController.to.startIndex.value + index;
 
-                            final int itemIndex =
-                                LoungeController.to.startIndex.value + index;
-
-                            if (!LoungeController.to.pageload.value) {
-                              if (LoungeController.to.selectedDisplayCount ==
-                                      10 &&
-                                  LoungeController.to.loungeList.length -
-                                          itemIndex <
-                                      80) {
-                                // loungeList가 현재 itemIndex 보다 뒤에서 80개 남았을 경우
-                                LoungeController.to.pageload.value = true;
-                                LoungeController.to
-                                    .loadMoreData(nextPageParams)
-                                    .then((_) {
-                                  LoungeController.to.pageload.value = false;
-                                });
-                              } else if (LoungeController
-                                          .to.selectedDisplayCount ==
-                                      50 &&
-                                  LoungeController.to.loungeList.length -
-                                          itemIndex <
-                                      200) {
-                                // loungeList가 현재 itemIndex 보다 뒤에서 200개 남았을 경우
-                                LoungeController.to.pageload.value = true;
-                                LoungeController.to
-                                    .loadMoreData(nextPageParams + 1)
-                                    .then((_) {
-                                  return LoungeController.to
-                                      .loadMoreData(nextPageParams + 2);
-                                }).then((_) {
-                                  return LoungeController.to
-                                      .loadMoreData(nextPageParams + 3);
-                                }).then((_) {
-                                  LoungeController.to.pageload.value = false;
-                                });
-                              }
-                            }
-                            final LoungePostModel lounge =
-                                LoungeController.to.loungeList[itemIndex];
-                            return Row(
-                              children: [
-                                // if (lounge.imageUrl != '')
-                                //   SizedBox(
-                                //     width: 48,
-                                //     height: 48,
-                                //     child: ClipRRect(
-                                //       borderRadius: BorderRadius.circular(8),
-                                //       child: Image.network(
-                                //         lounge.imageUrl,
-                                //         width: double.infinity,
-                                //         height: double.infinity,
-                                //         fit: BoxFit.cover,
-                                //         errorBuilder: (context, error, stackTrace) {
-                                //           print(1);
-                                //           print(error);
-                                //           return Image.asset(
-                                //               'assets/images/error_image.png');
-                                //         },
-                                //       ),
-                                //     ),
-                                //   ),
-                                Expanded(
-                                  child: ListTile(
-                                    title: SelectableText(lounge.title),
-                                    subtitle: SelectableText(
-                                      lounge.content,
-                                      style:
-                                          const TextStyle(color: Colors.blue),
-                                    ),
+                          if ((itemIndex >=
+                                  (0.7 *
+                                      LoungeController.to.loungeList.length)) &&
+                              !LoungeController.to.pageload.value) {
+                            LoungeController.to.addData();
+                          }
+                          // 현재 아이템 표시
+                          final LoungePostModel lounge =
+                              LoungeController.to.loungeList[itemIndex];
+                          return Row(
+                            children: [
+                              // 이미지 표시
+                              // if (lounge.imageUrl != '')
+                              //   SizedBox(
+                              //     width: 48,
+                              //     height: 48,
+                              //     child: ClipRRect(
+                              //       borderRadius: BorderRadius.circular(8),
+                              //       child: Image.network(
+                              //         lounge.imageUrl,
+                              //         width: double.infinity,
+                              //         height: double.infinity,
+                              //         fit: BoxFit.cover,
+                              //         errorBuilder: (context, error, stackTrace) {
+                              //           // 에러 발생 시 대체 이미지를 표시합니다.
+                              //           print(1);
+                              //           print(error);
+                              //           return Image.asset(
+                              //               'assets/images/error_image.png');
+                              //         },
+                              //       ),
+                              //     ),
+                              //   ),
+                              // 제목과 내용을 표시
+                              Expanded(
+                                child: ListTile(
+                                  title: SelectableText(lounge.title),
+                                  subtitle: SelectableText(
+                                    lounge.content,
+                                    style: const TextStyle(color: Colors.blue),
                                   ),
                                 ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                              ),
+                            ],
+                          );
+                        }),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

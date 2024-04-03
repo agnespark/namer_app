@@ -25,6 +25,7 @@ class LoungeController extends GetxController {
   // Pagination 정보
   int pageCount = 5; // pagination 아래 1-5 숫자
   RxList<int> pageCountList = RxList<int>(); // pagination 아래 1-5 업데이트 숫자
+  RxInt nextPageParameter = 1.obs;
 
   @override
   void onInit() {
@@ -41,13 +42,11 @@ class LoungeController extends GetxController {
       result['results'].forEach((e) {
         loungeList.add(LoungePostModel.fromJson(e));
       });
-
       if (selectedDisplayCount.value == 50) {
-        await loadMoreData(currentPage.value + 1);
-        await loadMoreData(currentPage.value + 2);
-        result['results'].forEach((e) {
-          loungeList.add(LoungePostModel.fromJson(e));
-        });
+        for (int i = 1; i <= 4; i++) {
+          nextPageParameter.value = i + 1;
+          await loadMoreData(currentPage.value + i);
+        }
       }
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
       dataCount.value = loungeList.length;
@@ -60,14 +59,15 @@ class LoungeController extends GetxController {
   }
 
   Future<void> loadMoreData(int nextPage) async {
+    if (currentPage.value == 1) {
+      status.value = 0;
+    }
     try {
       var result = await LoungeInterface.getList(nextPage);
       result['results'].forEach((e) {
         loungeList.add(LoungePostModel.fromJson(e));
       });
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
-      setPageCountList();
-      setDataIndexPerPage();
       status.value = 1;
     } catch (e) {
       status.value = 2;
@@ -75,7 +75,7 @@ class LoungeController extends GetxController {
   }
 
   void prevButtonClicked() {
-    if (currentPage == 1) {
+    if (currentPage.value == 1) {
       return;
     }
     currentPage.value = currentPage.value - 1;
@@ -83,8 +83,8 @@ class LoungeController extends GetxController {
     setDataIndexPerPage();
   }
 
-  Future<void> nextButtonClicked() async {
-    if (currentPage == totalPage.value) {
+  void nextButtonClicked() {
+    if (currentPage.value == totalPage.value) {
       return;
     }
 
@@ -115,5 +115,25 @@ class LoungeController extends GetxController {
     currentPage.value = page;
     setPageCountList();
     setDataIndexPerPage();
+  }
+
+  Future<void> addData() async {
+    pageload.value = true;
+    if (selectedDisplayCount.value == 10) {
+      nextPageParameter.value = nextPageParameter.value + 1;
+      await loadMoreData(nextPageParameter.value);
+      pageload.value = false;
+    } else if (selectedDisplayCount.value == 50) {
+      List<Future> futures = [];
+      for (int i = 1; i <= 5; i++) {
+        futures.add(loadMoreData(nextPageParameter.value + i));
+        if (i == 5) {
+          nextPageParameter.value = nextPageParameter.value + i;
+        }
+      }
+      Future.wait(futures).then((_) {
+        pageload.value = false;
+      });
+    }
   }
 }
