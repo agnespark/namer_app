@@ -9,14 +9,14 @@ class LoungeController extends GetxController {
   RxInt status = 0.obs;
   RxList<LoungePostModel> loungeList = RxList();
 
-  bool pageload = false;
+  Rx<bool> pageload = false.obs;
 
   // 현재, 전체 페이지 정보
   RxInt currentPage = 1.obs;
   RxInt totalPage = 0.obs; // 전체 페이지수
   RxInt startIndex = 0.obs; // 페이지내 데이터 시작 index
   RxInt endIndex = 0.obs; // 페이지내 데이터 끝 index
-  int dataCount = 0; // 백엔드에서 잘라서 보내주는 데이터 갯수
+  RxInt dataCount = 0.obs; // 백엔드에서 잘라서 보내주는 데이터 갯수
 
   // displayCount 정보
   RxList<int> displayCount = [10, 50].obs; // display 메뉴 리스트
@@ -41,14 +41,16 @@ class LoungeController extends GetxController {
       result['results'].forEach((e) {
         loungeList.add(LoungePostModel.fromJson(e));
       });
-      dataCount = loungeList.length;
+
       if (selectedDisplayCount.value == 50) {
         await loadMoreData(currentPage.value + 1);
+        await loadMoreData(currentPage.value + 2);
         result['results'].forEach((e) {
           loungeList.add(LoungePostModel.fromJson(e));
         });
       }
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
+      dataCount.value = loungeList.length;
       setPageCountList();
       setDataIndexPerPage();
       status.value = 1;
@@ -58,14 +60,14 @@ class LoungeController extends GetxController {
   }
 
   Future<void> loadMoreData(int nextPage) async {
-    status.value = 0;
     try {
       var result = await LoungeInterface.getList(nextPage);
       result['results'].forEach((e) {
         loungeList.add(LoungePostModel.fromJson(e));
       });
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
-      pageload = false;
+      setPageCountList();
+      setDataIndexPerPage();
       status.value = 1;
     } catch (e) {
       status.value = 2;
@@ -82,25 +84,12 @@ class LoungeController extends GetxController {
   }
 
   Future<void> nextButtonClicked() async {
-    // 현재 불러온 페이지의 다음 페이지를 불러오기 (현재 length의 기본데이터 150 나누기)
-    var nextPageParams = (loungeList.length / dataCount).ceil() + 1;
-
     if (currentPage == totalPage.value) {
       return;
     }
+
     currentPage.value = currentPage.value + 1;
 
-    if (selectedDisplayCount.value == 50 &&
-        currentPage.value % 5 == 1 &&
-        !pageload) {
-      pageload = true;
-      await loadMoreData(nextPageParams + 2);
-      await loadMoreData(nextPageParams + 3);
-    } else if (currentPage.value % 10 == 1 && !pageload) {
-      // pageload가 false이고 현재 페이지가 전체 페이지의 10배수 + 1인 경우에만 실행
-      pageload = true;
-      await loadMoreData(nextPageParams);
-    }
     setPageCountList();
     setDataIndexPerPage();
   }
@@ -124,6 +113,7 @@ class LoungeController extends GetxController {
 
   void pageClicked(int page) {
     currentPage.value = page;
+    setPageCountList();
     setDataIndexPerPage();
   }
 }
