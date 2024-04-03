@@ -99,6 +99,12 @@ class LoungePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          LoungeController.to.firstPageButtonClicked();
+                        },
+                      ),
                       // prev 버튼
                       IconButton(
                         icon: const Icon(Icons.arrow_back),

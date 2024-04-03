@@ -94,6 +94,20 @@ class LoungeController extends GetxController {
     setDataIndexPerPage();
   }
 
+  void firstPageButtonClicked() {
+    currentPage.value = 1;
+
+    setPageCountList();
+    setDataIndexPerPage();
+  }
+
+  void lastPageButtonClicked() {
+    currentPage.value = 1;
+
+    setPageCountList();
+    setDataIndexPerPage();
+  }
+
   void setPageCountList() {
     var currentGroup = (currentPage.value / pageCount).ceil();
     var newFirstNumber = (currentGroup - 1) * pageCount + 1;
