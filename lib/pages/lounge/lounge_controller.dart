@@ -44,8 +44,10 @@ class LoungeController extends GetxController {
       });
       if (selectedDisplayCount.value == 50) {
         for (int i = 1; i <= 4; i++) {
-          nextPageParameter.value = i + 1;
           await loadMoreData(currentPage.value + i);
+          if (i == 4) {
+            nextPageParameter.value = 5;
+          }
         }
       }
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
@@ -132,6 +134,10 @@ class LoungeController extends GetxController {
   }
 
   Future<void> addData() async {
+    if (pageload.value) {
+      return;
+    }
+
     pageload.value = true;
     if (selectedDisplayCount.value == 10) {
       nextPageParameter.value = nextPageParameter.value + 1;

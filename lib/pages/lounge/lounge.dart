@@ -49,10 +49,8 @@ class LoungePage extends StatelessWidget {
                           final int itemIndex =
                               LoungeController.to.startIndex.value + index;
 
-                          if ((itemIndex >=
-                                  (0.7 *
-                                      LoungeController.to.loungeList.length)) &&
-                              !LoungeController.to.pageload.value) {
+                          if (itemIndex >=
+                              (0.7 * LoungeController.to.loungeList.length)) {
                             LoungeController.to.addData();
                           }
                           // 현재 아이템 표시
@@ -73,9 +71,6 @@ class LoungePage extends StatelessWidget {
                               //         height: double.infinity,
                               //         fit: BoxFit.cover,
                               //         errorBuilder: (context, error, stackTrace) {
-                              //           // 에러 발생 시 대체 이미지를 표시합니다.
-                              //           print(1);
-                              //           print(error);
                               //           return Image.asset(
                               //               'assets/images/error_image.png');
                               //         },
@@ -101,9 +96,8 @@ class LoungePage extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back),
-                        onPressed: () {
-                          LoungeController.to.firstPageButtonClicked();
-                        },
+                        onPressed: () =>
+                            LoungeController.to.firstPageButtonClicked(),
                       ),
                       // prev 버튼
                       IconButton(
