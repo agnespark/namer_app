@@ -76,12 +76,14 @@ class _TablePageState extends State<TablePage> {
     return SfDataGrid(
         source: _orderInfoDataSource,
         columnWidthMode: ColumnWidthMode.fill,
+        headerGridLinesVisibility: GridLinesVisibility.both,
+        gridLinesVisibility: GridLinesVisibility.both,
         columns: <GridColumn>[
           GridColumn(
               columnName: 'orderID',
               label: Container(
                   padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: Text(
                     'Order ID',
                     overflow: TextOverflow.ellipsis,
@@ -90,13 +92,13 @@ class _TablePageState extends State<TablePage> {
               columnName: 'customerID',
               label: Container(
                   padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Text('Customer Name'))),
           GridColumn(
               columnName: 'orderDate',
               label: Container(
                   padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: Text('Order Date'))),
           GridColumn(
               columnName: 'freight',
@@ -132,7 +134,7 @@ class OrderInfoDataSource extends DataGridSource {
       if (dataGridCell.columnName == 'orderID') {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.centerRight,
+          alignment: Alignment.center,
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -140,30 +142,31 @@ class OrderInfoDataSource extends DataGridSource {
         );
       } else if (dataGridCell.columnName == 'customerID') {
         return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              dataGridCell.value.toString(),
-              overflow: TextOverflow.ellipsis,
-            ));
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.center,
+          child: Text(
+            dataGridCell.value.toString(),
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
       } else if (dataGridCell.columnName == 'orderDate') {
         return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.centerRight,
-            child: Text(
-              DateFormat.yMd().format(dataGridCell.value).toString(),
-              overflow: TextOverflow.ellipsis,
-            ));
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.center,
+          child: Text(
+            dataGridCell.value.toString(),
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
       } else {
         return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.center,
-            child: Text(
-              NumberFormat.currency(locale: 'en_US', symbol: '\$')
-                  .format(dataGridCell.value)
-                  .toString(),
-              overflow: TextOverflow.ellipsis,
-            ));
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.center,
+          child: Text(
+            dataGridCell.value.toString(),
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
       }
     }).toList());
   }
@@ -183,7 +186,6 @@ class OrderInfoDataSource extends DataGridSource {
   }
 
   void buildPaginatedDataGridRows() {
-    print('여기');
     dataGridRows = _paginatedOrders.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
         DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
