@@ -23,7 +23,7 @@ class TextFieldPage extends StatelessWidget {
                 child: PasswordField(
                   hasFloatingPlaceholder: true,
                   backgroundColor: Colors.red.shade100,
-                  controller: TextEditingController(text: 'password'),
+                  controller: TextEditingController(text: ''),
                   errorMessage:
                       'required at least 1 letter and number 5+ chars',
                   passwordConstraint: r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$',
@@ -38,7 +38,7 @@ class TextFieldPage extends StatelessWidget {
                       fontSize: 14,
                     ),
                   ),
-                  hintText: 'Password',
+                  hintText: '',
                   onChanged: (x) {
                     print(x);
                   },
@@ -122,7 +122,7 @@ class TextFieldPage extends StatelessWidget {
                           BorderSide(width: 2, color: Colors.red.shade200),
                     ),
                   ),
-
+                  hintText: '',
                   errorMessage:
                       'must contain special character either . * @ # \$',
                 ),

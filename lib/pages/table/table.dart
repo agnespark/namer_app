@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class TablePage extends StatefulWidget {
   @override
@@ -44,6 +45,16 @@ class _TablePageState extends State<TablePage> {
       OrderInfo(10007, 'g', DateTime.now(), 150.0),
       OrderInfo(10008, 'h', DateTime.now(), 150.0),
       OrderInfo(10009, 'i', DateTime.now(), 150.0),
+      OrderInfo(10010, 'j', DateTime.now(), 150.0),
+      OrderInfo(10001, 'a', DateTime.now(), 200.0),
+      OrderInfo(10002, 'b', DateTime.now(), 300.0),
+      OrderInfo(10003, 'c', DateTime.now(), 150.0),
+      OrderInfo(10004, 'd', DateTime.now(), 150.0),
+      OrderInfo(10005, 'e', DateTime.now(), 150.0),
+      OrderInfo(10006, 'f', DateTime.now(), 150.0),
+      OrderInfo(10007, 'g', DateTime.now(), 150.0),
+      OrderInfo(10008, 'h', DateTime.now(), 150.0),
+      OrderInfo(10009, 'i', DateTime.now(), 150.0),
       OrderInfo(10010, 'j', DateTime.now(), 150.0)
     ];
   }
@@ -54,26 +65,62 @@ class _TablePageState extends State<TablePage> {
       appBar: AppBar(
         title: Text('Syncfusion DataGrid'),
       ),
-      body: LayoutBuilder(builder: (context, constraint) {
-        return Column(children: [
-          SizedBox(
-              height: constraint.maxHeight - _dataPagerHeight,
-              width: constraint.maxWidth,
-              child: _buildDataGrid(constraint)),
-          Container(
-              height: _dataPagerHeight,
-              child: SfDataPager(
-                delegate: _orderInfoDataSource,
-                pageCount: (_orders.length / _rowsPerPage).ceil().toDouble(),
-                direction: Axis.horizontal,
-              ))
-        ]);
-      }),
+      body: LayoutBuilder(
+        builder: (context, constraint) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // header
+                SizedBox(
+                    height: constraint.maxHeight - (_dataPagerHeight * 5),
+                    width: constraint.maxWidth,
+                    child: _buildDataGrid(constraint)),
+                // body
+                Container(
+                  height: _dataPagerHeight,
+                  width: constraint.maxWidth / 3,
+                  child: Center(
+                    child: SfDataPagerTheme(
+                      data: SfDataPagerThemeData(
+                        itemColor: Colors.white,
+                        selectedItemColor: Colors.blue,
+                        // itemBorderRadius: BorderRadius.circular(5),
+                        // backgroundColor: Colors.teal,
+                      ),
+                      // pagination
+                      child: SfDataPager(
+                        delegate: _orderInfoDataSource,
+                        pageCount:
+                            (_orders.length / _rowsPerPage).ceil().toDouble(),
+                        direction: Axis.horizontal,
+
+                        // onPageNavigationStart: ,
+                        // onPageNavigationEnd: ,
+                        // onRowsPerPageChanged: ,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
   Widget _buildDataGrid(BoxConstraints constraint) {
-    return SfDataGrid(
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+          rowHoverColor: Colors.black12,
+          rowHoverTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+          ),
+          headerColor: Colors.lightBlueAccent,
+          headerHoverColor: Colors.lightBlueAccent),
+      child: SfDataGrid(
         source: _orderInfoDataSource,
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
@@ -106,7 +153,9 @@ class _TablePageState extends State<TablePage> {
                   padding: EdgeInsets.all(16.0),
                   alignment: Alignment.center,
                   child: Text('Freight'))),
-        ]);
+        ],
+      ),
+    );
   }
 }
 
@@ -115,7 +164,7 @@ class OrderInfoDataSource extends DataGridSource {
     _orders = orders;
     // _paginatedOrders =
     //     _orders.getRange(0, _rowsPerPage).toList(growable: false);
-    // buildPaginatedDataGridRows();
+    buildPaginatedDataGridRows();
   }
 
   List<OrderInfo> _orders = [];
@@ -132,39 +181,31 @@ class OrderInfoDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       if (dataGridCell.columnName == 'orderID') {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.center,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      } else if (dataGridCell.columnName == 'customerID') {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.center,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      } else if (dataGridCell.columnName == 'orderDate') {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.center,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text(
+                dataGridCell.value.toString(),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
         );
       } else {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.center,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text(
+                dataGridCell.value.toString(),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
         );
       }
@@ -175,8 +216,10 @@ class OrderInfoDataSource extends DataGridSource {
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     int startIndex = newPageIndex * _rowsPerPage;
+    int endIndex = startIndex + _rowsPerPage;
     if (startIndex < _orders.length) {
-      _paginatedOrders = _orders.skip(startIndex).take(_rowsPerPage).toList();
+      _paginatedOrders =
+          _orders.getRange(startIndex, endIndex).toList(growable: false);
     } else {
       _paginatedOrders = [];
     }
