@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/pages/noshimmer/news_card.dart';
-import 'package:namer_app/pages/noshimmer/skeleton.dart';
+import 'package:namer_app/pages/shimmer/news_card.dart';
+import 'package:namer_app/pages/shimmer/skeleton.dart';
 import 'constants.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -40,8 +41,18 @@ class _NewsPageState extends State<NewsPage> {
         padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
         child: _isLoading
             ? ListView.separated(
-                itemCount: 5,
-                itemBuilder: (context, index) => const NewsCardSkelton(),
+                itemCount: 6,
+                itemBuilder: (context, index) => Container(
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      width: 500.0,
+                      height: 100.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: defaultPadding),
               )
