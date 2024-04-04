@@ -66,10 +66,11 @@ class TextFieldPage extends StatelessWidget {
                   obscureText: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue.shade100,
-                        ),
-                        borderRadius: BorderRadius.circular(12)),
+                      borderSide: BorderSide(
+                        color: Colors.blue.shade100,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.blue.shade100,

@@ -44,6 +44,7 @@ dependencies:
   intl:
   passwordfield:
   omni_datetime_picker:
+  shimmer:
 
 dev_dependencies:
   flutter_test:
