@@ -6,6 +6,7 @@ import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
 import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 import 'package:namer_app/pages/table/table.dart';
+import 'package:namer_app/pages/textfield/textfield.dart';
 
 import 'nav_model.dart';
 import 'pages/dashboard/dashboard.dart';
@@ -45,6 +46,7 @@ class MyController extends GetxController {
       ),
       Menu(name: "Lounge", page: LoungePage(), depth: 0),
       Menu(name: "Table", page: TablePage(), depth: 0),
+      Menu(name: "TextField", page: TextFieldPage(), depth: 0),
     ].obs;
   }
 
