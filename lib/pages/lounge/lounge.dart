@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/model/lounge_model.dart';
 import 'package:namer_app/pages/lounge/lounge_controller.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class LoungePage extends StatelessWidget {
   const LoungePage({Key? key});
@@ -45,10 +46,26 @@ class LoungePage extends StatelessWidget {
                       itemCount: LoungeController.to.endIndex.value -
                           LoungeController.to.startIndex.value,
                       itemBuilder: (context, index) {
+                        if (index == LoungeController.to.loungeList.length) {
+                          return GestureDetector(
+                            onTap: LoungeController.to.nextButtonClicked,
+                            child: Container(
+                              height: 50,
+                              color: Colors.blue,
+                              child: Center(
+                                child: Text(
+                                  'Next Page',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
                         final int itemIndex =
                             LoungeController.to.startIndex.value + index;
                         final LoungePostModel lounge =
                             LoungeController.to.loungeList[itemIndex];
+
                         return Row(
                           children: [
                             // if (lounge.imageUrl != '')

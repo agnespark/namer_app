@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:namer_app/interfacae/lounge_interface.dart';
 import 'package:namer_app/model/lounge_model.dart';
+import 'package:flutter/material.dart';
 
 class LoungeController extends GetxController {
   static LoungeController get to => Get.find<LoungeController>();
@@ -13,18 +14,18 @@ class LoungeController extends GetxController {
 
   // 현재, 전체 페이지 정보
   RxInt currentPage = 1.obs;
-  RxInt totalPage = 0.obs; // 전체 페이지수
-  RxInt startIndex = 0.obs; // 페이지내 데이터 시작 index
-  RxInt endIndex = 0.obs; // 페이지내 데이터 끝 index
-  int dataCount = 0; // 백엔드에서 잘라서 보내주는 데이터 갯수
+  RxInt totalPage = 0.obs;
+  RxInt startIndex = 0.obs;
+  RxInt endIndex = 0.obs;
+  int dataCount = 0;
 
   // displayCount 정보
-  RxList<int> displayCount = [10, 50].obs; // display 메뉴 리스트
-  RxInt selectedDisplayCount = 10.obs; // 한 페이지에 보여질 데이터 수
+  RxList<int> displayCount = [10, 50].obs;
+  RxInt selectedDisplayCount = 10.obs;
 
   // Pagination 정보
-  int pageCount = 5; // pagination 아래 1-5 숫자
-  RxList<int> pageCountList = RxList<int>(); // pagination 아래 1-5 업데이트 숫자
+  int pageCount = 5;
+  RxList<int> pageCountList = RxList<int>();
 
   @override
   void onInit() {
@@ -35,18 +36,20 @@ class LoungeController extends GetxController {
   Future<void> loadData() async {
     status.value = 0;
     try {
-      loungeList.clear();
       currentPage.value = 1;
       var result = await LoungeInterface.getList(currentPage.value);
+      List<LoungePostModel> newDataList = [];
       result['results'].forEach((e) {
-        loungeList.add(LoungePostModel.fromJson(e));
+        newDataList.add(LoungePostModel.fromJson(e));
       });
-      dataCount = loungeList.length;
+      loungeList.addAll(newDataList);
+      dataCount = loungeList.length; // 데이터 갯수 업데이트
       if (selectedDisplayCount.value == 50) {
-        await loadMoreData(currentPage.value + 1);
+        await loadMoreData(currentPage.value + 2);
         result['results'].forEach((e) {
-          loungeList.add(LoungePostModel.fromJson(e));
+          newDataList.add(LoungePostModel.fromJson(e)); // 추가 데이터 추가
         });
+        loungeList.addAll(newDataList); // 추가 데이터를 기존 리스트에 추가
       }
       totalPage.value = (loungeList.length / selectedDisplayCount.value).ceil();
       setPageCountList();
@@ -61,6 +64,7 @@ class LoungeController extends GetxController {
     status.value = 0;
     try {
       var result = await LoungeInterface.getList(nextPage);
+      print(nextPage);
       result['results'].forEach((e) {
         loungeList.add(LoungePostModel.fromJson(e));
       });
