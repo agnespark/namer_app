@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import "package:namer_app/easy_nav_main.dart";
 import "package:namer_app/global_scaffold_key.dart";
 import "package:namer_app/main_controller.dart";
 import "package:namer_app/nav_model.dart";
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
       ),
-      home: MainPage(),
+      home: EasyNavMainPage(),
     );
   }
 }

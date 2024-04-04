@@ -3,7 +3,9 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 class DateTimePage extends StatefulWidget {
-  DateTimePage({Key? key}) : super(key: key);
+  final String? param; // 사용자 ID를 저장하는 변수 추가
+
+  DateTimePage({Key? key, this.param}) : super(key: key);
 
   @override
   _DateTimePageState createState() => _DateTimePageState();
@@ -84,6 +86,9 @@ class _DateTimePageState extends State<DateTimePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('param: ${widget.param ?? ""}'), // 사용자 ID 출력
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16),

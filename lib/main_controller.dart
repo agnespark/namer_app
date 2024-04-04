@@ -6,7 +6,7 @@ import 'package:namer_app/pages/datetime/datetime.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
 import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
-import 'package:namer_app/pages/noshimmer/news_page.dart';
+import 'package:namer_app/pages/shimmer/news_page.dart';
 import 'package:namer_app/pages/table/table.dart';
 import 'package:namer_app/pages/textfield/textfield.dart';
 

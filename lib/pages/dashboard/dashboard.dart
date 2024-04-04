@@ -9,6 +9,7 @@ import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Get.put(MyController());
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,

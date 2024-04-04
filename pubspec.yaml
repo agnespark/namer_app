@@ -45,6 +45,7 @@ dependencies:
   passwordfield:
   omni_datetime_picker:
   shimmer:
+  easy_sidemenu:
 
 dev_dependencies:
   flutter_test:
