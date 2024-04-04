@@ -47,6 +47,7 @@ dependencies:
   shimmer:
   easy_sidemenu:
   table_calendar:
+  calendar_date_picker2:
 
 dev_dependencies:
   flutter_test:
