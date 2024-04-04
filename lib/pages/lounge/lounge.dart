@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/model/lounge_model.dart';
 import 'package:namer_app/pages/lounge/lounge_controller.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class LoungePage extends StatelessWidget {
   const LoungePage({Key? key});
@@ -43,62 +42,63 @@ class LoungePage extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: LoungeController.to.endIndex.value -
-                          LoungeController.to.startIndex.value,
-                      itemBuilder: (context, index) {
-                        if (index == LoungeController.to.loungeList.length) {
-                          return GestureDetector(
-                            onTap: LoungeController.to.nextButtonClicked,
-                            child: Container(
-                              height: 50,
-                              color: Colors.blue,
-                              child: Center(
-                                child: Text(
-                                  'Next Page',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        final int itemIndex =
-                            LoungeController.to.startIndex.value + index;
-                        final LoungePostModel lounge =
-                            LoungeController.to.loungeList[itemIndex];
+                        itemCount: LoungeController.to.endIndex.value -
+                            LoungeController.to.startIndex.value,
+                        itemBuilder: (context, index) {
+                          // 현재 아이템의 인덱스 계산
+                          final int itemIndex =
+                              LoungeController.to.startIndex.value + index;
 
-                        return Row(
-                          children: [
-                            // if (lounge.imageUrl != '')
-                            //   SizedBox(
-                            //     width: 48,
-                            //     height: 48,
-                            //     child: ClipRRect(
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       child: Image.network(
-                            //         lounge.imageUrl,
-                            //         width: double.infinity,
-                            //         height: double.infinity,
-                            //         fit: BoxFit.cover,
-                            //       ),
-                            //     ),
-                            //   ),
-                            Expanded(
-                              child: ListTile(
-                                title: SelectableText(lounge.title),
-                                subtitle: SelectableText(
-                                  lounge.content,
-                                  style: const TextStyle(color: Colors.blue),
+                          if (itemIndex >=
+                              (0.7 * LoungeController.to.loungeList.length)) {
+                            LoungeController.to.addData();
+                          }
+                          // 현재 아이템 표시
+                          final LoungePostModel lounge =
+                              LoungeController.to.loungeList[itemIndex];
+                          return Row(
+                            children: [
+                              // 이미지 표시
+                              // if (lounge.imageUrl != '')
+                              //   SizedBox(
+                              //     width: 48,
+                              //     height: 48,
+                              //     child: ClipRRect(
+                              //       borderRadius: BorderRadius.circular(8),
+                              //       child: Image.network(
+                              //         lounge.imageUrl,
+                              //         width: double.infinity,
+                              //         height: double.infinity,
+                              //         fit: BoxFit.cover,
+                              //         errorBuilder: (context, error, stackTrace) {
+                              //           return Image.asset(
+                              //               'assets/images/error_image.png');
+                              //         },
+                              //       ),
+                              //     ),
+                              //   ),
+                              // 제목과 내용을 표시
+                              Expanded(
+                                child: ListTile(
+                                  title: SelectableText(lounge.title),
+                                  subtitle: SelectableText(
+                                    lounge.content,
+                                    style: const TextStyle(color: Colors.blue),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                            ],
+                          );
+                        }),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () =>
+                            LoungeController.to.firstPageButtonClicked(),
+                      ),
                       // prev 버튼
                       IconButton(
                         icon: const Icon(Icons.arrow_back),

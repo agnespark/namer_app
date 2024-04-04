@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
+import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
 import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
+import 'package:namer_app/pages/table/table.dart';
+import 'package:namer_app/pages/TextFiled/TextFiled.dart';
 
 import 'nav_model.dart';
 import 'pages/dashboard/dashboard.dart';
@@ -43,6 +46,9 @@ class MyController extends GetxController {
         ],
       ),
       Menu(name: "Lounge", page: LoungePage(), depth: 0),
+      Menu(name: "Table", page: TablePage(), depth: 0),
+      Menu(name: "TextFiled", page: TextFiledPage(), depth: 0),
+      Menu(name: "DropdownMenu", page: DropdownMenuPage(), depth: 0),
     ].obs;
   }
 
