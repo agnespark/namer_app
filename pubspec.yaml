@@ -46,6 +46,7 @@ dependencies:
   omni_datetime_picker:
   shimmer:
   easy_sidemenu:
+  table_calendar:
 
 dev_dependencies:
   flutter_test:

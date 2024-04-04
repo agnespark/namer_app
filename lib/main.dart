@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
       ),
-      home: EasyNavMainPage(),
+      home: MainPage(),
     );
   }
 }
