@@ -17,11 +17,11 @@ class _NewsPageState extends State<NewsPage> {
   @override
   void initState() {
     _isLoading = true;
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-      });
-    });
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    // });
     super.initState();
   }
 
