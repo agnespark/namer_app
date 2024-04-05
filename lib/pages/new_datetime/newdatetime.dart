@@ -12,6 +12,9 @@ class NewDateTimePage extends StatefulWidget {
 }
 
 class _NewDateTimePageState extends State<NewDateTimePage> {
+  int selectedHour = 0;
+  int selectedMinute = 0;
+
   List<DateTime?> _dialogCalendarPickerValue = [
     DateTime(2021, 8, 10),
     DateTime(2021, 8, 13),
@@ -37,24 +40,71 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // 현재 시간을 가져와서 selectedHour와 selectedMinute을 설정
+    DateTime now = DateTime.now();
+    selectedHour = now.hour;
+    selectedMinute = now.minute;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start, // 위젯들을 세로로 정렬
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: _buildDefaultSingleDatePickerWithValue(), // 예시로 사용된 함수
+      body: Container(
+        child: Column(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(width: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black), // 사방으로 보더 적용
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(12)), // 보더의 모서리를 둥글게 함
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      _getValueText(
+                        CalendarDatePicker2Type.single,
+                        _singleDatePickerValueWithDefaultValue,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.black), // 테두리 선 설정
               ),
-              Expanded(
-                flex: 1,
-                child: NumberPage(), // 예시로 사용된 함수
+              width: 480,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 300, // 첫 번째 자식 위젯의 폭을 200으로 설정
+                    child:
+                        _buildDefaultSingleDatePickerWithValue(), // 예시로 사용된 함수
+                  ),
+                  // SizedBox(height: 16), // 위젯 사이 간격 조정을 위한 SizedBox
+                  Container(
+                    width: 1, // Divider의 너비를 1로 설정
+                    height: 300,
+                    color: Colors.black, // Divider의 색상 설정
+                  ),
+                  Container(
+                    width: 150,
+                    child: _setTimeNumberValue(),
+                  ),
+                ],
               ),
-              // 추가적인 위젯들을 이어서 배치할 수 있음
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -101,6 +151,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
       fontWeight: FontWeight.w700,
       decoration: TextDecoration.underline,
     );
+    // config 변수
     final config = CalendarDatePicker2WithActionButtonsConfig(
       calendarViewScrollPhysics: const NeverScrollableScrollPhysics(),
       dayTextStyle: dayTextStyle,
@@ -274,29 +325,93 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 10),
-        const Text('Single Date Picker (With default value)'),
         CalendarDatePicker2(
           config: config,
           value: _singleDatePickerValueWithDefaultValue,
           onValueChanged: (dates) =>
               setState(() => _singleDatePickerValueWithDefaultValue = dates),
         ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Selection(s):  '),
-            const SizedBox(width: 10),
-            Text(
-              _getValueText(
-                config.calendarType,
-                _singleDatePickerValueWithDefaultValue,
+      ],
+    );
+  }
+
+  Widget _setTimeNumberValue() {
+    return Row(
+      children: [
+        Expanded(
+          child: SizedBox(
+            height: 300,
+            child: ListView(
+              children: List.generate(
+                24,
+                (index) {
+                  final hour = index;
+                  return ListTile(
+                    title: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: selectedHour == hour ? Colors.blue : null,
+                      ),
+                      // padding: EdgeInsets.all(8),
+                      child: Center(
+                        child: Text(
+                          '$hour',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: selectedHour == hour ? Colors.white : null,
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        selectedHour = hour;
+                      });
+                    },
+                  );
+                },
               ),
             ),
-          ],
+          ),
         ),
-        const SizedBox(height: 25),
+        Divider(color: Colors.black),
+        Expanded(
+          child: SizedBox(
+            height: 300,
+            child: ListView(
+              children: List.generate(
+                60,
+                (index) {
+                  final minute = index;
+                  return ListTile(
+                    title: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: selectedMinute == minute ? Colors.blue : null,
+                      ),
+                      // padding: EdgeInsets.all(8),
+                      child: Center(
+                        child: Text(
+                          '$minute',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color:
+                                selectedMinute == minute ? Colors.white : null,
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        selectedMinute = minute;
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
