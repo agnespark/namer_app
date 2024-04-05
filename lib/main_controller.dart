@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
-import 'package:namer_app/pages/%08sideShieet/SideSheet.dart';
+import 'package:namer_app/pages/sideSheet/SideSheet.dart';
 import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
+import 'package:namer_app/pages/multiSelect/multiSelectPage.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
-import 'package:namer_app/pages/sideMenu/sideMenuPage.dart';
 import 'package:namer_app/pages/table/table.dart';
 import 'package:namer_app/pages/TextFiled/TextFiled.dart';
 
@@ -51,7 +51,7 @@ class MyController extends GetxController {
       Menu(name: "TextFiled", page: TextFiledPage(), depth: 0),
       Menu(name: "DropdownMenu", page: DropdownMenuPage(), depth: 0),
       Menu(name: "SideSheet", page: SideSheetPage(), depth: 0),
-      Menu(name: "sideMenu", page: sideMenuPage(), depth: 0),
+      Menu(name: "MutiSelect", page: MutiSelectPage(), depth: 0),
     ].obs;
   }
 

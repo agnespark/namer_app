@@ -44,6 +44,7 @@ dependencies:
   passwordfield: ^0.2.0
   side_sheet: ^1.0.4
   easy_sidemenu: ^0.6.0
+  multi_dropdown: ^2.1.4
 
 dev_dependencies:
   flutter_test:
