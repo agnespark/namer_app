@@ -1,36 +1,17 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-final today = DateUtils.dateOnly(DateTime.now());
+import 'package:namer_app/pages/new_datetime/newdatetime_controller.dart';
 
 class NewDateTimePage extends StatefulWidget {
-  const NewDateTimePage({Key? key}) : super(key: key);
+  NewDateTimePage({Key? key}) : super(key: key);
 
   @override
   State<NewDateTimePage> createState() => _NewDateTimePageState();
 }
 
 class _NewDateTimePageState extends State<NewDateTimePage> {
-  final selectedHour = RxInt(0);
-  final selectedMinute = RxInt(0);
-
-  List<DateTime?> _singleDatePickerValueWithDefaultValue = [
-    DateTime.now(),
-  ];
-  DateTime? _selectedDateTime;
-  final _tempSelectedHour = RxInt(0);
-  final _tempSelectedMinute = RxInt(0);
-
-  @override
-  void initState() {
-    super.initState();
-    DateTime now = DateTime.now();
-    selectedHour.value = now.hour;
-    selectedMinute.value = now.minute;
-    _tempSelectedHour.value = now.hour;
-    _tempSelectedMinute.value = now.minute;
-  }
+  final NewDateTimeController controller = Get.put(NewDateTimeController());
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +33,13 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            _getValueText(
-                              CalendarDatePicker2Type.single,
-                              _singleDatePickerValueWithDefaultValue,
+                          child: Obx(
+                            () => Text(
+                              _getValueText(
+                                CalendarDatePicker2Type.single,
+                                controller
+                                    .singleDatePickerValueWithDefaultValue,
+                              ),
                             ),
                           ),
                         ),
@@ -69,7 +53,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   title: Text(''),
                                   content: Container(
                                     width: 500,
-                                    height: 400,
+                                    height: 350,
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -96,14 +80,15 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        setState(() {
-                                          selectedHour.value =
-                                              _tempSelectedHour.value;
-                                          selectedMinute.value =
-                                              _tempSelectedMinute.value;
-                                          _singleDatePickerValueWithDefaultValue =
-                                              [_selectedDateTime];
-                                        });
+                                        controller.selectedHour.value =
+                                            controller.tempSelectedHour.value;
+                                        controller.selectedMinute.value =
+                                            controller.tempSelectedMinute.value;
+                                        controller
+                                            .singleDatePickerValueWithDefaultValue
+                                            .value = [
+                                          controller.selectedDateTime.value
+                                        ].map((dateTime) => dateTime!).toList();
                                         Navigator.of(context).pop();
                                       },
                                       child: Text('확인'),
@@ -137,8 +122,8 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         .replaceAll('00:00:00.000', '');
 
     // Add selected time to the displayed text
-    valueText += ' ${selectedHour.value.toString().padLeft(2, '0')}:'
-        '${selectedMinute.value.toString().padLeft(2, '0')}';
+    valueText += ' ${controller.selectedHour.value.toString().padLeft(2, '0')}:'
+        '${controller.selectedMinute.value.toString().padLeft(2, '0')}';
 
     if (datePickerType == CalendarDatePicker2Type.multi) {
       valueText = values.isNotEmpty
@@ -157,6 +142,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         return 'null';
       }
     }
+    print(valueText);
 
     return valueText;
   }
@@ -185,16 +171,19 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
       ),
       selectableDayPredicate: (day) => true,
     );
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CalendarDatePicker2(
-          config: config,
-          value: _singleDatePickerValueWithDefaultValue,
-          onValueChanged: (dates) =>
-              setState(() => _selectedDateTime = dates.first),
-        ),
-      ],
+    return Obx(
+      () => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CalendarDatePicker2(
+              config: config,
+              value: controller.singleDatePickerValueWithDefaultValue
+                  .map((dateTime) => dateTime!)
+                  .toList(),
+              onValueChanged: (dates) => controller.selectedDateTime.value =
+                  dates.first ?? DateTime.now()),
+        ],
+      ),
     );
   }
 
@@ -227,15 +216,13 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                           final hour = index;
                           return GestureDetector(
                             onTap: () {
-                              setState(() {
-                                _tempSelectedHour.value = hour;
-                              });
+                              controller.tempSelectedHour.value = hour;
                             },
                             child: Container(
                               height: 30,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: _tempSelectedHour == hour
+                                color: controller.tempSelectedHour == hour
                                     ? Colors.blue
                                     : null,
                               ),
@@ -244,7 +231,8 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   '$hour',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: _tempSelectedHour.value == hour
+                                    color: controller.tempSelectedHour.value ==
+                                            hour
                                         ? Colors.white
                                         : null,
                                   ),
@@ -287,15 +275,14 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                           final minute = index;
                           return GestureDetector(
                             onTap: () {
-                              setState(() {
-                                _tempSelectedMinute.value = minute;
-                              });
+                              controller.tempSelectedMinute.value = minute;
                             },
                             child: Container(
                               height: 30,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: _tempSelectedMinute.value == minute
+                                color: controller.tempSelectedMinute.value ==
+                                        minute
                                     ? Colors.blue
                                     : null,
                               ),
@@ -304,9 +291,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   '$minute',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: _tempSelectedMinute.value == minute
-                                        ? Colors.white
-                                        : null,
+                                    color:
+                                        controller.tempSelectedMinute.value ==
+                                                minute
+                                            ? Colors.white
+                                            : null,
                                   ),
                                 ),
                               ),
