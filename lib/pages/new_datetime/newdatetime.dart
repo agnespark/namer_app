@@ -214,28 +214,35 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                         24,
                         (index) {
                           final hour = index;
-                          return GestureDetector(
-                            onTap: () {
-                              controller.tempSelectedHour.value = hour;
-                            },
-                            child: Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: controller.tempSelectedHour == hour
-                                    ? Colors.blue
-                                    : null,
+                          return SizedBox(
+                            height: 38,
+                            child: TextButton(
+                              onPressed: () {
+                                controller.tempSelectedHour.value = hour;
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<CircleBorder>(
+                                  CircleBorder(),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (controller.tempSelectedHour.value ==
+                                        hour) {
+                                      return Colors.blue;
+                                    }
+                                    return Colors.transparent;
+                                  },
+                                ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  '$hour',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: controller.tempSelectedHour.value ==
-                                            hour
-                                        ? Colors.white
-                                        : null,
-                                  ),
+                              child: Text(
+                                '$hour',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color:
+                                      controller.tempSelectedHour.value == hour
+                                          ? Colors.white
+                                          : null,
                                 ),
                               ),
                             ),
@@ -273,30 +280,35 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                         60,
                         (index) {
                           final minute = index;
-                          return GestureDetector(
-                            onTap: () {
-                              controller.tempSelectedMinute.value = minute;
-                            },
-                            child: Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: controller.tempSelectedMinute.value ==
-                                        minute
-                                    ? Colors.blue
-                                    : null,
+                          return SizedBox(
+                            height: 38,
+                            child: TextButton(
+                              onPressed: () {
+                                controller.tempSelectedMinute.value = minute;
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<CircleBorder>(
+                                  CircleBorder(),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (controller.tempSelectedMinute.value ==
+                                        minute) {
+                                      return Colors.blue;
+                                    }
+                                    return Colors.transparent;
+                                  },
+                                ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  '$minute',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color:
-                                        controller.tempSelectedMinute.value ==
-                                                minute
-                                            ? Colors.white
-                                            : null,
-                                  ),
+                              child: Text(
+                                '$minute',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: controller.tempSelectedMinute.value ==
+                                          minute
+                                      ? Colors.white
+                                      : null,
                                 ),
                               ),
                             ),
