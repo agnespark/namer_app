@@ -17,7 +17,8 @@ class SideSheetPage extends StatelessWidget {
                     SideSheet.right(
                       body: DetailWidget(),
                       context: context,
-                      width: MediaQuery.of(context).size.width * 0.6,
+                      width: MediaQuery.of(context).size.width *
+                          0.6, // get으로 사용해야 함
                     );
                   },
                   child: Text('OPEN LEFT SIDE SHEET WITH RETURN DATA')),
