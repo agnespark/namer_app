@@ -4,32 +4,92 @@ class Themes {
   static final light = ThemeData(
     useMaterial3: false,
     // brightness: Brightness.light,
-    primaryColor: Colors.green,
-    primaryColorLight: Colors.yellow,
-    primaryColorDark: Colors.orange,
-    secondaryHeaderColor: Colors.blue,
-    textTheme: const TextTheme(
-            // bodyLarge: TextStyle(color: Color(0xff113311), fontSize: 20),
-            // bodyMedium: TextStyle(color: Color(0xff223344), fontSize: 20),
-            )
-        .apply(
+    primaryColor: Color(0xFF148FEF), // primary500
+    primaryColorDark: Color(0xFF1481E1), // primary600
+    primaryColorLight: Color(0xFFE2F1FD), // priamry50
+    textTheme: TextTheme(
+      // Heading/Regular/06 (QS 대제목)
+      displayLarge: TextStyle(
+        color: Colors.black,
+        fontSize: 24,
+        fontWeight: FontWeight.w400,
+        height: 0.06,
+        letterSpacing: -0.48,
+      ),
+      // Heading/06
+      displayMedium: TextStyle(
+        color: Colors.black,
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+        height: 0.06,
+        letterSpacing: -0.48,
+      ),
+      // Subheading/03
+      headlineLarge: TextStyle(
+        color: Colors.black,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        height: 0.09,
+        letterSpacing: -0.19,
+      ),
+      // Body/Regular/300
+      titleLarge: TextStyle(
+        color: Colors.black,
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
+        height: 0.09,
+      ),
+      // Body/Regular/400
+      titleMedium: TextStyle(
+        color: Colors.black,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        height: 0.09,
+      ),
+      // Body/Small/300 (기본폰트)
+      bodyLarge: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w300,
+        height: 0.10,
+      ),
+      // Body/Small/400
+      bodyMedium: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        height: 0.10,
+      ),
+    ).apply(
       fontFamily: 'NotoSansKR',
     ),
-    // splashColor: Colors.transparent,
-    // highlightColor: Colors.transparent,
-    // colorScheme: ColorScheme(
-    //   brightness: Brightness.light,
-    //   primary: Colors.red,
-    //   secondary: Colors.yellow,
-    //   surface: Colors.blue,
-    //   background: Colors.indigo,
-    //   error: Colors.purple,
-    //   onPrimary: Colors.white,
-    //   onSecondary: Colors.black,
-    //   onSurface: Colors.white,
-    //   onBackground: Colors.white,
-    //   onError: Colors.white,
-    // ),
+    // fontFamilyFallback: ,
+    splashColor: Colors.transparent,
+    // disabledColor: ,
+    // dividerColor: ,
+    // focusColor: ,
+    // highlightColor: ,
+    // hintColor: ,
+    // hoverColor: ,
+    // iconTheme: ,
+    // buttonTheme: ,
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white, // Dialog background color
+      elevation: 4.0, // Dialog elevation
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50), // Dialog shape
+      ),
+    ),
+    // dividerTheme: ,
+    // dropdownMenuTheme: ,
+    // expansionTileTheme: ,
+    // filledButtonTheme: ,
+    // iconButtonTheme: ,
+    // outlinedButtonTheme: ,
+    // progressIndicatorTheme: ,
+    // radioTheme: ,
+    // snackBarTheme: ,
+    // tooltipTheme: ,
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: TextStyle(color: Colors.red[600], fontSize: 20),
       focusColor: Color(0xff37375C),
@@ -61,7 +121,6 @@ class Themes {
         vertical: -2.0, // 세로 크기 조절
       ),
     ),
-    splashColor: Colors.transparent,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black, // 버튼의 배경색
@@ -72,13 +131,6 @@ class Themes {
         ),
         padding:
             EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // 내부 여백 설정
-      ),
-    ),
-    dialogTheme: DialogTheme(
-      backgroundColor: Colors.white, // Dialog background color
-      elevation: 4.0, // Dialog elevation
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50), // Dialog shape
       ),
     ),
   );
