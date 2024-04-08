@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/config/color.dart';
 
 class Themes {
   static final light = ThemeData(
     useMaterial3: false,
     // brightness: Brightness.light,
-    primaryColor: Color(0xFF148FEF), // primary500
-    primaryColorDark: Color(0xFF1481E1), // primary600
-    primaryColorLight: Color(0xFFE2F1FD), // priamry50
+    // primaryColor: Color(0xFF148FEF), // primary500
+    // primaryColorDark: Color(0xFF1481E1), // primary600
+    // primaryColorLight: Color(0xFFE2F1FD), // priamry50
     textTheme: TextTheme(
       // Heading/Regular/06 (QS 대제목)
       displayLarge: TextStyle(
@@ -63,75 +64,84 @@ class Themes {
     ).apply(
       fontFamily: 'NotoSansKR',
     ),
-    // fontFamilyFallback: ,
+    fontFamilyFallback: ['latin'],
     splashColor: Colors.transparent,
-    // disabledColor: ,
-    // dividerColor: ,
+    disabledColor: Color(0xFFCDD2D8),
+    dividerColor: Colors.black.withOpacity(0.11999999731779099),
     // focusColor: ,
     // highlightColor: ,
-    // hintColor: ,
+    hintColor: grayMain,
     // hoverColor: ,
     // iconTheme: ,
-    // buttonTheme: ,
-    dialogTheme: DialogTheme(
-      backgroundColor: Colors.white, // Dialog background color
-      elevation: 4.0, // Dialog elevation
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50), // Dialog shape
-      ),
-    ),
     // dividerTheme: ,
     // dropdownMenuTheme: ,
     // expansionTileTheme: ,
     // filledButtonTheme: ,
-    // iconButtonTheme: ,
     // outlinedButtonTheme: ,
-    // progressIndicatorTheme: ,
-    // radioTheme: ,
-    // snackBarTheme: ,
+    // elevatedButtonTheme:
+    buttonTheme: ButtonThemeData(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5), // 버튼의 BorderRadius 설정
+      ),
+    ),
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4), // Dialog shape
+      ),
+    ),
+    iconTheme: IconThemeData(
+      color: grayMain,
+    ),
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: primaryMain,
+    ),
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return primaryDark;
+          }
+          return grayLight;
+        },
+      ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+    ),
     // tooltipTheme: ,
     inputDecorationTheme: InputDecorationTheme(
-      labelStyle: TextStyle(color: Colors.red[600], fontSize: 20),
-      focusColor: Color(0xff37375C),
+      focusColor: Color(0xFFCDD2D8),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25.0),
-        borderSide: BorderSide(color: Color(0xff37375C)),
+        borderRadius: BorderRadius.circular(5),
+        borderSide: BorderSide(color: Color(0xFFCDD2D8)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25.0),
-        borderSide: BorderSide(color: Color(0xff37375C)),
+        borderRadius: BorderRadius.circular(5),
+        borderSide: BorderSide(color: Color(0xFFCDD2D8)),
       ),
       // fillColor: Colors.white,
       // filled: true,
       isDense: true,
-      iconColor: Color(0xff37375C),
     ),
-    checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-        (Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
-            return Colors.green; // 체크된 상태일 때 색상
-          }
-          return Colors.transparent; // 체크되지 않은 상태일 때 색상
-        },
-      ),
-      side: BorderSide(color: Colors.grey[400]!, width: 1.0),
-      visualDensity: VisualDensity(
-        horizontal: -2.0, // 가로 크기 조절
-        vertical: -2.0, // 세로 크기 조절
-      ),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black, // 버튼의 배경색
-        textStyle: TextStyle(color: Colors.white), // 버튼 텍스트의 색상
-        shape: RoundedRectangleBorder(
-          // 버튼 모양 설정
-          borderRadius: BorderRadius.circular(8.0), // 원하는 각도 설정
-        ),
-        padding:
-            EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // 내부 여백 설정
-      ),
-    ),
+    // checkboxTheme: CheckboxThemeData(
+    //   fillColor: MaterialStateProperty.resolveWith<Color?>(
+    //     (Set<MaterialState> states) {
+    //       if (states.contains(MaterialState.selected)) {
+    //         return primaryMain; // 체크된 상태일 때 색상
+    //       }
+    //       return Color(0x99000000); // 체크되지 않은 상태일 때 색상
+    //     },
+    //   ),
+    //   side: BorderSide(color: Colors.grey[400]!, width: 1.0),
+    //   visualDensity: VisualDensity(
+    //     horizontal: -2.0, // 가로 크기 조절
+    //     vertical: -2.0, // 세로 크기 조절
+    //   ),
+    // ),
   );
 }
