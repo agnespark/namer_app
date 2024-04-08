@@ -5,6 +5,7 @@ import "package:namer_app/global_scaffold_key.dart";
 import "package:namer_app/main_controller.dart";
 import "package:namer_app/nav_model.dart";
 import 'package:flutter/services.dart';
+import "package:namer_app/config/themes.dart";
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -25,10 +26,7 @@ class MyApp extends StatelessWidget {
       locale: Locale('ko'),
       title: "Namer App",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
-      ),
+      theme: Themes.light,
       home: MainPage(),
     );
   }
@@ -69,7 +67,6 @@ class MainPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    color: Theme.of(context).colorScheme.primaryContainer,
                     child: MyController.to.currentWidget.value,
                   ),
                 ),

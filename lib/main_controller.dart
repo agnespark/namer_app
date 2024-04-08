@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
 import 'package:namer_app/pages/datetime/datetime.dart';
+import 'package:namer_app/pages/design/design.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
@@ -53,6 +54,7 @@ class MyController extends GetxController {
       Menu(name: "DateTime", page: DateTimePage(), depth: 0),
       Menu(name: "New DateTime", page: NewDateTimePage(), depth: 0),
       Menu(name: "Shimmer", page: NewsPage(), depth: 0),
+      Menu(name: "Design", page: DesignPage(), depth: 0),
     ].obs;
   }
 

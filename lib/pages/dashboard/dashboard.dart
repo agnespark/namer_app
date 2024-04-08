@@ -1,5 +1,6 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/confirm_dialog.dart';
 import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
@@ -9,7 +10,6 @@ import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Get.put(MyController());
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -31,7 +31,11 @@ class DashboardPage extends StatelessWidget {
                 }
                 return ElevatedButton.icon(
                   onPressed: () {
-                    MyController.to.toggleFavorite();
+                    // MyController.to.toggleFavorite();
+                    DialogWidget('결재문서 매핑을 해제하시겠습니까?', () {
+                      printInfo(info: '확인');
+                      Get.back();
+                    }).confirm();
                   },
                   icon: Icon(icon),
                   label: Text('Like'),

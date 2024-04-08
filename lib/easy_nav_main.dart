@@ -104,7 +104,6 @@ class _EasyNavMainPageState extends State<EasyNavMainPage> {
                 onTap: (index, _) {
                   print(index);
                   sideMenu.changePage(index);
-                  String userId = 'user123'; // 예시로 사용자 ID를 설정
                 },
               ),
               SideMenuExpansionItem(

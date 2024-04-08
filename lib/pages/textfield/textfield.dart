@@ -65,24 +65,24 @@ class TextFieldPage extends StatelessWidget {
                 child: TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue.shade100,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue.shade100,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide:
-                          BorderSide(width: 2, color: Colors.red.shade200),
-                    ),
-                    labelStyle: TextStyle(color: Colors.black, fontSize: 14),
+                    // border: OutlineInputBorder(
+                    //   borderSide: BorderSide(
+                    //     color: Colors.blue.shade100,
+                    //   ),
+                    //   borderRadius: BorderRadius.circular(12),
+                    // ),
+                    // focusedBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(
+                    //     color: Colors.blue.shade100,
+                    //   ),
+                    //   borderRadius: BorderRadius.circular(12),
+                    // ),
+                    // focusedErrorBorder: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(12),
+                    //   borderSide:
+                    //       BorderSide(width: 2, color: Colors.red.shade200),
+                    // ),
+                    // labelStyle: TextStyle(color: Colors.black, fontSize: 14),
                     labelText: 'Email',
                     isDense: true,
                     contentPadding:
