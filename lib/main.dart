@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import "package:namer_app/component/depth.dart";
 import "package:namer_app/global_scaffold_key.dart";
 import "package:namer_app/main_controller.dart";
 import "package:namer_app/nav_model.dart";
@@ -64,8 +65,33 @@ class MainPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    child: MyController.to.currentWidget.value,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: Get.width,
+                        height: 48,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 32.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // depth 넣기
+                            DepthWidget(
+                                    'PLC', 'secondDepth', 'thirdDepth', null)
+                                .Widget(3),
+                            // profile 넣기
+                            Text('profile'),
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.black12, width: 1))),
+                      ),
+                      Expanded(
+                        child: MyController.to.currentWidget.value,
+                      ),
+                    ],
                   ),
                 ),
               ],
