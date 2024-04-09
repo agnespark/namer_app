@@ -39,8 +39,8 @@ class DashboardPage extends StatelessWidget {
                       {
                         MyController.to.favorites
                                 .contains(MyController.to.current.value)
-                            ? ToastWidget('보관되었습니다.').success()
-                            : ToastWidget('해제되었습니다.').info();
+                            ? ToastWidget('보관되었습니다.').blue()
+                            : ToastWidget('해제되었습니다.').green();
                       }
                     }).confirm();
                   },

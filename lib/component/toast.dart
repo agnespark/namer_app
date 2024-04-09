@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/config/color.dart';
+import 'package:namer_app/config/themes.dart';
 
 class ToastWidget {
   ToastWidget(this.text);
@@ -11,38 +13,37 @@ class ToastWidget {
       titleText: Text(
         text,
         textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
+        style:
+            Themes.light.textTheme.titleMedium!.copyWith(color: Colors.white),
       ),
       messageText: SizedBox.shrink(),
-      icon: const Icon(Icons.info_outline_rounded),
+      icon: Icon(
+        Icons.info_outline_rounded,
+        color: Colors.white,
+      ),
       maxWidth: 480,
       snackPosition: SnackPosition.TOP,
       backgroundColor: color,
-      borderRadius: 4, // 스낵바의 모서리 둥글기
-      colorText: Colors.white, // 텍스트 색상
+      // colorText: Colors.white, // 텍스트 색상
       duration: Duration(seconds: 3), // 스낵바가 표시되는 시간
       isDismissible: true, // 사용자가 스낵바를 스와이프하여 닫을 수 있는지 여부
-      dismissDirection: DismissDirection.horizontal, // 닫는 방향
+      // dismissDirection: DismissDirection.horizontal, // 닫는 방향
       forwardAnimationCurve: Curves.easeOut, // 애니메이션
     );
   }
 
-  info() {
-    Color color = Colors.blueAccent;
+  blue() {
+    Color color = primaryMain;
     Widget(color);
   }
 
-  success() {
-    Color color = Colors.greenAccent;
+  green() {
+    Color color = greenMain;
     Widget(color);
   }
 
-  error() {
-    Color color = Colors.redAccent;
+  red() {
+    Color color = redMain;
     Widget(color);
   }
 }

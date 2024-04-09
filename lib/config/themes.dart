@@ -75,17 +75,16 @@ class Themes {
     buttonTheme: ButtonThemeData(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5), // 버튼의 BorderRadius 설정
+        borderRadius: BorderRadius.circular(5),
       ),
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
     ),
     dialogTheme: DialogTheme(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4), // Dialog shape
       ),
-    ),
-    iconTheme: IconThemeData(
-      color: grayMain,
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: primaryMain,
@@ -101,7 +100,6 @@ class Themes {
       ),
     ),
     snackBarTheme: SnackBarThemeData(
-      insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),
