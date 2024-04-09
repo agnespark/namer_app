@@ -1,6 +1,7 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
 import 'package:namer_app/component/confirm_dialog.dart';
+import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
@@ -33,8 +34,14 @@ class DashboardPage extends StatelessWidget {
                   onPressed: () {
                     // MyController.to.toggleFavorite();
                     DialogWidget('결재문서 매핑을 해제하시겠습니까?', () {
-                      printInfo(info: '확인');
+                      MyController.to.toggleFavorite();
                       Get.back();
+                      {
+                        MyController.to.favorites
+                                .contains(MyController.to.current.value)
+                            ? ToastWidget('보관되었습니다.').success()
+                            : ToastWidget('해제되었습니다.').info();
+                      }
                     }).confirm();
                   },
                   icon: Icon(icon),

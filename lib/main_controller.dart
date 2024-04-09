@@ -7,10 +7,13 @@ import 'package:namer_app/pages/design/design.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
-import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 import 'package:namer_app/pages/shimmer/news_page.dart';
+import 'package:namer_app/pages/sideSheet/sideSheet.dart';
 import 'package:namer_app/pages/table/table.dart';
 import 'package:namer_app/pages/textfield/textfield.dart';
+import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
+import 'package:namer_app/pages/multiSelect/multiSelectPage.dart';
+import 'package:namer_app/pages/TextFiled/TextFiled.dart';
 
 import 'nav_model.dart';
 import 'pages/dashboard/dashboard.dart';
@@ -55,6 +58,10 @@ class MyController extends GetxController {
       Menu(name: "New DateTime", page: NewDateTimePage(), depth: 0),
       Menu(name: "Shimmer", page: NewsPage(), depth: 0),
       Menu(name: "Design", page: DesignPage(), depth: 0),
+      Menu(name: "SideSheet", page: SideSheetPage(), depth: 0),
+      Menu(name: "TextFiled", page: TextFiledPage(), depth: 0),
+      Menu(name: "DropdownMenu", page: DropdownMenuPage(), depth: 0),
+      Menu(name: "MutiSelect", page: MutiSelectPage(), depth: 0),
     ].obs;
   }
 
