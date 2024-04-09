@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/component/toast.dart';
 
 class ButtonPage extends StatelessWidget {
@@ -24,6 +25,9 @@ class ButtonPage extends StatelessWidget {
             ButtonWidget("text", () {
               ToastWidget("다시 시도해주세요.").green();
             }).green(),
+            PlusButtonWidget(
+              onPressed: () {},
+            )
           ],
         ),
       ),
