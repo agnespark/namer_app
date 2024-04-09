@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -112,23 +114,24 @@ class _TablePageState extends State<TablePage> {
   Widget _buildDataGrid(BoxConstraints constraint) {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
-          rowHoverColor: Colors.black12,
+          rowHoverColor: grayLight,
           rowHoverTextStyle: TextStyle(
-            color: Colors.black,
+            color: blackTextColor,
             fontSize: 14,
           ),
-          headerColor: Colors.lightBlueAccent,
-          headerHoverColor: Colors.lightBlueAccent),
+          headerColor: primaryLight,
+          headerHoverColor: Colors.transparent),
       child: SfDataGrid(
         source: _orderInfoDataSource,
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
         gridLinesVisibility: GridLinesVisibility.both,
+        headerRowHeight: 40,
+        rowHeight: 40,
         columns: <GridColumn>[
           GridColumn(
               columnName: 'orderID',
               label: Container(
-                  padding: EdgeInsets.all(16.0),
                   alignment: Alignment.center,
                   child: Text(
                     'Order ID',
@@ -137,21 +140,15 @@ class _TablePageState extends State<TablePage> {
           GridColumn(
               columnName: 'customerID',
               label: Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.center,
-                  child: Text('Customer Name'))),
+                  alignment: Alignment.center, child: Text('Customer Name'))),
           GridColumn(
               columnName: 'orderDate',
               label: Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.center,
-                  child: Text('Order Date'))),
+                  alignment: Alignment.center, child: Text('Order Date'))),
           GridColumn(
               columnName: 'freight',
               label: Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.center,
-                  child: Text('Freight'))),
+                  alignment: Alignment.center, child: Text('Freight'))),
         ],
       ),
     );

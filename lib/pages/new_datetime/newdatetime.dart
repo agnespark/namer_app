@@ -1,7 +1,10 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/config/color.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime_controller.dart';
+
+// startTime true/false 분기해서 startTime, endTime 분리해서 저장?
 
 class NewDateTimePage extends StatefulWidget {
   NewDateTimePage({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                   const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(color: borderColor),
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                     ),
                     child: Row(
@@ -50,7 +53,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text(''),
+                                  contentPadding: EdgeInsets.all(16),
                                   content: Container(
                                     width: 500,
                                     height: 350,
@@ -117,6 +120,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
   ) {
     values =
         values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
+    print(values);
     var valueText = (values.isNotEmpty ? values[0] : null)
         .toString()
         .replaceAll('00:00:00.000', '');
@@ -133,7 +137,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
           : 'null';
     } else if (datePickerType == CalendarDatePicker2Type.range) {
       if (values.isNotEmpty) {
-        final startDate = values[0].toString().replaceAll('00:00:00.000', '');
+        final startDate = values[0].toString().replaceAll('00:00:00', '');
         final endDate = values.length > 1
             ? values[1].toString().replaceAll('00:00:00.000', '')
             : 'null';
@@ -142,32 +146,30 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         return 'null';
       }
     }
-    print(valueText);
 
     return valueText;
   }
 
   Widget _buildDefaultSingleDatePickerWithValue() {
     final config = CalendarDatePicker2Config(
-      selectedDayHighlightColor: Colors.blue,
+      selectedDayHighlightColor: primaryMain,
       weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      weekdayLabelTextStyle: const TextStyle(
-        color: Colors.black87,
-        fontWeight: FontWeight.bold,
+      weekdayLabelTextStyle: TextStyle(
+        fontSize: 14,
+        color: blackTextColor,
       ),
       firstDayOfWeek: 1,
       controlsHeight: 50,
-      controlsTextStyle: const TextStyle(
-        color: Colors.black,
-        fontSize: 15,
-        fontWeight: FontWeight.bold,
+      controlsTextStyle: TextStyle(
+        fontSize: 14,
+        color: blackTextColor,
       ),
-      dayTextStyle: const TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
+      dayTextStyle: TextStyle(
+        fontSize: 14,
+        color: blackTextColor,
       ),
-      disabledDayTextStyle: const TextStyle(
-        color: Colors.grey,
+      disabledDayTextStyle: TextStyle(
+        color: grayTextColor,
       ),
       selectableDayPredicate: (day) => true,
     );
@@ -194,18 +196,17 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: EdgeInsets.only(top: 16, bottom: 8),
                 child: Text(
                   'HOUR',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
               ),
+              Divider(),
               Container(
-                height: 1,
-                width: double.infinity,
-                color: Colors.black,
-              ),
-              Container(
-                height: 310,
+                height: 270,
                 child: Obx(
                   () => SingleChildScrollView(
                     scrollDirection: Axis.vertical,
@@ -216,6 +217,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                           final hour = index;
                           return SizedBox(
                             height: 38,
+                            width: double.infinity,
                             child: TextButton(
                               onPressed: () {
                                 controller.tempSelectedHour.value = hour;
@@ -229,7 +231,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   (Set<MaterialState> states) {
                                     if (controller.tempSelectedHour.value ==
                                         hour) {
-                                      return Colors.blue;
+                                      return primaryMain;
                                     }
                                     return Colors.transparent;
                                   },
@@ -242,7 +244,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   color:
                                       controller.tempSelectedHour.value == hour
                                           ? Colors.white
-                                          : null,
+                                          : blackTextColor,
                                 ),
                               ),
                             ),
@@ -260,18 +262,17 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: EdgeInsets.only(top: 16, bottom: 8),
                 child: Text(
                   'MINUTE',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
               ),
+              Divider(),
               Container(
-                height: 1,
-                width: double.infinity,
-                color: Colors.black,
-              ),
-              Container(
-                height: 310,
+                height: 270,
                 child: Obx(
                   () => SingleChildScrollView(
                     scrollDirection: Axis.vertical,
@@ -282,6 +283,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                           final minute = index;
                           return SizedBox(
                             height: 38,
+                            width: double.infinity,
                             child: TextButton(
                               onPressed: () {
                                 controller.tempSelectedMinute.value = minute;
@@ -295,7 +297,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   (Set<MaterialState> states) {
                                     if (controller.tempSelectedMinute.value ==
                                         minute) {
-                                      return Colors.blue;
+                                      return primaryMain;
                                     }
                                     return Colors.transparent;
                                   },
@@ -308,7 +310,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                   color: controller.tempSelectedMinute.value ==
                                           minute
                                       ? Colors.white
-                                      : null,
+                                      : blackTextColor,
                                 ),
                               ),
                             ),

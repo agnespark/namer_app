@@ -11,55 +11,48 @@ class Themes {
     textTheme: TextTheme(
       // Heading/Regular/06 (QS 대제목)
       displayLarge: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 24,
         fontWeight: FontWeight.w400,
-        height: 0.06,
         letterSpacing: -0.48,
       ),
       // Heading/06
       displayMedium: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 24,
         fontWeight: FontWeight.w700,
-        height: 0.06,
         letterSpacing: -0.48,
       ),
       // Subheading/03
       headlineLarge: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        height: 0.09,
         letterSpacing: -0.19,
       ),
       // Body/Regular/300
       titleLarge: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 16,
         fontWeight: FontWeight.w300,
-        height: 0.09,
       ),
       // Body/Regular/400
       titleMedium: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        height: 0.09,
       ),
       // Body/Small/300 (기본폰트)
       bodyLarge: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 14,
         fontWeight: FontWeight.w300,
-        height: 0.10,
       ),
       // Body/Small/400
       bodyMedium: TextStyle(
-        color: Colors.black,
+        color: blackTextColor,
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        height: 0.10,
       ),
     ).apply(
       fontFamily: 'NotoSansKR',
