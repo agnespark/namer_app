@@ -16,7 +16,12 @@ class ButtonController extends GetxController {
     "Other6",
     "Duty Buttonddddddddddddd3",
   ].obs;
-  RxList<bool> selectedCheckBox = RxList<bool>();
+  RxList<String> selectedCheckBox = RxList<String>();
+  RxList<String> radioList = RxList<String>([
+    "Radio 1",
+    "Radio 2",
+  ]);
+  RxString selectedRadio = RxString("");
 
   @override
   void onInit() {
@@ -25,7 +30,8 @@ class ButtonController extends GetxController {
       checkBoxList.insert(0, 'ALL');
     }
 
-    selectedCheckBox
-        .addAll(List.generate(checkBoxList.length, (index) => false));
+    selectedRadio.value = radioList[0];
+    // selectedCheckBox
+    //     .addAll(List.generate(checkBoxList.length, (index) => false));
   }
 }
