@@ -12,9 +12,11 @@ class RadioPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
-        child: Wrap(
+        child: Row(
+          // Change Wrap to Row
           children: radioList.map((item) {
             return Row(
+              mainAxisSize: MainAxisSize.min, // Adjust size as needed
               children: [
                 Radio(
                   value: item,

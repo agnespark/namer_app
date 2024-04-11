@@ -59,6 +59,9 @@ class MultiCheckBoxPage extends StatelessWidget {
                             Flexible(
                               child: Text(item),
                             ),
+                            SizedBox(
+                              width: 8,
+                            ),
                           ],
                         ),
                       ),

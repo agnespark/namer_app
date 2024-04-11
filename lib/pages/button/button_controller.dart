@@ -32,6 +32,8 @@ class ButtonController extends GetxController {
   RxString selectedRadio = RxString("");
   RxString selectedSingleCheckBox = RxString("");
 
+  RxString title = RxString("");
+
   @override
   void onInit() {
     super.onInit();
@@ -40,6 +42,8 @@ class ButtonController extends GetxController {
     }
     selectedSingleCheckBox.value = singleCheckBoxList[0];
     selectedRadio.value = radioList[0];
+
+    title.value = "Program Server";
     // selectedCheckBox
     //     .addAll(List.generate(checkBoxList.length, (index) => false));
   }
