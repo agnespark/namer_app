@@ -30,6 +30,12 @@ class Themes {
         fontWeight: FontWeight.w500,
         letterSpacing: -0.19,
       ),
+      headlineMedium: TextStyle(
+        color: grayDark,
+        fontSize: 12,
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.19,
+      ),
       // Body/Regular/300
       titleLarge: TextStyle(
         color: blackTextColor,
@@ -54,9 +60,8 @@ class Themes {
         fontSize: 14,
         fontWeight: FontWeight.w400,
       ),
-    ).apply(
-      fontFamily: 'NotoSansKR',
     ),
+    fontFamily: 'NotoSansKR',
     fontFamilyFallback: ['latin'],
     splashColor: Colors.transparent,
     disabledColor: Color(0xFFCDD2D8),

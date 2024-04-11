@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
-import 'package:namer_app/pages/checkbox/multi_checkbox.dart';
-import 'package:namer_app/pages/checkbox/single_checkbox.dart';
-import 'package:namer_app/pages/info-textarea/info-textarea.dart';
-import 'package:namer_app/pages/radio/radio.dart';
-import 'package:namer_app/pages/title-texfield/title_textfield.dart';
+import 'package:namer_app/component/checkbox/multi_checkbox.dart';
+import 'package:namer_app/component/checkbox/single_checkbox.dart';
+import 'package:namer_app/component/textarea/info-textarea.dart';
+import 'package:namer_app/component/checkbox/radio.dart';
+import 'package:namer_app/component/filter-row/filter_row.dart';
 
 class ButtonPage extends StatelessWidget {
   ButtonPage({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class ButtonPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ButtonWidget("text", () {
@@ -37,34 +36,24 @@ class ButtonPage extends StatelessWidget {
             PlusButtonWidget(
               onPressed: () {},
             ),
-            Expanded(
-              child: SingleCheckBoxPage(
-                  singleCheckBoxList: controller.singleCheckBoxList,
-                  selectedSingleCheckBox: controller.selectedSingleCheckBox),
+            SingleCheckBoxPage(
+                singleCheckBoxList: controller.singleCheckBoxList,
+                selectedSingleCheckBox: controller.selectedSingleCheckBox),
+            MultiCheckBoxPage(
+                checkBoxList: controller.checkBoxList,
+                selectedCheckBox: controller.selectedCheckBox),
+            RadioPage(
+              radioList: controller.radioList,
+              selectedRadio: controller.selectedRadio,
             ),
-            Expanded(
-              child: MultiCheckBoxPage(
-                  checkBoxList: controller.checkBoxList,
-                  selectedCheckBox: controller.selectedCheckBox),
-            ),
-            Expanded(
-              child: RadioPage(
-                radioList: controller.radioList,
-                selectedRadio: controller.selectedRadio,
+            FilterRow(
+              title: controller.title,
+              body: MultiCheckBoxPage(
+                checkBoxList: controller.checkBoxList,
+                selectedCheckBox: controller.selectedCheckBox,
               ),
             ),
-            Expanded(
-              child: TitleTextField(
-                title: controller.title,
-                body: MultiCheckBoxPage(
-                  checkBoxList: controller.checkBoxList,
-                  selectedCheckBox: controller.selectedCheckBox,
-                ),
-              ),
-            ),
-            Expanded(
-              child: InfoTextAreaPage(content: controller.content),
-            ),
+            InfoTextAreaPage(content: controller.content),
           ],
         ),
       ),
