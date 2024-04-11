@@ -34,6 +34,9 @@ class ButtonController extends GetxController {
 
   RxString title = RxString("");
 
+  RxString content = RxString(
+      'COMPLETENESS CHECK\n\n(LOG COUNT : 115, SR COUNT : 115)        USER_USERINFO: INCLUDE (2024-01-11~)AUTH_USER: INCLUDE (2024-01-16~)');
+
   @override
   void onInit() {
     super.onInit();

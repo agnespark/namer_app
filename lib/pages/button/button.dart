@@ -63,7 +63,7 @@ class ButtonPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: InfoTextAreaPage(),
+              child: InfoTextAreaPage(content: controller.content),
             ),
           ],
         ),

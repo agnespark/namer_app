@@ -16,6 +16,10 @@ Color orangeMain = Color(0xFFFF9800); // orange[500]
 Color orangeLight = Color(0xFFFFF3E0); // orange[50]
 Color orangeDark = Color(0xFFEF6C00); // orange[700]
 
+Color yellowMain = Color(0xFFFFC759); // yellow[500]
+Color yellowLight = Color(0xFFFFF9EE); // yellow[50]
+Color yellowDark = Color(0xFF997735); // yellow[700]
+
 Color grayMain = Color(0xFF838E9E); // gray[500]
 Color grayLight = Color(0xFFF4F5F7); // gray[50]
 Color grayDark = Color(0xFF42526B); // gray[700]
