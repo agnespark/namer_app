@@ -5,6 +5,7 @@ import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/checkbox/multi_checkbox.dart';
+import 'package:namer_app/pages/checkbox/single_checkbox.dart';
 import 'package:namer_app/pages/radio/radio.dart';
 
 class ButtonPage extends StatelessWidget {
@@ -31,6 +32,11 @@ class ButtonPage extends StatelessWidget {
           }).green(),
           PlusButtonWidget(
             onPressed: () {},
+          ),
+          Expanded(
+            child: SingleCheckBoxPage(
+                singleCheckBoxList: controller.singleCheckBoxList,
+                selectedSingleCheckBox: controller.selectedSingleCheckBox),
           ),
           Expanded(
             child: MultiCheckBoxPage(
