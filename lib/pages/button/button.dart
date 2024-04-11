@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/component/toast.dart';
+import 'package:namer_app/pages/button/button_controller.dart';
+import 'package:namer_app/pages/checkbox/checkbox.dart';
 
 class ButtonPage extends StatelessWidget {
-  const ButtonPage({Key? key}) : super(key: key);
+  ButtonPage({Key? key}) : super(key: key);
+  final ButtonController controller = Get.put(ButtonController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,12 @@ class ButtonPage extends StatelessWidget {
             }).green(),
             PlusButtonWidget(
               onPressed: () {},
-            )
+            ),
+            Expanded(
+              child: CheckBoxPage(
+                  checkBoxList: controller.checkBoxList,
+                  selectedCheckBox: controller.selectedCheckBox),
+            ),
           ],
         ),
       ),

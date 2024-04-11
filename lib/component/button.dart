@@ -6,7 +6,7 @@ class ButtonWidget {
   final String text;
   final VoidCallback onPressed;
 
-  Widget build(Color buttonColor) {
+  body(Color buttonColor) {
     return OutlinedButton(
       onPressed: onPressed,
       style: ButtonStyle(
@@ -26,16 +26,16 @@ class ButtonWidget {
 
   red() {
     Color buttonColor = redMain;
-    return build(buttonColor);
+    return body(buttonColor);
   }
 
   blue() {
     Color buttonColor = primaryMain;
-    return build(buttonColor);
+    return body(buttonColor);
   }
 
   green() {
     Color buttonColor = greenMain;
-    return build(buttonColor);
+    return body(buttonColor);
   }
 }
