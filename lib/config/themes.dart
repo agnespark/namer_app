@@ -93,9 +93,9 @@ class Themes {
       fillColor: MaterialStateProperty.resolveWith<Color?>(
         (Set<MaterialState> states) {
           if (states.contains(MaterialState.selected)) {
-            return primaryDark;
+            return primaryMain;
           }
-          return grayLight;
+          return grayMain;
         },
       ),
     ),

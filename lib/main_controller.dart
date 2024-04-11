@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
 import 'package:namer_app/pages/button/button.dart';
-import 'package:namer_app/pages/checkbox/checkbox.dart';
+import 'package:namer_app/pages/checkbox/single_checkbox.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
 import 'package:namer_app/pages/datetime/datetime.dart';
 import 'package:namer_app/pages/design/design.dart';
