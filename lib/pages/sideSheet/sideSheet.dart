@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/profile.dart';
 import 'package:namer_app/pages/sideSheet/detail.dart';
 import 'package:side_sheet/side_sheet.dart';
 
@@ -23,6 +24,7 @@ class SideSheetPage extends StatelessWidget {
                   },
                   child: Text('OPEN LEFT SIDE SHEET WITH RETURN DATA')),
               SizedBox(height: 10),
+              ProfileWidget().Widget(),
             ],
           ),
         ),

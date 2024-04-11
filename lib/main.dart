@@ -64,10 +64,39 @@ class MainPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    child: MyController.to.currentWidget.value,
-                  ),
+                  child: MyController.to.currentWidget.value,
                 ),
+                // Expanded(
+                //   child: Column(
+                //     children: [
+                //       Container(
+                //         width: Get.width,
+                //         height: 48,
+                //         padding: EdgeInsets.symmetric(
+                //             vertical: 10.0, horizontal: 32.0),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             // depth 넣기
+                //             DepthWidget(
+                //                     ' ${MyController.to.currentMenu.value}',
+                //                     ' ${MyController.to.currentMenu.value}',
+                //                     '${MyController.to.currentMenu.value}',
+                //                     null)
+                //                 .Widget(MyController.to.currentDepth.value),
+                //             // profile 넣기
+                //             ProfileWidget().Widget(),
+                //           ],
+                //         ),
+                //         decoration: BoxDecoration(
+                //             border: Border(
+                //                 bottom: BorderSide(
+                //                     color: Colors.black12, width: 1))),
+                //       ),
+                //
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -81,7 +110,7 @@ Widget _navList(Menu menu) {
   if (menu.subMenu == null) {
     return GestureDetector(
       onTap: () {
-        MyController.to.changePage(menu.page, menu.name);
+        MyController.to.changePage(menu.page!, menu.name, menu.depth);
       },
       child: ListTile(
         mouseCursor: SystemMouseCursors.click,
