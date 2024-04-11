@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/component/checkbox/multi_checkbox.dart';
@@ -54,6 +55,10 @@ class ButtonPage extends StatelessWidget {
               ),
             ),
             InfoTextAreaPage(content: controller.content),
+            FilterRow(
+              title: controller.title,
+              body: BasicTextField(hintText: "힌트텍스트!"),
+            ),
           ],
         ),
       ),
