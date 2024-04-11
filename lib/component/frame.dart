@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'package:namer_app/component/depth.dart';
 import 'package:namer_app/component/profile.dart';
 
-class frameWidget {
-  frameWidget(this.title, this.widget);
-  final String title;
-  final widget;
+class FrameWidget extends StatelessWidget {
+  const FrameWidget({super.key, required this.title, required this.body});
 
-  Widget() {
+  final String title;
+  final body;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
@@ -28,7 +30,7 @@ class frameWidget {
               border:
                   Border(bottom: BorderSide(color: Colors.black12, width: 1))),
         ),
-        widget,
+        Expanded(child: body),
       ],
     );
   }

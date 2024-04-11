@@ -12,9 +12,9 @@ import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return frameWidget(
-      'Dashboard',
-      Column(
+    return FrameWidget(
+      title: 'Dashboard',
+      body: Column(
         children: [
           Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
           SelectableText('random number'),
@@ -78,7 +78,7 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
       ),
-    ).Widget();
+    );
   }
 }
 

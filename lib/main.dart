@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
-import "package:namer_app/component/depth.dart";
-import "package:namer_app/component/profile.dart";
 import "package:namer_app/global_scaffold_key.dart";
 import "package:namer_app/main_controller.dart";
 import "package:namer_app/nav_model.dart";
