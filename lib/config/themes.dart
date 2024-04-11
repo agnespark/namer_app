@@ -14,27 +14,23 @@ class Themes {
         color: blackTextColor,
         fontSize: 24,
         fontWeight: FontWeight.w400,
-        letterSpacing: -0.48,
       ),
       // Heading/06
       displayMedium: TextStyle(
         color: blackTextColor,
         fontSize: 24,
         fontWeight: FontWeight.w700,
-        letterSpacing: -0.48,
       ),
       // Subheading/03
       headlineLarge: TextStyle(
         color: blackTextColor,
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        letterSpacing: -0.19,
       ),
       headlineMedium: TextStyle(
         color: grayDark,
         fontSize: 12,
         fontWeight: FontWeight.w700,
-        letterSpacing: -0.19,
       ),
       // Body/Regular/300
       titleLarge: TextStyle(

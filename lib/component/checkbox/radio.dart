@@ -16,7 +16,7 @@ class RadioPage extends StatelessWidget {
           // Change Wrap to Row
           children: radioList.map((item) {
             return Row(
-              mainAxisSize: MainAxisSize.min, // Adjust size as needed
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Radio(
                   value: item,
