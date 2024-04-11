@@ -1,6 +1,7 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
 import 'package:namer_app/component/confirm_dialog.dart';
+import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/global_scaffold_key.dart';
 import 'package:namer_app/main_controller.dart';
@@ -11,9 +12,9 @@ import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    return frameWidget(
+      'Dashboard',
+      Column(
         children: [
           Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
           SelectableText('random number'),
@@ -77,7 +78,7 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ).Widget();
   }
 }
 

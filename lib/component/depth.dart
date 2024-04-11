@@ -1,73 +1,36 @@
 import 'package:flutter/material.dart';
 
 class DepthWidget {
-  DepthWidget(
-      this.firstDepth, this.secondDepth, this.thirdDepth, this.fourthDepth);
-  final String firstDepth;
-  final String? secondDepth;
-  final String? thirdDepth;
-  final String? fourthDepth;
+  DepthWidget(this.title);
+  final String title;
 
-  Widget(int depth) {
-    if (depth == 1) {
-      return Row(
-        children: [
-          Text(
-            firstDepth,
-            style: TextStyle(color: Colors.lightBlueAccent),
+  Widget buildWidget() {
+    List<String> depths = title.split('/');
+    List<Widget> widgets = []; // 위젯을 담을 리스트를 선언합니다.
+
+    for (int i = 0; i < depths.length; i++) {
+      // 마지막 요소에만 특별한 스타일을 적용합니다.
+      TextStyle? textStyle = (i == depths.length - 1)
+          ? TextStyle(color: Colors.lightBlueAccent)
+          : null;
+
+      // 각 요소를 위젯 리스트에 추가합니다.
+      widgets.add(
+        Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: Text(
+            depths[i],
+            style: textStyle,
           ),
-        ],
+        ),
       );
-    } else if (depth == 2) {
-      return Row(
-        children: [
-          Text(firstDepth),
-          Text('/'),
-          Text(secondDepth!, style: TextStyle(color: Colors.lightBlueAccent)),
-        ],
-      );
-    } else if (depth == 3) {
-      return Row(
-        children: [
-          Text(firstDepth),
-          Text('/'),
-          Text(secondDepth!),
-          Text('/'),
-          Text(thirdDepth!, style: TextStyle(color: Colors.lightBlueAccent)),
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Text(firstDepth),
-          Text('/'),
-          Text(secondDepth!),
-          Text('/'),
-          Text(thirdDepth!),
-          Text('/'),
-          Text(fourthDepth!, style: TextStyle(color: Colors.lightBlueAccent)),
-        ],
-      );
+
+      // 마지막 요소가 아니면, '/'를 추가합니다.
+      if (i < depths.length - 1) {
+        widgets.add(Text(' /  '));
+      }
     }
-  }
 
-  oneDepth() {
-    int depth = 1;
-    Widget(depth);
-  }
-
-  twoDepth() {
-    int depth = 2;
-    Widget(depth);
-  }
-
-  threeDepth() {
-    int depth = 3;
-    Widget(depth);
-  }
-
-  fourDepth() {
-    int depth = 4;
-    Widget(depth);
+    return Row(children: widgets);
   }
 }

@@ -26,11 +26,9 @@ class MyController extends GetxController {
 
   Rx<Widget> currentWidget = Container(child: DashboardPage()).obs;
   Rx<Widget> currentDetail = Container(child: DashboardDetail()).obs;
+
   late Rx<Widget> currentPost;
   Rx<String> currentMenu = "".obs;
-  Rx<String> currentMenu2 = "".obs;
-  Rx<String> currentMenu3 = "".obs;
-  Rx<String> currentMenu4 = "".obs;
 
   RxList navList = RxList();
 
@@ -68,7 +66,7 @@ class MyController extends GetxController {
     ].obs;
   }
 
-  void changePage(Widget? widget, String name) {
+  void changePage(Widget widget, String name, double depth) {
     currentWidget.value = Container(child: widget);
     currentMenu.value = name;
   }
