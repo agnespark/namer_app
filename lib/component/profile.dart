@@ -1,5 +1,3 @@
-import 'dart:html';
-
 // 프로필은 page에 넣어야함 ! controller도 같은 폴더 안에!
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/shimmer/constants.dart';
