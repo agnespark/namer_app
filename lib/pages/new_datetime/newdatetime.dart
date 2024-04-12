@@ -34,7 +34,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Obx(
                         () => Text(
-                          _getValueText(
+                          _getStartValueText(
                             CalendarDatePicker2Type.single,
                             controller.startDefaultValue,
                           ),
@@ -46,7 +46,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                         Icons.calendar_today_outlined,
                         color: borderColor,
                       ),
-                      onPressed: () => _showStartTimeDialog(context),
+                      onPressed: () {
+                        controller.isStart.value = true;
+                        _showStartTimeDialog(context);
+                      },
                     ),
                   ],
                 ),
@@ -71,7 +74,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Obx(
                         () => Text(
-                          _getValueText(
+                          _getEndValueText(
                             CalendarDatePicker2Type.single,
                             controller.endDefaultValue,
                           ),
@@ -83,7 +86,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                         Icons.calendar_today_outlined,
                         color: borderColor,
                       ),
-                      onPressed: () => _showEndTimeDialog(context),
+                      onPressed: () {
+                        controller.isStart.value = false;
+                        _showEndTimeDialog(context);
+                      },
                     ),
                   ],
                 ),
@@ -95,35 +101,38 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     );
   }
 
-  String _getValueText(
+  String _getStartValueText(
     CalendarDatePicker2Type datePickerType,
     List<DateTime?> values,
   ) {
     values =
         values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
-    print(values);
     var valueText = (values.isNotEmpty ? values[0] : null)
         .toString()
         .replaceAll('00:00:00.000', '');
 
-    if (datePickerType == CalendarDatePicker2Type.single) {
-      valueText +=
-          ' ${controller.selectedStartHour.value.toString().padLeft(2, '0')}:'
-          '${controller.selectedStartMinute.value.toString().padLeft(2, '0')}';
-    }
+    // Add selected time to the displayed text
+    valueText +=
+        ' ${controller.selectedStartHour.value.toString().padLeft(2, '0')}:'
+        '${controller.selectedStartMinute.value.toString().padLeft(2, '0')}';
 
-    if (datePickerType == CalendarDatePicker2Type.range) {
-      if (values.isNotEmpty) {
-        final startDate = values[0].toString().replaceAll('00:00:00', '');
-        final endDate = values.length > 1
-            ? values[1].toString().replaceAll('00:00:00.000', '')
-            : 'null';
-        valueText = '$startDate to $endDate';
-      } else {
-        return 'null';
-      }
-    }
-    print(valueText);
+    return valueText;
+  }
+
+  String _getEndValueText(
+    CalendarDatePicker2Type datePickerType,
+    List<DateTime?> values,
+  ) {
+    values =
+        values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
+    var valueText = (values.isNotEmpty ? values[0] : null)
+        .toString()
+        .replaceAll('00:00:00.000', '');
+
+    // Add selected time to the displayed text
+    valueText +=
+        ' ${controller.selectedEndHour.value.toString().padLeft(2, '0')}:'
+        '${controller.selectedEndMinute.value.toString().padLeft(2, '0')}';
 
     return valueText;
   }
@@ -142,13 +151,12 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child:
-                      _buildDefaultSingleDatePickerWithValue(isStartTime: true),
+                  child: _buildDefaultSingleDatePickerWithValue(),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   flex: 1,
-                  child: _setTimeNumberValue(isStartTime: true),
+                  child: _setTimeNumberValue(),
                 ),
               ],
             ),
@@ -193,13 +201,12 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: _buildDefaultSingleDatePickerWithValue(
-                      isStartTime: false),
+                  child: _buildDefaultSingleDatePickerWithValue(),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   flex: 1,
-                  child: _setTimeNumberValue(isStartTime: false),
+                  child: _setTimeNumberValue(),
                 ),
               ],
             ),
@@ -230,7 +237,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     );
   }
 
-  Widget _buildDefaultSingleDatePickerWithValue({required bool isStartTime}) {
+  Widget _buildDefaultSingleDatePickerWithValue() {
     final config = CalendarDatePicker2Config(
       selectedDayHighlightColor: primaryMain,
       weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -259,14 +266,14 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         children: [
           CalendarDatePicker2(
             config: config,
-            value: isStartTime
+            value: controller.isStart.value
                 ? controller.startDefaultValue
                     .map((dateTime) => dateTime!)
                     .toList()
                 : controller.endDefaultValue
                     .map((dateTime) => dateTime!)
                     .toList(),
-            onValueChanged: (dates) => isStartTime
+            onValueChanged: (dates) => controller.isStart.value
                 ? controller.selectedStartDateTime.value =
                     dates.first ?? DateTime.now()
                 : controller.selectedEndDateTime.value =
@@ -277,14 +284,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     );
   }
 
-  Widget _setTimeNumberValue({required bool isStartTime}) {
-    final RxInt tempSelectedHour = isStartTime
-        ? controller.tempSelectedStartHour
-        : controller.tempSelectedEndHour;
-    final RxInt tempSelectedMinute = isStartTime
-        ? controller.tempSelectedStartMinute
-        : controller.tempSelectedEndMinute;
-
+  Widget _setTimeNumberValue() {
     return Row(
       children: [
         Expanded(
@@ -315,7 +315,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                tempSelectedHour.value = hour;
+                                if (controller.isStart.value) {
+                                  controller.tempSelectedStartHour.value = hour;
+                                } else {
+                                  controller.tempSelectedEndHour.value = hour;
+                                }
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<CircleBorder>(
@@ -324,7 +328,14 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    if (tempSelectedHour.value == hour) {
+                                    if (controller.isStart.value &&
+                                        controller
+                                                .tempSelectedStartHour.value ==
+                                            hour) {
+                                      return primaryMain;
+                                    } else if (!controller.isStart.value &&
+                                        controller.tempSelectedEndHour.value ==
+                                            hour) {
                                       return primaryMain;
                                     }
                                     return Colors.transparent;
@@ -335,9 +346,16 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 '$hour',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: tempSelectedHour.value == hour
-                                      ? Colors.white
-                                      : blackTextColor,
+                                  color: controller.isStart.value
+                                      ? (controller.tempSelectedStartHour
+                                                  .value ==
+                                              hour
+                                          ? Colors.white
+                                          : blackTextColor)
+                                      : (controller.tempSelectedEndHour.value ==
+                                              hour
+                                          ? Colors.white
+                                          : blackTextColor),
                                 ),
                               ),
                             ),
@@ -379,7 +397,13 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                tempSelectedMinute.value = minute;
+                                if (controller.isStart.value) {
+                                  controller.tempSelectedStartMinute.value =
+                                      minute;
+                                } else {
+                                  controller.tempSelectedEndMinute.value =
+                                      minute;
+                                }
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<CircleBorder>(
@@ -388,7 +412,15 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    if (tempSelectedMinute.value == minute) {
+                                    if (controller.isStart.value &&
+                                        controller.tempSelectedStartMinute
+                                                .value ==
+                                            minute) {
+                                      return primaryMain;
+                                    } else if (!controller.isStart.value &&
+                                        controller
+                                                .tempSelectedEndMinute.value ==
+                                            minute) {
                                       return primaryMain;
                                     }
                                     return Colors.transparent;
@@ -399,9 +431,17 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 '$minute',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: tempSelectedMinute.value == minute
-                                      ? Colors.white
-                                      : blackTextColor,
+                                  color: controller.isStart.value
+                                      ? (controller.tempSelectedStartMinute
+                                                  .value ==
+                                              minute
+                                          ? Colors.white
+                                          : blackTextColor)
+                                      : (controller.tempSelectedEndMinute
+                                                  .value ==
+                                              minute
+                                          ? Colors.white
+                                          : blackTextColor),
                                 ),
                               ),
                             ),

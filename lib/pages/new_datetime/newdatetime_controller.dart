@@ -7,6 +7,8 @@ class NewDateTimeController extends GetxController {
   RxInt tempSelectedStartMinute = 0.obs;
   Rx<DateTime?> selectedStartDateTime = DateTime.now().obs;
 
+  RxBool isStart = true.obs;
+
   RxInt selectedEndHour = 0.obs;
   RxInt selectedEndMinute = 0.obs;
   RxInt tempSelectedEndHour = 0.obs;
