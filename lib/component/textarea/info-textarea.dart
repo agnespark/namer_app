@@ -12,7 +12,7 @@ class InfoTextAreaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
         decoration: ShapeDecoration(
           color: yellowLight,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -30,12 +30,9 @@ class InfoTextAreaPage extends StatelessWidget {
               width: 19,
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 1),
-                child: Text(
-                  content.value,
-                  style: Themes.light.textTheme.headlineMedium,
-                ),
+              child: Text(
+                content.value,
+                style: Themes.light.textTheme.headlineMedium,
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/accordion.dart';
 import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
@@ -10,7 +11,7 @@ import 'package:namer_app/component/checkbox/multi_checkbox.dart';
 import 'package:namer_app/component/checkbox/single_checkbox.dart';
 import 'package:namer_app/component/textarea/info-textarea.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
-import 'package:namer_app/component/filter-row/filter_row.dart';
+import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 
 class ButtonPage extends StatelessWidget {
   ButtonPage({Key? key}) : super(key: key);
@@ -61,6 +62,42 @@ class ButtonPage extends StatelessWidget {
               body: BasicTextField(hintText: "힌트텍스트!"),
             ),
             Accordion(),
+            SizedBox(
+              height: 10,
+            ),
+            FilterFrame(body: [
+              FilterRow(
+                title: "DBMS Server",
+                body: MultiCheckBoxPage(
+                    checkBoxList: controller.checkBoxList,
+                    selectedCheckBox: controller.selectedCheckBox),
+              ),
+              FilterRow(
+                title: "Type",
+                body: RadioPage(
+                  radioList: controller.radioList,
+                  selectedRadio: controller.selectedRadio,
+                ),
+              ),
+              FilterRow(
+                title: controller.title,
+                body: MultiCheckBoxPage(
+                  checkBoxList: controller.checkBoxList,
+                  selectedCheckBox: controller.selectedCheckBox,
+                ),
+              ),
+              Accordion(),
+            ], button: [
+              ButtonWidget("text", () {
+                ToastWidget("에러가 발생했습니다.").red();
+              }).red(),
+              ButtonWidget("text", () {
+                ToastWidget("성공했습니다.").blue();
+              }).blue(),
+              ButtonWidget("text", () {
+                ToastWidget("다시 시도해주세요.").green();
+              }).green(),
+            ]),
           ],
         ),
       ),

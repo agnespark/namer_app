@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/filter-row/filter_row.dart';
+import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textarea/info-textarea.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/config/color.dart';
