@@ -25,7 +25,7 @@ class Themes {
       headlineLarge: TextStyle(
         color: blackTextColor,
         fontSize: 16,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
       ),
       headlineMedium: TextStyle(
         color: grayDark,

@@ -7,7 +7,7 @@ class ToastWidget {
   ToastWidget(this.text);
   final String text;
 
-  body(Color color) {
+  body(color) {
     Get.snackbar(
       text, "",
       titleText: Text(

@@ -32,7 +32,7 @@ class ButtonController extends GetxController {
   RxString selectedRadio = RxString("");
   RxString selectedSingleCheckBox = RxString("");
 
-  RxString title = RxString("");
+  String title = "";
 
   RxString content = RxString(
       'COMPLETENESS CHECK\n\n(LOG COUNT : 115, SR COUNT : 115)        USER_USERINFO: INCLUDE (2024-01-11~)AUTH_USER: INCLUDE (2024-01-16~)');
@@ -46,7 +46,7 @@ class ButtonController extends GetxController {
     selectedSingleCheckBox.value = singleCheckBoxList[0];
     selectedRadio.value = radioList[0];
 
-    title.value = "Program Server";
+    title = "Program Server";
     // selectedCheckBox
     //     .addAll(List.generate(checkBoxList.length, (index) => false));
   }
