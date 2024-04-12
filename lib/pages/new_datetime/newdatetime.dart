@@ -71,7 +71,6 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                 child: Obx(
                   () => Text(
                     _getValueText(
-                      CalendarDatePicker2Type.single,
                       defaultValue,
                       selectedHour,
                       selectedMinute,
@@ -97,7 +96,6 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
   }
 
   String _getValueText(
-    CalendarDatePicker2Type datePickerType,
     List<DateTime?> values,
     RxInt selectedHour,
     RxInt selectedMinute,
@@ -260,11 +258,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                if (isStartTime) {
-                                  tempSelectedHour.value = hour;
-                                } else {
-                                  tempSelectedHour.value = hour;
-                                }
+                                tempSelectedHour.value = hour;
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<CircleBorder>(
@@ -273,14 +267,9 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    if (isStartTime &&
-                                        tempSelectedHour.value == hour) {
-                                      return primaryMain;
-                                    } else if (!isStartTime &&
-                                        tempSelectedHour.value == hour) {
-                                      return primaryMain;
-                                    }
-                                    return Colors.transparent;
+                                    return tempSelectedHour.value == hour
+                                        ? primaryMain
+                                        : Colors.transparent;
                                   },
                                 ),
                               ),
@@ -288,13 +277,9 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 '$hour',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: isStartTime
-                                      ? (tempSelectedHour.value == hour
-                                          ? Colors.white
-                                          : blackTextColor)
-                                      : (tempSelectedHour.value == hour
-                                          ? Colors.white
-                                          : blackTextColor),
+                                  color: tempSelectedHour.value == hour
+                                      ? Colors.white
+                                      : blackTextColor,
                                 ),
                               ),
                             ),
@@ -336,11 +321,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                if (isStartTime) {
-                                  tempSelectedMinute.value = minute;
-                                } else {
-                                  tempSelectedMinute.value = minute;
-                                }
+                                tempSelectedMinute.value = minute;
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<CircleBorder>(
@@ -349,14 +330,9 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    if (isStartTime &&
-                                        tempSelectedMinute.value == minute) {
-                                      return primaryMain;
-                                    } else if (!isStartTime &&
-                                        tempSelectedMinute.value == minute) {
-                                      return primaryMain;
-                                    }
-                                    return Colors.transparent;
+                                    return tempSelectedMinute.value == minute
+                                        ? primaryMain
+                                        : Colors.transparent;
                                   },
                                 ),
                               ),
@@ -364,13 +340,9 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 '$minute',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: isStartTime
-                                      ? (tempSelectedMinute.value == minute
-                                          ? Colors.white
-                                          : blackTextColor)
-                                      : (tempSelectedMinute.value == minute
-                                          ? Colors.white
-                                          : blackTextColor),
+                                  color: tempSelectedMinute.value == minute
+                                      ? Colors.white
+                                      : blackTextColor,
                                 ),
                               ),
                             ),
