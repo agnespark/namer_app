@@ -20,90 +20,87 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
       child: Row(
         children: [
           // StartTime Container
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: borderColor),
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Obx(
-                        () => Text(
-                          _getStartValueText(
-                            CalendarDatePicker2Type.single,
-                            controller.startDefaultValue,
-                          ),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.calendar_today_outlined,
-                        color: borderColor,
-                      ),
-                      onPressed: () {
-                        controller.isStart.value = true;
-                        _showStartTimeDialog(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          _buildTimeContainer(
+            controller.startDefaultValue,
+            controller.selectedStartHour,
+            controller.selectedStartMinute,
+            controller.tempSelectedStartHour,
+            controller.tempSelectedStartMinute,
+            controller.selectedStartDateTime,
+            true,
           ),
           const SizedBox(width: 10),
           Text("-"),
           const SizedBox(width: 10),
           // EndTime Container
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: borderColor),
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Obx(
-                        () => Text(
-                          _getEndValueText(
-                            CalendarDatePicker2Type.single,
-                            controller.endDefaultValue,
-                          ),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.calendar_today_outlined,
-                        color: borderColor,
-                      ),
-                      onPressed: () {
-                        controller.isStart.value = false;
-                        _showEndTimeDialog(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          _buildTimeContainer(
+            controller.endDefaultValue,
+            controller.selectedEndHour,
+            controller.selectedEndMinute,
+            controller.tempSelectedEndHour,
+            controller.tempSelectedEndMinute,
+            controller.selectedEndDateTime,
+            false,
           ),
         ],
       ),
     );
   }
 
-  String _getStartValueText(
+  Widget _buildTimeContainer(
+    RxList<DateTime?> defaultValue,
+    RxInt selectedHour,
+    RxInt selectedMinute,
+    RxInt tempSelectedHour,
+    RxInt tempSelectedMinute,
+    Rx<DateTime?> selectedDateTime,
+    bool isStartTime,
+  ) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Obx(
+                  () => Text(
+                    _getValueText(
+                      CalendarDatePicker2Type.single,
+                      defaultValue,
+                      selectedHour,
+                      selectedMinute,
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.calendar_today_outlined,
+                  color: borderColor,
+                ),
+                onPressed: () {
+                  controller.isStart.value = isStartTime;
+                  _showTimeDialog(context, isStartTime);
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _getValueText(
     CalendarDatePicker2Type datePickerType,
     List<DateTime?> values,
+    RxInt selectedHour,
+    RxInt selectedMinute,
   ) {
     values =
         values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
@@ -112,32 +109,13 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         .replaceAll('00:00:00.000', '');
 
     // Add selected time to the displayed text
-    valueText +=
-        ' ${controller.selectedStartHour.value.toString().padLeft(2, '0')}:'
-        '${controller.selectedStartMinute.value.toString().padLeft(2, '0')}';
+    valueText += ' ${selectedHour.value.toString().padLeft(2, '0')}:'
+        '${selectedMinute.value.toString().padLeft(2, '0')}';
 
     return valueText;
   }
 
-  String _getEndValueText(
-    CalendarDatePicker2Type datePickerType,
-    List<DateTime?> values,
-  ) {
-    values =
-        values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
-    var valueText = (values.isNotEmpty ? values[0] : null)
-        .toString()
-        .replaceAll('00:00:00.000', '');
-
-    // Add selected time to the displayed text
-    valueText +=
-        ' ${controller.selectedEndHour.value.toString().padLeft(2, '0')}:'
-        '${controller.selectedEndMinute.value.toString().padLeft(2, '0')}';
-
-    return valueText;
-  }
-
-  void _showStartTimeDialog(BuildContext context) {
+  void _showTimeDialog(BuildContext context, bool isStartTime) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -151,12 +129,12 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: _buildDefaultSingleDatePickerWithValue(),
+                  child: _buildDefaultSingleDatePickerWithValue(isStartTime),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   flex: 1,
-                  child: _setTimeNumberValue(),
+                  child: _setTimeNumberValue(isStartTime),
                 ),
               ],
             ),
@@ -170,13 +148,23 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
             ),
             TextButton(
               onPressed: () {
-                controller.selectedStartHour.value =
-                    controller.tempSelectedStartHour.value;
-                controller.selectedStartMinute.value =
-                    controller.tempSelectedStartMinute.value;
-                controller.startDefaultValue.value = [
-                  controller.selectedStartDateTime.value
-                ].map((dateTime) => dateTime!).toList();
+                if (isStartTime) {
+                  controller.selectedStartHour.value =
+                      controller.tempSelectedStartHour.value;
+                  controller.selectedStartMinute.value =
+                      controller.tempSelectedStartMinute.value;
+                  controller.startDefaultValue.value = [
+                    controller.selectedStartDateTime.value
+                  ].map((dateTime) => dateTime!).toList();
+                } else {
+                  controller.selectedEndHour.value =
+                      controller.tempSelectedEndHour.value;
+                  controller.selectedEndMinute.value =
+                      controller.tempSelectedEndMinute.value;
+                  controller.endDefaultValue.value = [
+                    controller.selectedEndDateTime.value
+                  ].map((dateTime) => dateTime!).toList();
+                }
                 Navigator.of(context).pop();
               },
               child: Text('확인'),
@@ -187,57 +175,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     );
   }
 
-  void _showEndTimeDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(16),
-          content: Container(
-            width: 500,
-            height: 350,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: _buildDefaultSingleDatePickerWithValue(),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  flex: 1,
-                  child: _setTimeNumberValue(),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소'),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.selectedEndHour.value =
-                    controller.tempSelectedEndHour.value;
-                controller.selectedEndMinute.value =
-                    controller.tempSelectedEndMinute.value;
-                controller.endDefaultValue.value = [
-                  controller.selectedEndDateTime.value
-                ].map((dateTime) => dateTime!).toList();
-                Navigator.of(context).pop();
-              },
-              child: Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildDefaultSingleDatePickerWithValue() {
+  Widget _buildDefaultSingleDatePickerWithValue(bool isStartTime) {
     final config = CalendarDatePicker2Config(
       selectedDayHighlightColor: primaryMain,
       weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -266,14 +204,14 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         children: [
           CalendarDatePicker2(
             config: config,
-            value: controller.isStart.value
+            value: isStartTime
                 ? controller.startDefaultValue
                     .map((dateTime) => dateTime!)
                     .toList()
                 : controller.endDefaultValue
                     .map((dateTime) => dateTime!)
                     .toList(),
-            onValueChanged: (dates) => controller.isStart.value
+            onValueChanged: (dates) => isStartTime
                 ? controller.selectedStartDateTime.value =
                     dates.first ?? DateTime.now()
                 : controller.selectedEndDateTime.value =
@@ -284,7 +222,14 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     );
   }
 
-  Widget _setTimeNumberValue() {
+  Widget _setTimeNumberValue(bool isStartTime) {
+    final RxInt tempSelectedHour = isStartTime
+        ? controller.tempSelectedStartHour
+        : controller.tempSelectedEndHour;
+    final RxInt tempSelectedMinute = isStartTime
+        ? controller.tempSelectedStartMinute
+        : controller.tempSelectedEndMinute;
+
     return Row(
       children: [
         Expanded(
@@ -315,10 +260,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                if (controller.isStart.value) {
-                                  controller.tempSelectedStartHour.value = hour;
+                                if (isStartTime) {
+                                  tempSelectedHour.value = hour;
                                 } else {
-                                  controller.tempSelectedEndHour.value = hour;
+                                  tempSelectedHour.value = hour;
                                 }
                               },
                               style: ButtonStyle(
@@ -328,14 +273,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    if (controller.isStart.value &&
-                                        controller
-                                                .tempSelectedStartHour.value ==
-                                            hour) {
+                                    if (isStartTime &&
+                                        tempSelectedHour.value == hour) {
                                       return primaryMain;
-                                    } else if (!controller.isStart.value &&
-                                        controller.tempSelectedEndHour.value ==
-                                            hour) {
+                                    } else if (!isStartTime &&
+                                        tempSelectedHour.value == hour) {
                                       return primaryMain;
                                     }
                                     return Colors.transparent;
@@ -346,14 +288,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 '$hour',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: controller.isStart.value
-                                      ? (controller.tempSelectedStartHour
-                                                  .value ==
-                                              hour
+                                  color: isStartTime
+                                      ? (tempSelectedHour.value == hour
                                           ? Colors.white
                                           : blackTextColor)
-                                      : (controller.tempSelectedEndHour.value ==
-                                              hour
+                                      : (tempSelectedHour.value == hour
                                           ? Colors.white
                                           : blackTextColor),
                                 ),
@@ -397,12 +336,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                if (controller.isStart.value) {
-                                  controller.tempSelectedStartMinute.value =
-                                      minute;
+                                if (isStartTime) {
+                                  tempSelectedMinute.value = minute;
                                 } else {
-                                  controller.tempSelectedEndMinute.value =
-                                      minute;
+                                  tempSelectedMinute.value = minute;
                                 }
                               },
                               style: ButtonStyle(
@@ -412,15 +349,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    if (controller.isStart.value &&
-                                        controller.tempSelectedStartMinute
-                                                .value ==
-                                            minute) {
+                                    if (isStartTime &&
+                                        tempSelectedMinute.value == minute) {
                                       return primaryMain;
-                                    } else if (!controller.isStart.value &&
-                                        controller
-                                                .tempSelectedEndMinute.value ==
-                                            minute) {
+                                    } else if (!isStartTime &&
+                                        tempSelectedMinute.value == minute) {
                                       return primaryMain;
                                     }
                                     return Colors.transparent;
@@ -431,15 +364,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                                 '$minute',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: controller.isStart.value
-                                      ? (controller.tempSelectedStartMinute
-                                                  .value ==
-                                              minute
+                                  color: isStartTime
+                                      ? (tempSelectedMinute.value == minute
                                           ? Colors.white
                                           : blackTextColor)
-                                      : (controller.tempSelectedEndMinute
-                                                  .value ==
-                                              minute
+                                      : (tempSelectedMinute.value == minute
                                           ? Colors.white
                                           : blackTextColor),
                                 ),
