@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:namer_app/config/themes.dart';
 
 class FilterRow extends StatelessWidget {
-  final RxString title;
+  final String title;
   final Widget body;
   FilterRow({super.key, required this.title, required this.body});
 
@@ -26,7 +26,7 @@ class FilterRow extends StatelessWidget {
               children: [
                 SizedBox(
                   child: Text(
-                    title.value,
+                    title,
                     style: Themes.light.textTheme.headlineLarge,
                   ),
                 ),

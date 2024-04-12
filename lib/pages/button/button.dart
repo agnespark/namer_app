@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/component/accordion.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
@@ -59,6 +60,7 @@ class ButtonPage extends StatelessWidget {
               title: controller.title,
               body: BasicTextField(hintText: "힌트텍스트!"),
             ),
+            Accordion(),
           ],
         ),
       ),
