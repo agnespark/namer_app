@@ -13,6 +13,8 @@ class NewDateTimePage extends StatefulWidget {
 
 class _NewDateTimePageState extends State<NewDateTimePage> {
   final NewDateTimeController controller = Get.put(NewDateTimeController());
+  TextEditingController startDateTimeTextController = TextEditingController();
+  TextEditingController endDateTimeTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
       child: Row(
         children: [
           // StartTime Container
-          _buildTimeContainer(
+          _buildDateTimeContainer(
             controller.startDefaultValue,
             controller.selectedStartHour,
             controller.selectedStartMinute,
@@ -33,7 +35,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
           Text("-"),
           const SizedBox(width: 10),
           // EndTime Container
-          _buildTimeContainer(
+          _buildDateTimeContainer(
             controller.endDefaultValue,
             controller.selectedEndHour,
             controller.selectedEndMinute,
@@ -47,7 +49,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     );
   }
 
-  Widget _buildTimeContainer(
+  Widget _buildDateTimeContainer(
     RxList<DateTime?> defaultValue,
     RxInt selectedHour,
     RxInt selectedMinute,
@@ -56,42 +58,46 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
     Rx<DateTime?> selectedDateTime,
     bool isStartTime,
   ) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Obx(
-                  () => Text(
-                    _getValueText(
-                      defaultValue,
-                      selectedHour,
-                      selectedMinute,
+    startDateTimeTextController.text =
+        _getValueText(defaultValue, selectedHour, selectedMinute);
+
+    endDateTimeTextController.text =
+        _getValueText(defaultValue, selectedHour, selectedMinute);
+
+    return Container(
+      width: 300,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: isStartTime
+                    ? startDateTimeTextController
+                    : endDateTimeTextController,
+                onTap: () {},
+                decoration: InputDecoration(
+                  hintText: 'YYYY-MM-DD hh:mm:ss',
+                  suffixIcon: IconButton(
+                    // 서픽스 아이콘 추가
+                    icon: Icon(
+                      Icons.calendar_today_outlined,
+                      color: borderColor,
                     ),
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    onPressed: () {
+                      controller.isStart.value = isStartTime;
+                      _showTimeDialog(context, isStartTime);
+                    },
                   ),
                 ),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.calendar_today_outlined,
-                  color: borderColor,
-                ),
-                onPressed: () {
-                  controller.isStart.value = isStartTime;
-                  _showTimeDialog(context, isStartTime);
-                },
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -108,7 +114,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
 
     // Add selected time to the displayed text
     valueText += ' ${selectedHour.value.toString().padLeft(2, '0')}:'
-        '${selectedMinute.value.toString().padLeft(2, '0')}';
+        '${selectedMinute.value.toString().padLeft(2, '0')}:00';
 
     return valueText;
   }
@@ -154,6 +160,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                   controller.startDefaultValue.value = [
                     controller.selectedStartDateTime.value
                   ].map((dateTime) => dateTime!).toList();
+                  startDateTimeTextController.text = _getValueText(
+                      controller.startDefaultValue,
+                      controller.selectedStartHour,
+                      controller.selectedStartMinute);
                 } else {
                   controller.selectedEndHour.value =
                       controller.tempSelectedEndHour.value;
@@ -162,6 +172,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                   controller.endDefaultValue.value = [
                     controller.selectedEndDateTime.value
                   ].map((dateTime) => dateTime!).toList();
+                  endDateTimeTextController.text = _getValueText(
+                      controller.endDefaultValue,
+                      controller.selectedEndHour,
+                      controller.selectedEndMinute);
                 }
                 Navigator.of(context).pop();
               },
