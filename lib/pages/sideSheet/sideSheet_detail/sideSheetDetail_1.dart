@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/pages/sideSheet/detailContainer.dart';
-import 'package:namer_app/pages/sideSheet/sideSheet_detail/sideSheetDetail_2.dart';
 
 class SideSheetDetail1 extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
@@ -24,9 +23,7 @@ class SideSheetDetail1 extends StatelessWidget {
             Text(''),
             ElevatedButton(
                 onPressed: () {
-                  print(1);
-                  controller
-                      .changeDetailPage(Container(child: SideSheetDetail2()));
+                  controller.changeDetailPage('');
                 },
                 child: Text('NextPage'))
           ],

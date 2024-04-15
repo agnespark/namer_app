@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DetailController extends GetxController {
-  RxString pageIndex = "detail_1_page".obs;
+  RxString pageName = "population_post".obs;
   Rx<Widget>? currentDetail;
   RxString text = "".obs;
 
   TextEditingController textController = TextEditingController();
 
-  changeDetailPage(name) {
-    pageIndex.value = name;
+  changeDetailPage(String name) {
+    pageName.value = name;
   }
 }
