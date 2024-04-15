@@ -22,6 +22,9 @@ class NewDateTimeController extends GetxController {
     DateTime.now().add(Duration(days: 7)),
   ].obs;
 
+  RxString acs = "오름차순".obs;
+  RxString decs = "내림차순".obs;
+
   @override
   void onInit() {
     super.onInit();

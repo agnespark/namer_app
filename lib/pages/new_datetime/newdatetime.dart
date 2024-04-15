@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/component/checkbox/radio.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime_controller.dart';
@@ -44,6 +45,9 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
             controller.selectedEndDateTime,
             false,
           ),
+          RadioPage(
+              radioList: [controller.acs.value, controller.decs.value],
+              selectedRadio: controller.acs)
         ],
       ),
     );
