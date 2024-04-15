@@ -13,5 +13,8 @@ Widget PlusButtonWidget({
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
     hoverColor: Colors.transparent,
+    iconSize: 24,
+    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
+    padding: EdgeInsets.zero,
   );
 }

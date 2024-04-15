@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/pages/sideSheet/detailContainer.dart';
 
-class DashboardPost extends StatelessWidget {
+class DashboardSrDetail extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -19,20 +20,27 @@ class DashboardPost extends StatelessWidget {
             children: [
               // 버튼 변경될 내용
               Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(Icons.arrow_back_ios),
-                      iconSize: 24,
-                      constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                      padding: EdgeInsets.zero,
-                    ),
-                  ],
-                ),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(Icons.arrow_circle_up_rounded),
+                    iconSize: 24,
+                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
+                    padding: EdgeInsets.zero,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(Icons.arrow_circle_down_rounded),
+                    iconSize: 24,
+                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
+                    padding: EdgeInsets.zero,
+                  ),
+                ]),
               ),
               Container(
                   decoration: ShapeDecoration(
@@ -41,10 +49,7 @@ class DashboardPost extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: ButtonWidget('완료', () {
-                    controller.changeDetailPage('add_log_post');
-                    // DetailWidget().Widget(context);
-                  }).blue()),
+                  child: ButtonWidget('완료', () {}).blue()),
             ],
           ),
         ),
@@ -64,7 +69,7 @@ class DashboardPost extends StatelessWidget {
                 children: [
                   Text(
                     //title 변경
-                    '선택 범위 입력',
+                    'Detail',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -81,7 +86,11 @@ class DashboardPost extends StatelessWidget {
           ),
           child: Column(
             children: [
-              BasicTextField(hintText: "2, 4, 6, 8-12, 14-23"),
+              DetailAccordion(title: "Log"),
+              SizedBox(
+                height: 16,
+              ),
+              DetailAccordion(title: "결재문서"),
             ],
           ),
           // content 영역
@@ -90,3 +99,6 @@ class DashboardPost extends StatelessWidget {
     );
   }
 }
+
+// Get.snackbar("안녕", "ㅇㅇㅇㅇ");
+// 클릭 시 다이얼로그 띄우기

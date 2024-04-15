@@ -60,18 +60,18 @@ class DashboardPage extends StatelessWidget {
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  // MyController.to
-                  //     .changeDetail(Container(child: DashboardDetail()));
-                  // GlobalScaffoldKey.key.currentState!.openEndDrawer();
                   controller.changeDetailPage('population_detail');
-                  // SideSheet.right(
-                  //     body: DetailWidget(),
-                  //     context: context,
-                  //     width: Get.width * 0.6 // get으로 사용해야 함
-                  //     );
                   DetailWidget().Widget(context);
                 },
-                child: Text('Detail Page'),
+                child: Text('noneSR detailPage'),
+              ),
+              SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  controller.changeDetailPage('population_sr_detail');
+                  DetailWidget().Widget(context);
+                },
+                child: Text('SR detailPage'),
               ),
               SizedBox(width: 10),
               ElevatedButton(

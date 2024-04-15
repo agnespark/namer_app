@@ -8,7 +8,7 @@ class BasicTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 306,
+      // width: 350,
       child: TextField(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
