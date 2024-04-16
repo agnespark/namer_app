@@ -31,7 +31,12 @@ class SapPage extends StatelessWidget {
                 children: [
                   Text('테이블 검색', style: Themes.light.textTheme.bodyMedium),
                   const SizedBox(height: 8),
-                  SearchTextField(hintText: "Table Search"),
+                  SearchTextField(
+                    hintText: "Table Search",
+                    onChanged: (value) {
+                      controller.filterTableList(value);
+                    },
+                  ),
                   const SizedBox(height: 8),
                   Container(
                     width: double.infinity,

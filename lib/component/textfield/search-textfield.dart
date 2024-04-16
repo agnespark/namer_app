@@ -4,7 +4,8 @@ import 'package:namer_app/config/themes.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? hintText;
-  const SearchTextField({super.key, this.hintText});
+  final ValueChanged<String>? onChanged;
+  const SearchTextField({super.key, this.hintText, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +19,15 @@ class SearchTextField extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           border: OutlineInputBorder(),
           suffixIcon: IconButton(
-            // 서픽스 아이콘 추가
             icon: Icon(
               Icons.search,
               color: borderColor,
               size: 24,
             ),
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
             onPressed: () {},
           ),
         ),
+        onChanged: onChanged, // onChanged 콜백 등록
       ),
     );
   }
