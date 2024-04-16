@@ -24,6 +24,8 @@ class SearchTextField extends StatelessWidget {
               color: borderColor,
               size: 24,
             ),
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
             onPressed: () {},
           ),
         ),

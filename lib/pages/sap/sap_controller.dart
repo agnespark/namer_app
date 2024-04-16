@@ -56,6 +56,5 @@ class SapController extends GetxController {
     beforeTableList.assignAll(filteredTableList
         .where((table) => table.contains(searchKeyword))
         .toList());
-    // }
   }
 }
