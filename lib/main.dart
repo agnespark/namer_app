@@ -63,7 +63,23 @@ class MainPage extends StatelessWidget {
 }
 
 Widget _navList(Menu menu) {
-  if (menu.subMenu == null) {
+  if (menu.subMenu == null && menu.depth == 0) {
+    return GestureDetector(
+      onTap: () {
+        MyController.to.changePage(menu.page!, menu.name, menu.depth);
+      },
+      child: ListTile(
+        mouseCursor: SystemMouseCursors.click,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+          child: Text(
+            menu.name,
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
+    );
+  } else if (menu.subMenu == null) {
     return GestureDetector(
       onTap: () {
         MyController.to.changePage(menu.page!, menu.name, menu.depth);
