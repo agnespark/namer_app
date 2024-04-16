@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class DetailController extends GetxController {
   RxString pageName = "population_post".obs;
+  RxString samplingPageName = "sampling_post".obs;
   Rx<Widget>? currentDetail;
   RxString text = "".obs;
 
@@ -10,5 +11,9 @@ class DetailController extends GetxController {
 
   changeDetailPage(String name) {
     pageName.value = name;
+  }
+
+  sampingDetailPage(String name) {
+    samplingPageName.value = name;
   }
 }

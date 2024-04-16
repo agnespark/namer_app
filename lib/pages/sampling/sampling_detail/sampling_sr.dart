@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 
-class AddLogPost extends StatelessWidget {
+class SamplingSrDetail extends StatelessWidget {
+  final bool isBtn;
   final DetailController controller = Get.put(DetailController());
 
+  SamplingSrDetail({this.isBtn = true});
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -17,31 +20,36 @@ class AddLogPost extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 버튼 변경될 내용
-              Container(
-                  // child:
-                  //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  //   IconButton(
-                  //     onPressed: () {
-                  //       Get.back();
-                  //     },
-                  //     icon: Icon(Icons.arrow_back_ios),
-                  //     iconSize: 24,
-                  //     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                  //     padding: EdgeInsets.zero,
-                  //   ),
-                  // ]),
-                  ),
-              Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.50, color: Color(0xFF148FEF)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: ButtonWidget('완료', () {}).blue()),
-            ],
+            children: isBtn
+                ? [
+                    // 버튼 변경될 내용
+                    Container(
+                        // child:
+                        //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                        //   IconButton(
+                        //     onPressed: () {
+                        //       Get.back();
+                        //     },
+                        //     icon: Icon(Icons.arrow_back_ios),
+                        //     iconSize: 24,
+                        //     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
+                        //     padding: EdgeInsets.zero,
+                        //   ),
+                        // ]),
+                        ),
+                    Container(
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                width: 1.50, color: Color(0xFF148FEF)),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: ButtonWidget('완료', () {
+                          ToastWidget("성공했습니다.").blue();
+                        }).blue()),
+                  ]
+                : [Text('')],
           ),
         ),
         SizedBox(height: 16),
@@ -108,7 +116,9 @@ class AddLogPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
+                          ButtonWidget('결재문서 수정', () {
+                            controller.sampingDetailPage("srdoc_list_modal");
+                          }).blue(),
                         ])
                       ],
                     ),

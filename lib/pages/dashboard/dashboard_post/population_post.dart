@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
-import 'package:namer_app/pages/sideSheet/detailContainer.dart';
+import 'package:namer_app/controller/detailContainer.dart';
 
-class DashboardPost extends StatelessWidget {
+class PopulationPost extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -43,6 +43,7 @@ class DashboardPost extends StatelessWidget {
                   ),
                   child: ButtonWidget('완료', () {
                     controller.changeDetailPage('add_log_post');
+                    controller.sampingDetailPage("add_log_post");
                     // DetailWidget().Widget(context);
                   }).blue()),
             ],

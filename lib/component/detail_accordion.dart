@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/config/color.dart';
 
 class DetailAccordion extends StatelessWidget {
   final String title;
-  const DetailAccordion({Key? key, required this.title});
+  final Widget contentWidget;
+  const DetailAccordion(
+      {Key? key, required this.title, required this.contentWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +35,23 @@ class DetailAccordion extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Total: 2'),
-                      PlusButtonWidget(onPressed: () {})
-                    ],
-                  ),
-                  Text('Table')
-                ],
-              ),
+              child: contentWidget,
+              // 여기 내용을 파라미터로 받자
+              // Column(
+              //   children: [
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text('Total: 2'),
+              //     Row(children: [
+              //       PlusButtonWidget(onPressed: () {}),
+              //       ButtonWidget('결재문서 수정', () {}).blue(),
+              //     ])
+              //   ],
+              // ),
+              // Text('Table')
+              //   ],
+              // ),
             )
           ],
         ),

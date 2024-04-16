@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/textfield/basic-textfield.dart';
-import 'package:namer_app/pages/sideSheet/detailContainer.dart';
+import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/controller/detailContainer.dart';
 
 class DashboardSrDetail extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
@@ -86,11 +86,43 @@ class DashboardSrDetail extends StatelessWidget {
           ),
           child: Column(
             children: [
-              DetailAccordion(title: "Log"),
+              DetailAccordion(
+                title: "Log",
+                contentWidget: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total: 2'),
+                        Row(children: [
+                          PlusButtonWidget(onPressed: () {}),
+                        ])
+                      ],
+                    ),
+                    Text('Table')
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 16,
               ),
-              DetailAccordion(title: "결재문서"),
+              DetailAccordion(
+                title: "결재문서",
+                contentWidget: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total: 2'),
+                        Row(children: [
+                          ButtonWidget('결재문서 수정', () {}).blue(),
+                        ])
+                      ],
+                    ),
+                    Text('Table')
+                  ],
+                ),
+              ),
             ],
           ),
           // content 영역

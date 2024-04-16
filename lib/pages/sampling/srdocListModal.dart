@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
-import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/component/checkbox/radio.dart';
+import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
+import 'package:namer_app/component/filter/filter-row/filter_row.dart';
+import 'package:namer_app/component/textfield/basic-textfield.dart';
+import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/button/button_controller.dart';
+import 'package:namer_app/pages/new_datetime/timepicker.dart';
 
-class AddLogPost extends StatelessWidget {
+class srdocListModal extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
+  final ButtonController btn_controller = Get.put(ButtonController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +26,19 @@ class AddLogPost extends StatelessWidget {
             children: [
               // 버튼 변경될 내용
               Container(
-                  // child:
-                  //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  //   IconButton(
-                  //     onPressed: () {
-                  //       Get.back();
-                  //     },
-                  //     icon: Icon(Icons.arrow_back_ios),
-                  //     iconSize: 24,
-                  //     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                  //     padding: EdgeInsets.zero,
-                  //   ),
-                  // ]),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
+                    iconSize: 24,
+                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
+                    padding: EdgeInsets.zero,
                   ),
+                ]),
+              ),
               Container(
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
@@ -60,7 +66,7 @@ class AddLogPost extends StatelessWidget {
                 children: [
                   Text(
                     //title 변경
-                    '로그 합치기',
+                    '결재문서 선택',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -77,45 +83,33 @@ class AddLogPost extends StatelessWidget {
           ),
           child: Column(
             children: [
-              DetailAccordion(
-                title: "Log",
-                contentWidget: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          PlusButtonWidget(onPressed: () {
-                            controller.sampingDetailPage("population_post");
-                          }),
-                        ])
-                      ],
-                    ),
-                    Text('Table')
-                  ],
+              FilterFrame(body: [
+                FilterRow(
+                  title: "Type",
+                  body: RadioPage(
+                    radioList: btn_controller.radioList,
+                    selectedRadio: btn_controller.selectedRadio,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              DetailAccordion(
-                title: "결재문서",
-                contentWidget: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
-                        ])
-                      ],
-                    ),
-                    Text('Table')
-                  ],
+                FilterRow(
+                  title: "DateTime",
+                  body: NumberPage(),
                 ),
-              ),
+                FilterRow(
+                  title: 'Search',
+                  body: BasicTextField(),
+                ),
+              ], button: [
+                ButtonWidget("text", () {
+                  ToastWidget("에러가 발생했습니다.").red();
+                }).red(),
+                ButtonWidget("text", () {
+                  ToastWidget("성공했습니다.").blue();
+                }).blue(),
+                ButtonWidget("text", () {
+                  ToastWidget("다시 시도해주세요.").green();
+                }).green(),
+              ]),
             ],
           ),
           // content 영역
@@ -124,3 +118,6 @@ class AddLogPost extends StatelessWidget {
     );
   }
 }
+
+// Get.snackbar("안녕", "ㅇㅇㅇㅇ");
+// 클릭 시 다이얼로그 띄우기

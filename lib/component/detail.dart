@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
 import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_sr_detail.dart';
 import 'package:namer_app/pages/dashboard/dashboard_post/add_log_post.dart';
-import 'package:namer_app/pages/dashboard/dashboard_post/dashboard_post.dart';
-import 'package:namer_app/pages/sideSheet/detailContainer.dart';
+import 'package:namer_app/pages/dashboard/dashboard_post/population_post.dart';
+import 'package:namer_app/controller/detailContainer.dart';
 import 'package:side_sheet/side_sheet.dart';
 
 class DetailWidget {
@@ -19,7 +19,7 @@ class DetailWidget {
           child: Obx(() {
             switch (controller.pageName.value) {
               case "population_post":
-                return DashboardPost();
+                return PopulationPost();
               case "population_detail":
                 return DashboardDetail();
               case "population_sr_detail":

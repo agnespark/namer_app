@@ -38,25 +38,12 @@ class MainPage extends StatelessWidget {
       builder: (context, constraints) {
         return Scaffold(
           key: GlobalScaffoldKey.key,
-          endDrawer: Drawer(
-            width: 500,
-            shape:
-                const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            child: ClipRRect(
-              borderRadius: BorderRadius.zero,
-              child: Obx(
-                () {
-                  return MyController.to.currentDetail.value;
-                },
-              ),
-            ),
-          ),
           body: Obx(
             () => Row(
               children: [
                 Container(
                   width: 200, // 네비게이션 바의 고정된 너비
-                  color: Colors.blue,
+                  // color: Colors.blue,
                   child: ListView.builder(
                     itemCount: MyController.to.navList.length,
                     itemBuilder: (BuildContext context, int index) =>
@@ -66,37 +53,6 @@ class MainPage extends StatelessWidget {
                 Expanded(
                   child: MyController.to.currentWidget.value,
                 ),
-                // Expanded(
-                //   child: Column(
-                //     children: [
-                //       Container(
-                //         width: Get.width,
-                //         height: 48,
-                //         padding: EdgeInsets.symmetric(
-                //             vertical: 10.0, horizontal: 32.0),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             // depth 넣기
-                //             DepthWidget(
-                //                     ' ${MyController.to.currentMenu.value}',
-                //                     ' ${MyController.to.currentMenu.value}',
-                //                     '${MyController.to.currentMenu.value}',
-                //                     null)
-                //                 .Widget(MyController.to.currentDepth.value),
-                //             // profile 넣기
-                //             ProfileWidget().Widget(),
-                //           ],
-                //         ),
-                //         decoration: BoxDecoration(
-                //             border: Border(
-                //                 bottom: BorderSide(
-                //                     color: Colors.black12, width: 1))),
-                //       ),
-                //
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -114,9 +70,12 @@ Widget _navList(Menu menu) {
       },
       child: ListTile(
         mouseCursor: SystemMouseCursors.click,
-        title: Text(
-          menu.name,
-          style: TextStyle(fontSize: 16),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+          child: Text(
+            menu.name,
+            style: TextStyle(fontSize: 16),
+          ),
         ),
       ),
     );
@@ -130,7 +89,7 @@ Widget _navList(Menu menu) {
       side: BorderSide.none,
     ),
     title: Padding(
-      padding: EdgeInsets.only(left: menu.depth * 10), // 깊이에 따라 왼쪽 패딩 적용
+      padding: EdgeInsets.only(left: menu.depth * 24), // 깊이에 따라 왼쪽 패딩 적용
       child: Text(
         menu.name,
         style: TextStyle(fontSize: 16),
@@ -139,7 +98,7 @@ Widget _navList(Menu menu) {
     children: menu.subMenu!
         .map((subMenu) => Padding(
               padding: EdgeInsets.only(
-                  left: (menu.depth) * 30), // 자식 메뉴에 깊이에 따라 왼쪽 패딩 적용
+                  left: (menu.depth) * 24), // 자식 메뉴에 깊이에 따라 왼쪽 패딩 적용
               child: _navList(subMenu),
             ))
         .toList(),

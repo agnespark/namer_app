@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/button.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -68,6 +69,10 @@ class _TablePageState extends State<TablePage> {
           child: Column(
             children: [
               // header
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                ButtonWidget('로그 합치기', () {}).blue(),
+              ]),
+              SizedBox(height: 8),
               SizedBox(
                   height: constraint.maxHeight - (_dataPagerHeight * 5),
                   width: constraint.maxWidth,

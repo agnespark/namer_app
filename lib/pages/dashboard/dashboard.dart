@@ -6,7 +6,7 @@ import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
-import 'package:namer_app/pages/sideSheet/detailContainer.dart';
+import 'package:namer_app/controller/detailContainer.dart';
 
 class DashboardPage extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
