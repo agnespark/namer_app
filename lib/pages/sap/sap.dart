@@ -98,17 +98,8 @@ class SapPage extends StatelessWidget {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // 1. 첫 번째 버튼 클릭 시 beforeTableList에서 선택된 항목을 afterTableList로 추가합니다.
-                          if (controller.selectedBeforeTableIndex.value != -1) {
-                            String selectedItem = controller.beforeTableList[
-                                controller.selectedBeforeTableIndex.value];
-                            if (!controller.afterTableList
-                                .contains(selectedItem)) {
-                              controller.afterTableList.add(selectedItem);
-                              controller.beforeTableList.removeAt(
-                                  controller.selectedBeforeTableIndex.value);
-                            }
-                          }
+                          // 1. 첫 번째 버튼 클릭 시 beforeTableList에서 선택된 항목을 afterTableList로 이동
+                          controller.RightButtonClicked();
                         },
                         child: Transform.rotate(
                           angle: pi,
@@ -124,18 +115,8 @@ class SapPage extends StatelessWidget {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // 2. 두 번째 버튼 클릭 시 afterTableList에서 선택된 항목을 beforeTableList로 이동합니다.
-                          if (controller.selectedAfterTotalTableIndex.value !=
-                              -1) {
-                            String selectedItem = controller.afterTableList[
-                                controller.selectedAfterTotalTableIndex.value];
-                            if (!controller.beforeTableList
-                                .contains(selectedItem)) {
-                              controller.beforeTableList.add(selectedItem);
-                              controller.afterTableList.removeAt(controller
-                                  .selectedAfterTotalTableIndex.value);
-                            }
-                          }
+                          // 2. 두 번째 버튼 클릭 시 afterTableList에서 선택된 항목을 beforeTableList로 이동
+                          controller.LeftButtonClicked();
                         },
                         child: SvgPicture.asset(
                           'assets/icons/MdOutlineArrowDropDownCircle.svg',
@@ -151,11 +132,8 @@ class SapPage extends StatelessWidget {
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
                           onTap: () {
-                            // 3. 세 번째 버튼 클릭 시 beforeTableList의 모든 항목을 afterTableList로 이동합니다.
-                            controller.afterTableList.clear();
-                            controller.afterTableList
-                                .addAll(controller.beforeTableList);
-                            controller.beforeTableList.clear();
+                            // 3. 세 번째 버튼 클릭 시 beforeTableList의 모든 항목을 afterTableList로 이동
+                            controller.DoubleRightButtonClicked();
                           },
                           child: SvgPicture.asset(
                             'assets/icons/MdDoubleArrow.svg',
@@ -170,11 +148,8 @@ class SapPage extends StatelessWidget {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // 4. 네 번째 버튼 클릭 시 afterTableList의 모든 항목을 beforeTableList로 이동합니다.
-                          controller.beforeTableList.clear();
-                          controller.beforeTableList
-                              .addAll(controller.afterTableList);
-                          controller.afterTableList.clear();
+                          // 4. 네 번째 버튼 클릭 시 afterTableList의 모든 항목을 beforeTableList로 이동
+                          controller.DoubleLeftButtonClicked();
                         },
                         child: SvgPicture.asset(
                           'assets/icons/MdDoubleArrow.svg',
@@ -223,19 +198,18 @@ class SapPage extends StatelessWidget {
                               cursor: SystemMouseCursors.click,
                               child: GestureDetector(
                                 onTap: () {
-                                  controller.selectedAfterTotalTableIndex
-                                      .value = index;
+                                  controller.selectedAfterTableIndex.value =
+                                      index;
                                 },
                                 child: Container(
                                   width: double.infinity,
-                                  color: controller.selectedAfterTotalTableIndex
-                                              .value ==
+                                  color: controller
+                                              .selectedAfterTableIndex.value ==
                                           index
                                       ? grayLight
                                       : Colors.transparent,
                                   padding: EdgeInsets.all(8),
-                                  child:
-                                      Text(controller.beforeTableList[index]),
+                                  child: Text(controller.afterTableList[index]),
                                 ),
                               ),
                             ),
