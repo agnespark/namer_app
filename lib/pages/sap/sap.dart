@@ -52,9 +52,6 @@ class SapPage extends StatelessWidget {
               child: SearchTextField(
                 hintText: "테이블 검색",
                 onChanged: (value) {
-                  print('value: $value');
-                  print(controller.beforeTableList);
-                  print(controller.filteredTableList);
                   controller.filterTableList(value);
                 },
               ),
