@@ -8,7 +8,7 @@ import 'package:namer_app/config/themes.dart';
 import 'package:namer_app/pages/sap/sap_controller.dart';
 
 class SapPage extends StatelessWidget {
-  const SapPage({super.key});
+  const SapPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,218 +17,141 @@ class SapPage extends StatelessWidget {
       height: 280,
       child: Obx(() {
         return Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 300,
-              height: double.infinity,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('테이블 검색', style: Themes.light.textTheme.bodyMedium),
-                  const SizedBox(height: 8),
-                  SearchTextField(
-                    hintText: "Table Search",
-                    onChanged: (value) {
-                      controller.filterTableList(value);
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1,
-                          color: borderColor,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...List.generate(
-                            controller.beforeTableList.length,
-                            (index) => MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                onTap: () {
-                                  controller.selectedBeforeTableIndex.value =
-                                      index;
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  color: controller
-                                              .selectedBeforeTableIndex.value ==
-                                          index
-                                      ? grayLight
-                                      : Colors.transparent,
-                                  padding: EdgeInsets.all(8),
-                                  child:
-                                      Text(controller.beforeTableList[index]),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // 버튼
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Container(
-                height: double.infinity,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 70),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          // 1. 첫 번째 버튼 클릭 시 beforeTableList에서 선택된 항목을 afterTableList로 이동
-                          controller.RightButtonClicked();
-                        },
-                        child: Transform.rotate(
-                          angle: pi,
-                          child: SvgPicture.asset(
-                            'assets/icons/MdOutlineArrowDropDownCircle.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          // 2. 두 번째 버튼 클릭 시 afterTableList에서 선택된 항목을 beforeTableList로 이동
-                          controller.LeftButtonClicked();
-                        },
-                        child: SvgPicture.asset(
-                          'assets/icons/MdOutlineArrowDropDownCircle.svg',
-                          height: 24,
-                          width: 24,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Transform.rotate(
-                      angle: pi,
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: GestureDetector(
-                          onTap: () {
-                            // 3. 세 번째 버튼 클릭 시 beforeTableList의 모든 항목을 afterTableList로 이동
-                            controller.DoubleRightButtonClicked();
-                          },
-                          child: SvgPicture.asset(
-                            'assets/icons/MdDoubleArrow.svg',
-                            height: 20,
-                            width: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 3),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          // 4. 네 번째 버튼 클릭 시 afterTableList의 모든 항목을 beforeTableList로 이동
-                          controller.DoubleLeftButtonClicked();
-                        },
-                        child: SvgPicture.asset(
-                          'assets/icons/MdDoubleArrow.svg',
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              width: 300,
-              height: double.infinity,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('포함 테이블', style: Themes.light.textTheme.bodyMedium),
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1,
-                          strokeAlign: BorderSide.strokeAlignCenter,
-                          color: borderColor,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...List.generate(
-                            controller.afterTableList.length,
-                            (index) => MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                onTap: () {
-                                  controller.selectedAfterTableIndex.value =
-                                      index;
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  color: controller
-                                              .selectedAfterTableIndex.value ==
-                                          index
-                                      ? grayLight
-                                      : Colors.transparent,
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(controller.afterTableList[index]),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildTableList(controller.beforeTableList,
+                controller.selectedBeforeTableIndex, controller),
+            _buildButtonColumn(controller),
+            _buildTableList(controller.afterTableList,
+                controller.selectedAfterTableIndex, controller,
+                isAfter: true),
           ],
         );
       }),
+    );
+  }
+
+  Widget _buildTableList(
+      RxList<String> tableList, RxInt selectedIndex, SapController controller,
+      {bool isAfter = false}) {
+    return Container(
+      width: 300,
+      height: double.infinity,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            isAfter ? '포함 테이블' : '테이블 검색',
+            style: Themes.light.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+          SearchTextField(
+            hintText: isAfter ? "포함 테이블 검색" : "테이블 검색",
+            onChanged: (value) {
+              controller.filterTableList(value);
+            },
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            height: 200,
+            decoration: ShapeDecoration(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 1,
+                  color: borderColor,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: ListView.builder(
+                itemCount: tableList.length,
+                itemBuilder: (context, index) {
+                  return MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (isAfter) {
+                          controller.selectedAfterTableIndex.value = index;
+                        } else {
+                          controller.selectedBeforeTableIndex.value = index;
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        color: selectedIndex.value == index
+                            ? grayLight
+                            : Colors.transparent,
+                        padding: EdgeInsets.all(8),
+                        child: Text(tableList[index]),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonColumn(SapController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Container(
+        height: double.infinity,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 70),
+            _buildButton(
+              onTap: controller.RightButtonClicked,
+              iconAsset: 'assets/icons/MdOutlineArrowDropDownCircle.svg',
+              angle: pi,
+            ),
+            _buildButton(
+              onTap: controller.LeftButtonClicked,
+              iconAsset: 'assets/icons/MdOutlineArrowDropDownCircle.svg',
+            ),
+            SizedBox(height: 20),
+            _buildButton(
+              onTap: controller.DoubleRightButtonClicked,
+              iconAsset: 'assets/icons/MdDoubleArrow.svg',
+              angle: pi,
+            ),
+            SizedBox(height: 3),
+            _buildButton(
+              onTap: controller.DoubleLeftButtonClicked,
+              iconAsset: 'assets/icons/MdDoubleArrow.svg',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(
+      {VoidCallback? onTap, String? iconAsset, double angle = 0}) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Transform.rotate(
+          angle: angle,
+          child: SvgPicture.asset(
+            iconAsset!,
+            height: 24,
+            width: 24,
+          ),
+        ),
+      ),
     );
   }
 }
