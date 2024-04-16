@@ -46,12 +46,13 @@ class SapPage extends StatelessWidget {
             style: Themes.light.textTheme.bodyMedium,
           ),
           const SizedBox(height: 8),
-          SearchTextField(
-            hintText: isAfter ? "포함 테이블 검색" : "테이블 검색",
-            onChanged: (value) {
-              controller.filterTableList(value);
-            },
-          ),
+          if (!isAfter)
+            SearchTextField(
+              hintText: "테이블 검색",
+              onChanged: (value) {
+                controller.filterTableList(value);
+              },
+            ),
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
@@ -81,13 +82,19 @@ class SapPage extends StatelessWidget {
                           controller.selectedBeforeTableIndex.value = index;
                         }
                       },
-                      child: Container(
-                        width: double.infinity,
-                        color: selectedIndex.value == index
-                            ? grayLight
-                            : Colors.transparent,
-                        padding: EdgeInsets.all(8),
-                        child: Text(tableList[index]),
+                      child: Obx(
+                        () {
+                          return Container(
+                            width: double.infinity,
+                            color: selectedIndex.value == index
+                                ? grayLight
+                                : Colors.transparent,
+                            padding: EdgeInsets.all(4),
+                            child: Text(
+                              tableList[index],
+                            ),
+                          );
+                        },
                       ),
                     ),
                   );
@@ -115,21 +122,25 @@ class SapPage extends StatelessWidget {
               onTap: controller.RightButtonClicked,
               iconAsset: 'assets/icons/MdOutlineArrowDropDownCircle.svg',
               angle: pi,
+              size: 24,
             ),
             _buildButton(
               onTap: controller.LeftButtonClicked,
               iconAsset: 'assets/icons/MdOutlineArrowDropDownCircle.svg',
+              size: 24,
             ),
             SizedBox(height: 20),
             _buildButton(
               onTap: controller.DoubleRightButtonClicked,
               iconAsset: 'assets/icons/MdDoubleArrow.svg',
               angle: pi,
+              size: 20,
             ),
             SizedBox(height: 3),
             _buildButton(
               onTap: controller.DoubleLeftButtonClicked,
               iconAsset: 'assets/icons/MdDoubleArrow.svg',
+              size: 20,
             ),
           ],
         ),
@@ -138,7 +149,10 @@ class SapPage extends StatelessWidget {
   }
 
   Widget _buildButton(
-      {VoidCallback? onTap, String? iconAsset, double angle = 0}) {
+      {VoidCallback? onTap,
+      String? iconAsset,
+      double angle = 0,
+      double size = 20}) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -147,8 +161,8 @@ class SapPage extends StatelessWidget {
           angle: angle,
           child: SvgPicture.asset(
             iconAsset!,
-            height: 24,
-            width: 24,
+            height: size,
+            width: size,
           ),
         ),
       ),
