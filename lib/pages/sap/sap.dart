@@ -47,11 +47,17 @@ class SapPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           if (!isAfter)
-            SearchTextField(
-              hintText: "테이블 검색",
-              onChanged: (value) {
-                controller.filterTableList(value);
-              },
+            SizedBox(
+              height: 38,
+              child: SearchTextField(
+                hintText: "테이블 검색",
+                onChanged: (value) {
+                  print('value: $value');
+                  print(controller.beforeTableList);
+                  print(controller.filteredTableList);
+                  controller.filterTableList(value);
+                },
+              ),
             ),
           const SizedBox(height: 8),
           Container(
@@ -89,7 +95,8 @@ class SapPage extends StatelessWidget {
                             color: selectedIndex.value == index
                                 ? grayLight
                                 : Colors.transparent,
-                            padding: EdgeInsets.all(4),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             child: Text(
                               tableList[index],
                             ),

@@ -1,11 +1,20 @@
 import 'package:get/get.dart';
 
 class SapController extends GetxController {
-  RxList<String> beforeTableList = ["table1", "table2", "table3"].obs;
+  RxList<String> beforeTableList = RxList();
   RxList<String> afterTableList = RxList();
 
   RxInt selectedBeforeTableIndex = RxInt(-1);
   RxInt selectedAfterTableIndex = RxInt(-1);
+
+  RxList<String> filteredTableList = RxList();
+
+  @override
+  void onInit() {
+    super.onInit();
+    beforeTableList.assignAll(["table1", "table2", "table3"]);
+    filteredTableList.assignAll(beforeTableList);
+  }
 
   void RightButtonClicked() {
     if (selectedBeforeTableIndex.value != -1) {
@@ -41,12 +50,11 @@ class SapController extends GetxController {
 
   void filterTableList(String searchKeyword) {
     // 입력한 문자열과 일치하는 테이블만 보여주도록 beforeTableList 필터링
-    if (searchKeyword.isEmpty) {
-      // 검색어가 비어 있으면 모든 테이블 보여주기
-      beforeTableList.assignAll(["table1", "table2", "table3"]);
+    if (beforeTableList.length == 0) {
+      filteredTableList.assignAll([]);
     } else {
       // 검색어가 있으면 일치하는 테이블만 필터링하여 보여주기
-      beforeTableList.assignAll(beforeTableList
+      filteredTableList.assignAll(beforeTableList
           .where((table) => table.contains(searchKeyword))
           .toList());
     }
