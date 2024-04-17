@@ -13,7 +13,6 @@ class RadioPage extends StatelessWidget {
     return Obx(() {
       return Container(
         child: Row(
-          // Change Wrap to Row
           children: radioList.map((item) {
             return Row(
               mainAxisSize: MainAxisSize.min,

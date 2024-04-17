@@ -11,7 +11,6 @@ class FilterFrame extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 5,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: ShapeDecoration(
@@ -34,9 +33,6 @@ class FilterFrame extends StatelessWidget {
             ),
           ),
         ),
-        const Spacer(
-          flex: 2,
-        )
       ],
     );
   }
