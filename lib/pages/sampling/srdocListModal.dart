@@ -93,21 +93,21 @@ class srdocListModal extends StatelessWidget {
           ),
           child: Column(
             children: [
-              FilterFrame(body: [
+              FilterFrame(children: [
                 FilterRow(
                   title: "Type",
-                  body: RadioPage(
+                  child: RadioPage(
                     radioList: btn_controller.radioList,
                     selectedRadio: btn_controller.selectedRadio,
                   ),
                 ),
                 FilterRow(
                   title: "DateTime",
-                  body: NumberPage(),
+                  child: NumberPage(),
                 ),
                 FilterRow(
                   title: 'Search',
-                  body: BasicTextField(),
+                  child: BasicTextField(),
                 ),
               ], button: [
                 ButtonWidget("text", () {

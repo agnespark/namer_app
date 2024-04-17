@@ -5,8 +5,8 @@ import 'package:namer_app/config/themes.dart';
 
 class FilterRow extends StatelessWidget {
   final String title;
-  final Widget body;
-  FilterRow({super.key, required this.title, required this.body});
+  final Widget child;
+  FilterRow({super.key, required this.title, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class FilterRow extends StatelessWidget {
             ),
           ),
           Flexible(
-            child: body,
+            child: child,
           )
         ],
       ),

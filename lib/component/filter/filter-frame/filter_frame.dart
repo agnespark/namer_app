@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:namer_app/config/color.dart';
 
 class FilterFrame extends StatelessWidget {
-  final List<Widget> body;
+  final List<Widget> children;
   final List<Widget>? button;
-  FilterFrame({Key? key, required this.body, this.button});
+  FilterFrame({Key? key, required this.children, this.button});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class FilterFrame extends StatelessWidget {
               children: [
                 ListView.separated(
                   shrinkWrap: true,
-                  itemCount: body.length,
+                  itemCount: children.length,
                   separatorBuilder: (context, index) => SizedBox(height: 8),
-                  itemBuilder: (context, index) => body[index],
+                  itemBuilder: (context, index) => children[index],
                 ),
                 if (button != null)
                   Padding(

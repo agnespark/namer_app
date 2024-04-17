@@ -46,7 +46,7 @@ class ButtonPage extends StatelessWidget {
         ),
         FilterRow(
           title: controller.title,
-          body: MultiCheckBoxPage(
+          child: MultiCheckBoxPage(
             checkBoxList: controller.checkBoxList,
             selectedCheckBox: controller.selectedCheckBox,
           ),
@@ -54,33 +54,33 @@ class ButtonPage extends StatelessWidget {
         InfoTextAreaPage(content: controller.content),
         FilterRow(
           title: controller.title,
-          body: BasicTextField(hintText: "힌트텍스트!"),
+          child: BasicTextField(hintText: "힌트텍스트!"),
         ),
         Accordion(),
         SizedBox(
           height: 10,
         ),
-        FilterFrame(body: [
+        FilterFrame(children: [
           FilterRow(
             title: "DBMS Server",
-            body: MultiCheckBoxPage(
+            child: MultiCheckBoxPage(
                 checkBoxList: controller.checkBoxList,
                 selectedCheckBox: controller.selectedCheckBox),
           ),
           FilterRow(
             title: "Date Time",
-            body: NewDateTimePage(),
+            child: NewDateTimePage(),
           ),
           FilterRow(
             title: "Type",
-            body: RadioPage(
+            child: RadioPage(
               radioList: controller.radioList,
               selectedRadio: controller.selectedRadio,
             ),
           ),
           FilterRow(
             title: controller.title,
-            body: MultiCheckBoxPage(
+            child: MultiCheckBoxPage(
               checkBoxList: controller.checkBoxList,
               selectedCheckBox: controller.selectedCheckBox,
             ),

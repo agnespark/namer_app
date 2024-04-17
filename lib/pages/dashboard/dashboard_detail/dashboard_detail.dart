@@ -92,47 +92,47 @@ class DashboardDetail extends StatelessWidget {
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'DateTime',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'Server',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'Type',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'DB User',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'IP',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'Program',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'Command',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'Table',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                   FilterRow(
                     title: 'Log Count',
-                    body: BasicTextField(hintText: "-"),
+                    child: BasicTextField(hintText: "-"),
                   ),
                   SizedBox(height: 8),
                 ],
@@ -145,7 +145,7 @@ class DashboardDetail extends StatelessWidget {
               SizedBox(height: 16),
               FilterRow(
                 title: 'Content',
-                body: BasicTextField(hintText: "-"),
+                child: BasicTextField(hintText: "-"),
               ),
               SizedBox(height: 16),
               Divider(

@@ -42,23 +42,23 @@ class PopulationPage extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    FilterFrame(body: [
+                    FilterFrame(children: [
                       FilterRow(
                         title: "DBMS Server",
-                        body: MultiCheckBoxPage(
+                        child: MultiCheckBoxPage(
                             checkBoxList: btn_controller.checkBoxList,
                             selectedCheckBox: btn_controller.selectedCheckBox),
                       ),
                       FilterRow(
                         title: "Type",
-                        body: RadioPage(
+                        child: RadioPage(
                           radioList: btn_controller.radioList,
                           selectedRadio: btn_controller.selectedRadio,
                         ),
                       ),
                       FilterRow(
                         title: btn_controller.title,
-                        body: MultiCheckBoxPage(
+                        child: MultiCheckBoxPage(
                           checkBoxList: btn_controller.checkBoxList,
                           selectedCheckBox: btn_controller.selectedCheckBox,
                         ),

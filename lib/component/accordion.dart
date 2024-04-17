@@ -40,7 +40,7 @@ class Accordion extends StatelessWidget {
                   ),
                   FilterRow(
                     title: "Search1",
-                    body: BasicTextField(
+                    child: BasicTextField(
                       hintText: "hint text1",
                     ),
                   ),
@@ -49,28 +49,28 @@ class Accordion extends StatelessWidget {
                   ),
                   FilterRow(
                     title: "Search2",
-                    body: BasicTextField(),
+                    child: BasicTextField(),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   FilterRow(
                     title: "Search3",
-                    body: BasicTextField(),
+                    child: BasicTextField(),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   FilterRow(
                     title: "Search4",
-                    body: BasicTextField(),
+                    child: BasicTextField(),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   FilterRow(
                     title: "Search5",
-                    body: BasicTextField(),
+                    child: BasicTextField(),
                   ),
                 ],
               ),
