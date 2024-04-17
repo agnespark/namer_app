@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';

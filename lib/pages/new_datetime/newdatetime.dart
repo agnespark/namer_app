@@ -13,7 +13,7 @@ class NewDateTimePage extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _buildDateTimeContainer(
+          child: buildDateTimeContainer(
             controller.selectedStartDateTime,
             controller.startDateTimeTextController,
             true,
@@ -24,7 +24,7 @@ class NewDateTimePage extends StatelessWidget {
         Text("-"),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildDateTimeContainer(
+          child: buildDateTimeContainer(
             controller.selectedEndDateTime,
             controller.endDateTimeTextController,
             false,
@@ -40,7 +40,7 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  Widget _buildDateTimeContainer(
+  Widget buildDateTimeContainer(
       Rx<DateTime?> selectedDateTime,
       TextEditingController textEditingController,
       bool isStartTime,
@@ -66,7 +66,7 @@ class NewDateTimePage extends StatelessWidget {
             hoverColor: Colors.transparent,
             onPressed: () {
               controller.isStart.value = isStartTime;
-              _showDateTimeDialog(context, isStartTime);
+              showDateTimeDialog(context, isStartTime);
             },
           ),
         ),
@@ -74,7 +74,7 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  void _showDateTimeDialog(BuildContext context, bool isStartTime) {
+  void showDateTimeDialog(BuildContext context, bool isStartTime) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -88,12 +88,12 @@ class NewDateTimePage extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: _setDatePickerValue(isStartTime),
+                  child: setDatePickerValue(isStartTime),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   flex: 1,
-                  child: _setTimePickerValue(isStartTime),
+                  child: setTimePickerValue(isStartTime),
                 ),
               ],
             ),
@@ -118,7 +118,7 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  Widget _setDatePickerValue(bool isStartTime) {
+  Widget setDatePickerValue(bool isStartTime) {
     final config = CalendarDatePicker2Config(
       selectedDayHighlightColor: primaryMain,
       weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -159,7 +159,7 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  Widget _setTimePickerValue(bool isStartTime) {
+  Widget setTimePickerValue(bool isStartTime) {
     final selectedHour =
         isStartTime ? controller.selectedStartHour : controller.selectedEndHour;
     final selectedMinute = isStartTime

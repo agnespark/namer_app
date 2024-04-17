@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 
 class AddLogPost extends StatelessWidget {

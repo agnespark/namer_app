@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/accordion.dart';
-import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
-import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/button/button_controller.dart';

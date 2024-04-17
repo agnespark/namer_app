@@ -18,10 +18,10 @@ class SapPage extends StatelessWidget {
       child: Obx(() {
         return Row(
           children: [
-            _buildTableList(controller.beforeTableList,
+            buildTableList(controller.beforeTableList,
                 controller.selectedBeforeTableIndex, controller),
-            _buildButtonColumn(controller),
-            _buildTableList(controller.afterTableList,
+            buildButtonColumn(controller),
+            buildTableList(controller.afterTableList,
                 controller.selectedAfterTableIndex, controller,
                 isAfter: true),
           ],
@@ -30,7 +30,7 @@ class SapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTableList(
+  Widget buildTableList(
       RxList<String> tableList, RxInt selectedIndex, SapController controller,
       {bool isAfter = false}) {
     return Container(
@@ -111,7 +111,7 @@ class SapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildButtonColumn(SapController controller) {
+  Widget buildButtonColumn(SapController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Container(
@@ -122,26 +122,26 @@ class SapPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 70),
-            _buildButton(
+            buildButton(
               onTap: controller.RightButtonClicked,
               iconAsset: 'assets/icons/MdOutlineArrowDropDownCircle.svg',
               angle: pi,
               size: 24,
             ),
-            _buildButton(
+            buildButton(
               onTap: controller.LeftButtonClicked,
               iconAsset: 'assets/icons/MdOutlineArrowDropDownCircle.svg',
               size: 24,
             ),
             SizedBox(height: 20),
-            _buildButton(
+            buildButton(
               onTap: controller.DoubleRightButtonClicked,
               iconAsset: 'assets/icons/MdDoubleArrow.svg',
               angle: pi,
               size: 20,
             ),
             SizedBox(height: 3),
-            _buildButton(
+            buildButton(
               onTap: controller.DoubleLeftButtonClicked,
               iconAsset: 'assets/icons/MdDoubleArrow.svg',
               size: 20,
@@ -152,7 +152,7 @@ class SapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(
+  Widget buildButton(
       {VoidCallback? onTap,
       String? iconAsset,
       double angle = 0,

@@ -47,7 +47,7 @@ class MainPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: MyController.to.navList.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        _navList(MyController.to.navList[index]),
+                        navList(MyController.to.navList[index]),
                   ),
                 ),
                 Expanded(
@@ -62,7 +62,7 @@ class MainPage extends StatelessWidget {
   }
 }
 
-Widget _navList(Menu menu) {
+Widget navList(Menu menu) {
   if (menu.subMenu == null && menu.depth == 0) {
     return GestureDetector(
       onTap: () {
@@ -115,7 +115,7 @@ Widget _navList(Menu menu) {
         .map((subMenu) => Padding(
               padding: EdgeInsets.only(
                   left: (menu.depth) * 24), // 자식 메뉴에 깊이에 따라 왼쪽 패딩 적용
-              child: _navList(subMenu),
+              child: navList(subMenu),
             ))
         .toList(),
   );
