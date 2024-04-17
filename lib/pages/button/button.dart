@@ -12,6 +12,7 @@ import 'package:namer_app/component/checkbox/single_checkbox.dart';
 import 'package:namer_app/component/textarea/info-textarea.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
+import 'package:namer_app/pages/new_datetime/newdatetime.dart';
 
 class ButtonPage extends StatelessWidget {
   ButtonPage({Key? key}) : super(key: key);
@@ -19,75 +20,75 @@ class ButtonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ButtonWidget("text", () {
-              ToastWidget("에러가 발생했습니다.").red();
-            }).red(),
-            ButtonWidget("text", () {
-              ToastWidget("성공했습니다.").blue();
-            }).blue(),
-            ButtonWidget("text", () {
-              ToastWidget("다시 시도해주세요.").green();
-            }).green(),
-            PlusButtonWidget(
-              onPressed: () {},
-            ),
-            SingleCheckBoxPage(
-                singleCheckBoxList: controller.singleCheckBoxList,
-                selectedSingleCheckBox: controller.selectedSingleCheckBox),
-            MultiCheckBoxPage(
+    return ListView(
+      children: [
+        ButtonWidget("text", () {
+          ToastWidget("에러가 발생했습니다.").red();
+        }).red(),
+        ButtonWidget("text", () {
+          ToastWidget("성공했습니다.").blue();
+        }).blue(),
+        ButtonWidget("text", () {
+          ToastWidget("다시 시도해주세요.").green();
+        }).green(),
+        PlusButtonWidget(
+          onPressed: () {},
+        ),
+        SingleCheckBoxPage(
+            singleCheckBoxList: controller.singleCheckBoxList,
+            selectedSingleCheckBox: controller.selectedSingleCheckBox),
+        MultiCheckBoxPage(
+            checkBoxList: controller.checkBoxList,
+            selectedCheckBox: controller.selectedCheckBox),
+        RadioPage(
+          radioList: controller.radioList,
+          selectedRadio: controller.selectedRadio,
+        ),
+        FilterRow(
+          title: controller.title,
+          body: MultiCheckBoxPage(
+            checkBoxList: controller.checkBoxList,
+            selectedCheckBox: controller.selectedCheckBox,
+          ),
+        ),
+        InfoTextAreaPage(content: controller.content),
+        FilterRow(
+          title: controller.title,
+          body: BasicTextField(hintText: "힌트텍스트!"),
+        ),
+        Accordion(),
+        SizedBox(
+          height: 10,
+        ),
+        FilterFrame(body: [
+          FilterRow(
+            title: "DBMS Server",
+            body: MultiCheckBoxPage(
                 checkBoxList: controller.checkBoxList,
                 selectedCheckBox: controller.selectedCheckBox),
-            RadioPage(
+          ),
+          FilterRow(
+            title: "Date Time",
+            body: NewDateTimePage(),
+          ),
+          FilterRow(
+            title: "Type",
+            body: RadioPage(
               radioList: controller.radioList,
               selectedRadio: controller.selectedRadio,
             ),
-            FilterRow(
-              title: controller.title,
-              body: MultiCheckBoxPage(
-                checkBoxList: controller.checkBoxList,
-                selectedCheckBox: controller.selectedCheckBox,
-              ),
+          ),
+          FilterRow(
+            title: controller.title,
+            body: MultiCheckBoxPage(
+              checkBoxList: controller.checkBoxList,
+              selectedCheckBox: controller.selectedCheckBox,
             ),
-            InfoTextAreaPage(content: controller.content),
-            FilterRow(
-              title: controller.title,
-              body: BasicTextField(hintText: "힌트텍스트!"),
-            ),
-            Accordion(),
-            SizedBox(
-              height: 10,
-            ),
-            FilterFrame(body: [
-              FilterRow(
-                title: "DBMS Server",
-                body: MultiCheckBoxPage(
-                    checkBoxList: controller.checkBoxList,
-                    selectedCheckBox: controller.selectedCheckBox),
-              ),
-              FilterRow(
-                title: "Type",
-                body: RadioPage(
-                  radioList: controller.radioList,
-                  selectedRadio: controller.selectedRadio,
-                ),
-              ),
-              FilterRow(
-                title: controller.title,
-                body: MultiCheckBoxPage(
-                  checkBoxList: controller.checkBoxList,
-                  selectedCheckBox: controller.selectedCheckBox,
-                ),
-              ),
-              Accordion(),
-            ], button: [
+          ),
+          Accordion(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
               ButtonWidget("text", () {
                 ToastWidget("에러가 발생했습니다.").red();
               }).red(),
@@ -97,10 +98,10 @@ class ButtonPage extends StatelessWidget {
               ButtonWidget("text", () {
                 ToastWidget("다시 시도해주세요.").green();
               }).green(),
-            ]),
-          ],
-        ),
-      ),
+            ],
+          )
+        ]),
+      ],
     );
   }
 }

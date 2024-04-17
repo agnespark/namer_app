@@ -35,6 +35,7 @@ class NewDateTimePage extends StatelessWidget {
           radioList: controller.radioList,
           selectedRadio: controller.selectedRadio,
         ),
+        const Spacer(),
       ],
     );
   }
@@ -48,34 +49,27 @@ class NewDateTimePage extends StatelessWidget {
         controller.getFormattedDateTime(selectedDateTime);
 
     return Container(
-      width: 300,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: textEditingController,
-                decoration: InputDecoration(
-                  hintText: 'YYYY-MM-DD hh:mm:ss',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.calendar_today_outlined,
-                      color: borderColor,
-                    ),
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    onPressed: () {
-                      controller.isStart.value = isStartTime;
-                      _showDateTimeDialog(context, isStartTime);
-                    },
-                  ),
-                ),
-              ),
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: textEditingController,
+        decoration: InputDecoration(
+          fillColor: Colors.red,
+          filled: true,
+          isDense: true,
+          hintText: 'YYYY-MM-DD hh:mm:ss',
+          suffixIcon: IconButton(
+            icon: Icon(
+              Icons.calendar_today_outlined,
+              color: borderColor,
             ),
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            onPressed: () {
+              controller.isStart.value = isStartTime;
+              _showDateTimeDialog(context, isStartTime);
+            },
           ),
-        ],
+        ),
       ),
     );
   }

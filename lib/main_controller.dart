@@ -27,7 +27,7 @@ class MyController extends GetxController {
   Rx<WordPair> current = WordPair.random().obs;
   RxList<WordPair> favorites = <WordPair>[].obs;
 
-  Rx<Widget> currentWidget = Container(child: DashboardPage()).obs;
+  Rx<Widget> currentWidget = Container(child: ButtonPage()).obs;
   Rx<Widget> currentDetail = Container(child: DashboardDetail()).obs;
 
   late Rx<Widget> currentPost;
