@@ -9,6 +9,7 @@ import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime.dart';
 import 'package:namer_app/pages/population/population.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
+import 'package:namer_app/pages/sap/sap.dart';
 import 'package:namer_app/pages/shimmer/news_page.dart';
 import 'package:namer_app/pages/sideSheet/sideSheet.dart';
 import 'package:namer_app/pages/table/table.dart';
@@ -67,6 +68,7 @@ class MyController extends GetxController {
       Menu(name: "DropdownMenu", page: DropdownMenuPage(), depth: 0),
       Menu(name: "MutiSelect", page: MutiSelectPage(), depth: 0),
       Menu(name: "Button", page: ButtonPage(), depth: 0),
+      Menu(name: "SAP", page: SapPage(), depth: 0),
       // Menu(name: "Checkbox", page: CheckBoxPage(), depth: 0),
     ].obs;
   }
