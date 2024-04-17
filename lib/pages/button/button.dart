@@ -21,63 +21,30 @@ class ButtonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ButtonWidget("text", () {
-          ToastWidget("에러가 발생했습니다.").red();
-        }).red(),
-        ButtonWidget("text", () {
-          ToastWidget("성공했습니다.").blue();
-        }).blue(),
-        ButtonWidget("text", () {
-          ToastWidget("다시 시도해주세요.").green();
-        }).green(),
-        PlusButtonWidget(
-          onPressed: () {},
-        ),
-        SingleCheckBoxPage(
-            singleCheckBoxList: controller.singleCheckBoxList,
-            selectedSingleCheckBox: controller.selectedSingleCheckBox),
-        MultiCheckBoxPage(
-            checkBoxList: controller.checkBoxList,
-            selectedCheckBox: controller.selectedCheckBox),
-        RadioPage(
-          radioList: controller.radioList,
-          selectedRadio: controller.selectedRadio,
-        ),
-        FilterRow(
-          title: controller.title,
-          child: MultiCheckBoxPage(
-            checkBoxList: controller.checkBoxList,
-            selectedCheckBox: controller.selectedCheckBox,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ButtonWidget("text", () {
+            ToastWidget("에러가 발생했습니다.").red();
+          }).red(),
+          ButtonWidget("text", () {
+            ToastWidget("성공했습니다.").blue();
+          }).blue(),
+          ButtonWidget("text", () {
+            ToastWidget("다시 시도해주세요.").green();
+          }).green(),
+          PlusButtonWidget(
+            onPressed: () {},
           ),
-        ),
-        InfoTextAreaPage(content: controller.content),
-        FilterRow(
-          title: controller.title,
-          child: BasicTextField(hintText: "힌트텍스트!"),
-        ),
-        Accordion(),
-        SizedBox(
-          height: 10,
-        ),
-        FilterFrame(children: [
-          FilterRow(
-            title: "DBMS Server",
-            child: MultiCheckBoxPage(
-                checkBoxList: controller.checkBoxList,
-                selectedCheckBox: controller.selectedCheckBox),
-          ),
-          FilterRow(
-            title: "Date Time",
-            child: NewDateTimePage(),
-          ),
-          FilterRow(
-            title: "Type",
-            child: RadioPage(
-              radioList: controller.radioList,
-              selectedRadio: controller.selectedRadio,
-            ),
+          SingleCheckBoxPage(
+              singleCheckBoxList: controller.singleCheckBoxList,
+              selectedSingleCheckBox: controller.selectedSingleCheckBox),
+          MultiCheckBoxPage(
+              checkBoxList: controller.checkBoxList,
+              selectedCheckBox: controller.selectedCheckBox),
+          RadioPage(
+            radioList: controller.radioList,
+            selectedRadio: controller.selectedRadio,
           ),
           FilterRow(
             title: controller.title,
@@ -86,22 +53,57 @@ class ButtonPage extends StatelessWidget {
               selectedCheckBox: controller.selectedCheckBox,
             ),
           ),
+          InfoTextAreaPage(content: controller.content),
+          FilterRow(
+            title: controller.title,
+            child: BasicTextField(hintText: "힌트텍스트!"),
+          ),
           Accordion(),
-          FilterButton(
-            children: [
-              ButtonWidget("text", () {
-                ToastWidget("에러가 발생했습니다.").red();
-              }).red(),
-              ButtonWidget("text", () {
-                ToastWidget("성공했습니다.").blue();
-              }).blue(),
-              ButtonWidget("text", () {
-                ToastWidget("다시 시도해주세요.").green();
-              }).green(),
-            ],
-          )
-        ]),
-      ],
+          SizedBox(
+            height: 10,
+          ),
+          FilterFrame(children: [
+            FilterRow(
+              title: "DBMS Server",
+              child: MultiCheckBoxPage(
+                  checkBoxList: controller.checkBoxList,
+                  selectedCheckBox: controller.selectedCheckBox),
+            ),
+            FilterRow(
+              title: "Date Time",
+              child: NewDateTimePage(),
+            ),
+            FilterRow(
+              title: "Type",
+              child: RadioPage(
+                radioList: controller.radioList,
+                selectedRadio: controller.selectedRadio,
+              ),
+            ),
+            FilterRow(
+              title: controller.title,
+              child: MultiCheckBoxPage(
+                checkBoxList: controller.checkBoxList,
+                selectedCheckBox: controller.selectedCheckBox,
+              ),
+            ),
+            Accordion(),
+            FilterButton(
+              children: [
+                ButtonWidget("text", () {
+                  ToastWidget("에러가 발생했습니다.").red();
+                }).red(),
+                ButtonWidget("text", () {
+                  ToastWidget("성공했습니다.").blue();
+                }).blue(),
+                ButtonWidget("text", () {
+                  ToastWidget("다시 시도해주세요.").green();
+                }).green(),
+              ],
+            )
+          ]),
+        ],
+      ),
     );
   }
 }
