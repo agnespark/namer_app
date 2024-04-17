@@ -4,6 +4,7 @@ import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
+import 'package:namer_app/component/filter/filter-button/filter_button.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
@@ -109,16 +110,17 @@ class srdocListModal extends StatelessWidget {
                   title: 'Search',
                   child: BasicTextField(),
                 ),
-              ], button: [
-                ButtonWidget("text", () {
-                  ToastWidget("에러가 발생했습니다.").red();
-                }).red(),
-                ButtonWidget("text", () {
-                  ToastWidget("성공했습니다.").blue();
-                }).blue(),
-                ButtonWidget("text", () {
-                  ToastWidget("다시 시도해주세요.").green();
-                }).green(),
+                FilterButton(children: [
+                  ButtonWidget("text", () {
+                    ToastWidget("에러가 발생했습니다.").red();
+                  }).red(),
+                  ButtonWidget("text", () {
+                    ToastWidget("성공했습니다.").blue();
+                  }).blue(),
+                  ButtonWidget("text", () {
+                    ToastWidget("다시 시도해주세요.").green();
+                  }).green(),
+                ])
               ]),
             ],
           ),

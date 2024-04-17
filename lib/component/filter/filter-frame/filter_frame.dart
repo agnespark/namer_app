@@ -4,8 +4,7 @@ import 'package:namer_app/config/color.dart';
 
 class FilterFrame extends StatelessWidget {
   final List<Widget> children;
-  final List<Widget>? button;
-  FilterFrame({Key? key, required this.children, this.button});
+  FilterFrame({Key? key, required this.children});
 
   @override
   Widget build(BuildContext context) {
@@ -31,26 +30,6 @@ class FilterFrame extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(height: 8),
                   itemBuilder: (context, index) => children[index],
                 ),
-                if (button != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: List.generate(
-                        button!.length,
-                        (index) {
-                          return index == button!.length - 1
-                              ? button![index]
-                              : Row(
-                                  children: [
-                                    button![index],
-                                    SizedBox(width: 8),
-                                  ],
-                                );
-                        },
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),

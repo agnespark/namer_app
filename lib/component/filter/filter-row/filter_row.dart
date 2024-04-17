@@ -10,33 +10,21 @@ class FilterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        // mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 160,
-            child: Row(
-              // mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  child: Text(
-                    title,
-                    style: Themes.light.textTheme.headlineLarge,
-                  ),
-                ),
-              ],
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 160,
+          child: Text(
+            title,
+            style: Themes.light.textTheme.headlineLarge,
           ),
-          Flexible(
-            child: child,
-          )
-        ],
-      ),
+        ),
+        Flexible(
+          child: child,
+        )
+      ],
     );
   }
 }
