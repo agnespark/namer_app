@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -8,10 +7,6 @@ import 'package:namer_app/pages/new_datetime/newdatetime_controller.dart';
 
 class NewDateTimePage extends StatelessWidget {
   final NewDateTimeController controller = Get.put(NewDateTimeController());
-  final TextEditingController startDateTimeTextController =
-      TextEditingController();
-  final TextEditingController endDateTimeTextController =
-      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +15,7 @@ class NewDateTimePage extends StatelessWidget {
         Expanded(
           child: _buildDateTimeContainer(
             controller.selectedStartDateTime,
-            controller.selectedStartHour,
-            controller.selectedStartMinute,
-            controller.selectedStartHour,
-            controller.selectedStartMinute,
+            controller.startDateTimeTextController,
             true,
             context,
           ),
@@ -34,10 +26,7 @@ class NewDateTimePage extends StatelessWidget {
         Expanded(
           child: _buildDateTimeContainer(
             controller.selectedEndDateTime,
-            controller.selectedEndHour,
-            controller.selectedEndMinute,
-            controller.selectedEndHour,
-            controller.selectedEndMinute,
+            controller.endDateTimeTextController,
             false,
             context,
           ),
@@ -54,17 +43,11 @@ class NewDateTimePage extends StatelessWidget {
 
   Widget _buildDateTimeContainer(
       Rx<DateTime?> selectedDateTime,
-      RxInt selectedHour,
-      RxInt selectedMinute,
-      RxInt tempSelectedHour,
-      RxInt tempSelectedMinute,
+      TextEditingController textEditingController,
       bool isStartTime,
       BuildContext context) {
-    if (isStartTime) {
-      startDateTimeTextController.text = _getValueText(selectedDateTime);
-    } else {
-      endDateTimeTextController.text = _getValueText(selectedDateTime);
-    }
+    textEditingController.text =
+        controller.getFormattedDateTime(selectedDateTime);
 
     return Container(
       width: 300,
@@ -75,10 +58,7 @@ class NewDateTimePage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: isStartTime
-                    ? startDateTimeTextController
-                    : endDateTimeTextController,
-                onTap: () {},
+                controller: textEditingController,
                 decoration: InputDecoration(
                   hintText: 'YYYY-MM-DD hh:mm:ss',
                   suffixIcon: IconButton(
@@ -86,9 +66,11 @@ class NewDateTimePage extends StatelessWidget {
                       Icons.calendar_today_outlined,
                       color: borderColor,
                     ),
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
                     onPressed: () {
                       controller.isStart.value = isStartTime;
-                      _showTimeDialog(context, isStartTime);
+                      _showDateTimeDialog(context, isStartTime);
                     },
                   ),
                 ),
@@ -100,17 +82,7 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  String _getValueText(
-    Rx<DateTime?> selectedDateTime,
-  ) {
-    final selectedDate = selectedDateTime.value ?? DateTime.now();
-    final formattedDateTime =
-        DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate);
-
-    return formattedDateTime;
-  }
-
-  void _showTimeDialog(BuildContext context, bool isStartTime) {
+  void _showDateTimeDialog(BuildContext context, bool isStartTime) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -124,12 +96,12 @@ class NewDateTimePage extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: _buildDefaultSingleDatePickerWithValue(isStartTime),
+                  child: _setDatePickerValue(isStartTime),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   flex: 1,
-                  child: _setTimeNumberValue(isStartTime),
+                  child: _setTimePickerValue(isStartTime),
                 ),
               ],
             ),
@@ -143,7 +115,7 @@ class NewDateTimePage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                _updateSelectedTime(isStartTime);
+                controller.updateSelectedDateTime(isStartTime);
                 Navigator.of(context).pop();
               },
               child: Text('확인'),
@@ -154,7 +126,7 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  Widget _buildDefaultSingleDatePickerWithValue(bool isStartTime) {
+  Widget _setDatePickerValue(bool isStartTime) {
     final config = CalendarDatePicker2Config(
       selectedDayHighlightColor: primaryMain,
       weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -195,10 +167,10 @@ class NewDateTimePage extends StatelessWidget {
     );
   }
 
-  Widget _setTimeNumberValue(bool isStartTime) {
-    final tempSelectedHour =
+  Widget _setTimePickerValue(bool isStartTime) {
+    final selectedHour =
         isStartTime ? controller.selectedStartHour : controller.selectedEndHour;
-    final tempSelectedMinute = isStartTime
+    final selectedMinute = isStartTime
         ? controller.selectedStartMinute
         : controller.selectedEndMinute;
 
@@ -232,7 +204,7 @@ class NewDateTimePage extends StatelessWidget {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                tempSelectedHour.value = hour;
+                                selectedHour.value = hour;
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<CircleBorder>(
@@ -241,7 +213,7 @@ class NewDateTimePage extends StatelessWidget {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    return tempSelectedHour.value == hour
+                                    return selectedHour.value == hour
                                         ? primaryMain
                                         : Colors.transparent;
                                   },
@@ -251,7 +223,7 @@ class NewDateTimePage extends StatelessWidget {
                                 '$hour',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: tempSelectedHour.value == hour
+                                  color: selectedHour.value == hour
                                       ? Colors.white
                                       : blackTextColor,
                                 ),
@@ -295,7 +267,7 @@ class NewDateTimePage extends StatelessWidget {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () {
-                                tempSelectedMinute.value = minute;
+                                selectedMinute.value = minute;
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<CircleBorder>(
@@ -304,7 +276,7 @@ class NewDateTimePage extends StatelessWidget {
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (Set<MaterialState> states) {
-                                    return tempSelectedMinute.value == minute
+                                    return selectedMinute.value == minute
                                         ? primaryMain
                                         : Colors.transparent;
                                   },
@@ -314,7 +286,7 @@ class NewDateTimePage extends StatelessWidget {
                                 '$minute',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: tempSelectedMinute.value == minute
+                                  color: selectedMinute.value == minute
                                       ? Colors.white
                                       : blackTextColor,
                                 ),
@@ -332,31 +304,5 @@ class NewDateTimePage extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  void _updateSelectedTime(bool isStartTime) {
-    if (isStartTime) {
-      controller.selectedStartDateTime.value = DateTime(
-        controller.selectedStartDateTime.value!.year,
-        controller.selectedStartDateTime.value!.month,
-        controller.selectedStartDateTime.value!.day,
-        controller.selectedStartHour.value,
-        controller.selectedStartMinute.value,
-      );
-      startDateTimeTextController.text = _getValueText(
-        controller.selectedStartDateTime,
-      );
-    } else {
-      controller.selectedEndDateTime.value = DateTime(
-        controller.selectedEndDateTime.value!.year,
-        controller.selectedEndDateTime.value!.month,
-        controller.selectedEndDateTime.value!.day,
-        controller.selectedEndHour.value,
-        controller.selectedEndMinute.value,
-      );
-      endDateTimeTextController.text = _getValueText(
-        controller.selectedEndDateTime,
-      );
-    }
   }
 }
