@@ -16,7 +16,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  List<Menu> data = [];
+  // List<Menu> data = [];
 
   @override
   Widget build(BuildContext context) {

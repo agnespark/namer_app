@@ -31,8 +31,10 @@ class SamplingDetailWidget {
                 return PopulationPost();
               case "add_log_post":
                 return AddLogPost();
-              case "srdoc_list_modal":
-                return srdocListModal();
+              case "srdoc_list_sr":
+                return srdocListModal(isLog: false);
+              case "srdoc_list_log":
+                return srdocListModal(isLog: true);
               default:
                 return Text('No page found');
             }

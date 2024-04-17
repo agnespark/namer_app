@@ -108,7 +108,9 @@ class AddLogPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
+                          ButtonWidget('결재문서 수정', () {
+                            controller.sampingDetailPage('sampling_sr_doc');
+                          }).blue(),
                         ])
                       ],
                     ),

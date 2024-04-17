@@ -11,7 +11,10 @@ import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/new_datetime/timepicker.dart';
 
 class srdocListModal extends StatelessWidget {
+  final bool isLog;
   final DetailController controller = Get.put(DetailController());
+
+  srdocListModal({this.isLog = true});
   final ButtonController btn_controller = Get.put(ButtonController());
 
   @override
@@ -30,7 +33,10 @@ class srdocListModal extends StatelessWidget {
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   IconButton(
                     onPressed: () {
-                      Get.back();
+                      // controller.goBack()
+                      isLog
+                          ? controller.sampingDetailPage('sampling_log')
+                          : controller.sampingDetailPage('sampling_sr');
                     },
                     icon: Icon(Icons.arrow_back_ios),
                     iconSize: 24,
@@ -46,7 +52,11 @@ class srdocListModal extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: ButtonWidget('완료', () {}).blue()),
+                  child: ButtonWidget('완료', () {
+                    isLog
+                        ? controller.sampingDetailPage('sampling_log')
+                        : controller.sampingDetailPage('sampling_sr');
+                  }).blue()),
             ],
           ),
         ),

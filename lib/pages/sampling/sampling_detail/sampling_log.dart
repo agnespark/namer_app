@@ -176,7 +176,7 @@ class SamplingLogDetail extends StatelessWidget {
                         Text('Total: 2'),
                         Row(children: [
                           ButtonWidget('결재문서 수정', () {
-                            controller.sampingDetailPage("srdoc_list_modal");
+                            controller.sampingDetailPage("srdoc_list_log");
                           }).blue(),
                         ])
                       ],
