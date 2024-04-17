@@ -18,12 +18,17 @@ class NewDateTimeController extends GetxController {
 
   RxBool isStart = true.obs;
 
-  RxString asc = "오름차순".obs;
-  RxString desc = "내림차순".obs;
+  RxList<String> radioList = RxList<String>([
+    "오름차순",
+    "내림차순",
+  ]);
+  RxString selectedRadio = RxString("");
 
   @override
   void onInit() {
     super.onInit();
+    selectedRadio.value = radioList[0];
+
     DateTime now = DateTime.now();
 
     selectedStartHour.value = now.hour;

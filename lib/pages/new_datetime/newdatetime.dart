@@ -31,11 +31,9 @@ class NewDateTimePage extends StatelessWidget {
             context,
           ),
         ),
-        Obx(
-          () => RadioPage(
-            radioList: [controller.asc.value, controller.desc.value],
-            selectedRadio: controller.asc,
-          ),
+        RadioPage(
+          radioList: controller.radioList,
+          selectedRadio: controller.selectedRadio,
         ),
       ],
     );
