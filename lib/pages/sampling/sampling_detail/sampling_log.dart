@@ -4,11 +4,14 @@ import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
+import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 
-class DashboardDetail extends StatelessWidget {
+class SamplingLogDetail extends StatelessWidget {
+  final bool isBtn;
   final DetailController controller = Get.put(DetailController());
 
+  SamplingLogDetail({this.isBtn = true});
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -16,43 +19,52 @@ class DashboardDetail extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 버튼 변경될 내용
-              Container(
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_circle_up_rounded),
-                    iconSize: 24,
-                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                    padding: EdgeInsets.zero,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_circle_down_rounded),
-                    iconSize: 24,
-                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                    padding: EdgeInsets.zero,
-                  ),
-                ]),
-              ),
-              Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.50, color: Color(0xFF148FEF)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: ButtonWidget('완료', () {}).blue()),
-            ],
-          ),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: isBtn
+                  ? [
+                      // 버튼 변경될 내용
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: Icon(Icons.arrow_circle_up_rounded),
+                              iconSize: 24,
+                              constraints:
+                                  BoxConstraints(minHeight: 24, minWidth: 24),
+                              padding: EdgeInsets.zero,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: Icon(Icons.arrow_circle_down_rounded),
+                              iconSize: 24,
+                              constraints:
+                                  BoxConstraints(minHeight: 24, minWidth: 24),
+                              padding: EdgeInsets.zero,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                width: 1.50, color: Color(0xFF148FEF)),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: ButtonWidget("완료", () {
+                          ToastWidget("성공했습니다.").blue();
+                        }).blue(),
+                      )
+                    ]
+                  : [Text('')]),
         ),
         SizedBox(height: 16),
         Container(
@@ -163,7 +175,9 @@ class DashboardDetail extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
+                          ButtonWidget('결재문서 수정', () {
+                            controller.sampingDetailPage("srdoc_list_log");
+                          }).blue(),
                         ])
                       ],
                     ),

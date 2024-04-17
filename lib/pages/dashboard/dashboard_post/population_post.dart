@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
-import 'package:namer_app/pages/sideSheet/detailContainer.dart';
+import 'package:namer_app/component/textfield/basic-textfield.dart';
+import 'package:namer_app/controller/detailContainer.dart';
 
-class DashboardPost extends StatelessWidget {
+class PopulationPost extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        // Padding(
-        //   padding: const EdgeInsets.all(20),
-        //   child: Text('dashboard post page'),
-        // ),
         Container(
+          padding: EdgeInsets.all(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // 버튼 변경될 내용
               Container(
-                child: Stack(children: [
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.close),
-                  ),
-                ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(Icons.arrow_back_ios),
+                      iconSize: 24,
+                      constraints: BoxConstraints(minHeight: 24, minWidth: 24),
+                      padding: EdgeInsets.zero,
+                    ),
+                  ],
+                ),
               ),
               Container(
                   decoration: ShapeDecoration(
@@ -37,7 +41,11 @@ class DashboardPost extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: ButtonWidget('완료', () {}).blue()),
+                  child: ButtonWidget('완료', () {
+                    controller.changeDetailPage('add_log_post');
+                    controller.sampingDetailPage("add_log_post");
+                    // DetailWidget().Widget(context);
+                  }).blue()),
             ],
           ),
         ),
@@ -57,7 +65,7 @@ class DashboardPost extends StatelessWidget {
                 children: [
                   Text(
                     //title 변경
-                    'title',
+                    '선택 범위 입력',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -67,16 +75,18 @@ class DashboardPost extends StatelessWidget {
                 ])),
         SizedBox(height: 16),
         Container(
-            width: Get.width,
-            padding: const EdgeInsets.only(
-              left: 56,
-              right: 56,
-            ),
-            child:
-                // content 영역
-                ButtonWidget('PrevPage', () {
-              controller.changeDetailPage('population_detail');
-            }).blue())
+          width: Get.width,
+          padding: const EdgeInsets.only(
+            left: 56,
+            right: 56,
+          ),
+          child: Column(
+            children: [
+              BasicTextField(hintText: "2, 4, 6, 8-12, 14-23"),
+            ],
+          ),
+          // content 영역
+        )
       ],
     );
   }

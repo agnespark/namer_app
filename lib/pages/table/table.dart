@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/button.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -19,9 +20,9 @@ class _TablePageState extends State<TablePage> {
 
   @override
   void initState() {
-    super.initState();
     _orders = getOrders();
     _orderInfoDataSource = OrderInfoDataSource(orders: _orders);
+    super.initState();
   }
 
   List<OrderInfo> getOrders() {
@@ -61,52 +62,51 @@ class _TablePageState extends State<TablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Syncfusion DataGrid'),
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraint) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                // header
-                SizedBox(
-                    height: constraint.maxHeight - (_dataPagerHeight * 5),
-                    width: constraint.maxWidth,
-                    child: _buildDataGrid(constraint)),
-                // body
-                Container(
-                  height: _dataPagerHeight,
-                  width: constraint.maxWidth / 3,
-                  child: Center(
-                    child: SfDataPagerTheme(
-                      data: SfDataPagerThemeData(
-                        itemColor: Colors.white,
-                        selectedItemColor: Colors.blue,
-                        // itemBorderRadius: BorderRadius.circular(5),
-                        // backgroundColor: Colors.teal,
-                      ),
-                      // pagination
-                      child: SfDataPager(
-                        delegate: _orderInfoDataSource,
-                        pageCount:
-                            (_orders.length / _rowsPerPage).ceil().toDouble(),
-                        direction: Axis.horizontal,
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              // header
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                ButtonWidget('로그 합치기', () {}).blue(),
+              ]),
+              SizedBox(height: 8),
+              SizedBox(
+                  height: constraint.maxHeight - (_dataPagerHeight * 5),
+                  width: constraint.maxWidth,
+                  child: _buildDataGrid(constraint)),
+              // body
+              Container(
+                height: _dataPagerHeight,
+                width: constraint.maxWidth / 3,
+                child: Center(
+                  child: SfDataPagerTheme(
+                    data: SfDataPagerThemeData(
+                      itemColor: Colors.white,
+                      selectedItemColor: Colors.blue,
+                      // itemBorderRadius: BorderRadius.circular(5),
+                      // backgroundColor: Colors.teal,
+                    ),
+                    // pagination
+                    child: SfDataPager(
+                      delegate: _orderInfoDataSource,
+                      pageCount:
+                          (_orders.length / _rowsPerPage).ceil().toDouble(),
+                      direction: Axis.horizontal,
 
-                        // onPageNavigationStart: ,
-                        // onPageNavigationEnd: ,
-                        // onRowsPerPageChanged: ,
-                      ),
+                      // onPageNavigationStart: ,
+                      // onPageNavigationEnd: ,
+                      // onRowsPerPageChanged: ,
                     ),
                   ),
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

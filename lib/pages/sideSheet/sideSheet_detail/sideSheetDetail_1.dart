@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/pages/sideSheet/detailContainer.dart';
+import 'package:namer_app/controller/detailContainer.dart';
 
 class SideSheetDetail1 extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());

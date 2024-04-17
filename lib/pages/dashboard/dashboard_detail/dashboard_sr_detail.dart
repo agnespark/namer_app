@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/filter/filter-row/filter_row.dart';
-import 'package:namer_app/component/textfield/basic-textfield.dart';
+import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 
-class DashboardDetail extends StatelessWidget {
+class DashboardSrDetail extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -87,73 +86,26 @@ class DashboardDetail extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Column(
-                children: [
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'DateTime',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'Server',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'Type',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'DB User',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'IP',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'Program',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'Command',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'Table',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                  FilterRow(
-                    title: 'Log Count',
-                    body: BasicTextField(hintText: "-"),
-                  ),
-                  SizedBox(height: 8),
-                ],
+              DetailAccordion(
+                title: "Log",
+                contentWidget: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total: 2'),
+                        Row(children: [
+                          PlusButtonWidget(onPressed: () {}),
+                        ])
+                      ],
+                    ),
+                    Text('Table')
+                  ],
+                ),
               ),
-              SizedBox(height: 16),
-              Divider(
-                height: 1,
-                color: Colors.black12,
+              SizedBox(
+                height: 16,
               ),
-              SizedBox(height: 16),
-              FilterRow(
-                title: 'Content',
-                body: BasicTextField(hintText: "-"),
-              ),
-              SizedBox(height: 16),
-              Divider(
-                height: 1,
-                color: Colors.black12,
-              ),
-              SizedBox(height: 16),
-              // table이 들어감
               DetailAccordion(
                 title: "결재문서",
                 contentWidget: Column(
@@ -171,7 +123,6 @@ class DashboardDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
             ],
           ),
           // content 영역

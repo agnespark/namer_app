@@ -7,6 +7,7 @@ import 'package:namer_app/pages/datetime/datetime.dart';
 import 'package:namer_app/pages/design/design.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime.dart';
+import 'package:namer_app/pages/population/population.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
 import 'package:namer_app/pages/sap/sap.dart';
 import 'package:namer_app/pages/shimmer/news_page.dart';
@@ -47,6 +48,7 @@ class MyController extends GetxController {
         name: "PLC",
         depth: 0,
         subMenu: [
+          Menu(name: "Population", page: PopulationPage(), depth: 1),
           Menu(name: "Sampling", depth: 1, subMenu: [
             Menu(name: "구매단가", page: SamplingPage(), depth: 2),
             Menu(name: "BOM", page: SamplingPage(), depth: 2),
