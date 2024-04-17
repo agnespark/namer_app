@@ -1,72 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime_controller.dart';
 
-class NewDateTimePage extends StatefulWidget {
-  NewDateTimePage({Key? key}) : super(key: key);
-
-  @override
-  State<NewDateTimePage> createState() => _NewDateTimePageState();
-}
-
-class _NewDateTimePageState extends State<NewDateTimePage> {
+class NewDateTimePage extends StatelessWidget {
   final NewDateTimeController controller = Get.put(NewDateTimeController());
-  TextEditingController startDateTimeTextController = TextEditingController();
-  TextEditingController endDateTimeTextController = TextEditingController();
+  final TextEditingController startDateTimeTextController =
+      TextEditingController();
+  final TextEditingController endDateTimeTextController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          // StartTime Container
-          _buildDateTimeContainer(
-            controller.startDefaultValue,
+    return Row(
+      children: [
+        Expanded(
+          child: _buildDateTimeContainer(
+            controller.selectedStartDateTime,
             controller.selectedStartHour,
             controller.selectedStartMinute,
-            controller.tempSelectedStartHour,
-            controller.tempSelectedStartMinute,
-            controller.selectedStartDateTime,
+            controller.selectedStartHour,
+            controller.selectedStartMinute,
             true,
+            context,
           ),
-          const SizedBox(width: 10),
-          Text("-"),
-          const SizedBox(width: 10),
-          // EndTime Container
-          _buildDateTimeContainer(
-            controller.endDefaultValue,
+        ),
+        const SizedBox(width: 10),
+        Text("-"),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _buildDateTimeContainer(
+            controller.selectedEndDateTime,
             controller.selectedEndHour,
             controller.selectedEndMinute,
-            controller.tempSelectedEndHour,
-            controller.tempSelectedEndMinute,
-            controller.selectedEndDateTime,
+            controller.selectedEndHour,
+            controller.selectedEndMinute,
             false,
+            context,
           ),
-          RadioPage(
-              radioList: [controller.acs.value, controller.decs.value],
-              selectedRadio: controller.acs)
-        ],
-      ),
+        ),
+        Obx(
+          () => RadioPage(
+            radioList: [controller.asc.value, controller.desc.value],
+            selectedRadio: controller.asc,
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildDateTimeContainer(
-    RxList<DateTime?> defaultValue,
-    RxInt selectedHour,
-    RxInt selectedMinute,
-    RxInt tempSelectedHour,
-    RxInt tempSelectedMinute,
-    Rx<DateTime?> selectedDateTime,
-    bool isStartTime,
-  ) {
-    startDateTimeTextController.text =
-        _getValueText(defaultValue, selectedHour, selectedMinute);
-
-    endDateTimeTextController.text =
-        _getValueText(defaultValue, selectedHour, selectedMinute);
+      Rx<DateTime?> selectedDateTime,
+      RxInt selectedHour,
+      RxInt selectedMinute,
+      RxInt tempSelectedHour,
+      RxInt tempSelectedMinute,
+      bool isStartTime,
+      BuildContext context) {
+    if (isStartTime) {
+      startDateTimeTextController.text = _getValueText(selectedDateTime);
+    } else {
+      endDateTimeTextController.text = _getValueText(selectedDateTime);
+    }
 
     return Container(
       width: 300,
@@ -84,13 +82,10 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
                 decoration: InputDecoration(
                   hintText: 'YYYY-MM-DD hh:mm:ss',
                   suffixIcon: IconButton(
-                    // 서픽스 아이콘 추가
                     icon: Icon(
                       Icons.calendar_today_outlined,
                       color: borderColor,
                     ),
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
                     onPressed: () {
                       controller.isStart.value = isStartTime;
                       _showTimeDialog(context, isStartTime);
@@ -106,21 +101,13 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
   }
 
   String _getValueText(
-    List<DateTime?> values,
-    RxInt selectedHour,
-    RxInt selectedMinute,
+    Rx<DateTime?> selectedDateTime,
   ) {
-    values =
-        values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
-    var valueText = (values.isNotEmpty ? values[0] : null)
-        .toString()
-        .replaceAll('00:00:00.000', '');
+    final selectedDate = selectedDateTime.value ?? DateTime.now();
+    final formattedDateTime =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate);
 
-    // Add selected time to the displayed text
-    valueText += ' ${selectedHour.value.toString().padLeft(2, '0')}:'
-        '${selectedMinute.value.toString().padLeft(2, '0')}:00';
-
-    return valueText;
+    return formattedDateTime;
   }
 
   void _showTimeDialog(BuildContext context, bool isStartTime) {
@@ -156,31 +143,7 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
             ),
             TextButton(
               onPressed: () {
-                if (isStartTime) {
-                  controller.selectedStartHour.value =
-                      controller.tempSelectedStartHour.value;
-                  controller.selectedStartMinute.value =
-                      controller.tempSelectedStartMinute.value;
-                  controller.startDefaultValue.value = [
-                    controller.selectedStartDateTime.value
-                  ].map((dateTime) => dateTime!).toList();
-                  startDateTimeTextController.text = _getValueText(
-                      controller.startDefaultValue,
-                      controller.selectedStartHour,
-                      controller.selectedStartMinute);
-                } else {
-                  controller.selectedEndHour.value =
-                      controller.tempSelectedEndHour.value;
-                  controller.selectedEndMinute.value =
-                      controller.tempSelectedEndMinute.value;
-                  controller.endDefaultValue.value = [
-                    controller.selectedEndDateTime.value
-                  ].map((dateTime) => dateTime!).toList();
-                  endDateTimeTextController.text = _getValueText(
-                      controller.endDefaultValue,
-                      controller.selectedEndHour,
-                      controller.selectedEndMinute);
-                }
+                _updateSelectedTime(isStartTime);
                 Navigator.of(context).pop();
               },
               child: Text('확인'),
@@ -221,17 +184,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
           CalendarDatePicker2(
             config: config,
             value: isStartTime
-                ? controller.startDefaultValue
-                    .map((dateTime) => dateTime!)
-                    .toList()
-                : controller.endDefaultValue
-                    .map((dateTime) => dateTime!)
-                    .toList(),
+                ? [controller.selectedStartDateTime.value]
+                : [controller.selectedEndDateTime.value],
             onValueChanged: (dates) => isStartTime
-                ? controller.selectedStartDateTime.value =
-                    dates.first ?? DateTime.now()
-                : controller.selectedEndDateTime.value =
-                    dates.first ?? DateTime.now(),
+                ? controller.selectedStartDateTime.value = dates.first
+                : controller.selectedEndDateTime.value = dates.first,
           ),
         ],
       ),
@@ -239,12 +196,11 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
   }
 
   Widget _setTimeNumberValue(bool isStartTime) {
-    final RxInt tempSelectedHour = isStartTime
-        ? controller.tempSelectedStartHour
-        : controller.tempSelectedEndHour;
-    final RxInt tempSelectedMinute = isStartTime
-        ? controller.tempSelectedStartMinute
-        : controller.tempSelectedEndMinute;
+    final tempSelectedHour =
+        isStartTime ? controller.selectedStartHour : controller.selectedEndHour;
+    final tempSelectedMinute = isStartTime
+        ? controller.selectedStartMinute
+        : controller.selectedEndMinute;
 
     return Row(
       children: [
@@ -376,5 +332,31 @@ class _NewDateTimePageState extends State<NewDateTimePage> {
         ),
       ],
     );
+  }
+
+  void _updateSelectedTime(bool isStartTime) {
+    if (isStartTime) {
+      controller.selectedStartDateTime.value = DateTime(
+        controller.selectedStartDateTime.value!.year,
+        controller.selectedStartDateTime.value!.month,
+        controller.selectedStartDateTime.value!.day,
+        controller.selectedStartHour.value,
+        controller.selectedStartMinute.value,
+      );
+      startDateTimeTextController.text = _getValueText(
+        controller.selectedStartDateTime,
+      );
+    } else {
+      controller.selectedEndDateTime.value = DateTime(
+        controller.selectedEndDateTime.value!.year,
+        controller.selectedEndDateTime.value!.month,
+        controller.selectedEndDateTime.value!.day,
+        controller.selectedEndHour.value,
+        controller.selectedEndMinute.value,
+      );
+      endDateTimeTextController.text = _getValueText(
+        controller.selectedEndDateTime,
+      );
+    }
   }
 }
