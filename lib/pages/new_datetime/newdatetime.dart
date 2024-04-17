@@ -48,27 +48,24 @@ class NewDateTimePage extends StatelessWidget {
     textEditingController.text =
         controller.getFormattedDateTime(selectedDateTime);
 
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: textEditingController,
-        decoration: InputDecoration(
-          fillColor: Colors.red,
-          filled: true,
-          isDense: true,
-          hintText: 'YYYY-MM-DD hh:mm:ss',
-          suffixIcon: IconButton(
-            icon: Icon(
-              Icons.calendar_today_outlined,
-              color: borderColor,
-            ),
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            onPressed: () {
-              controller.isStart.value = isStartTime;
-              showDateTimeDialog(context, isStartTime);
-            },
+    return TextField(
+      controller: textEditingController,
+      decoration: InputDecoration(
+        isDense: true,
+        isCollapsed: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        hintText: 'YYYY-MM-DD hh:mm:ss',
+        suffixIcon: IconButton(
+          icon: Icon(
+            Icons.calendar_today_outlined,
+            color: borderColor,
           ),
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          onPressed: () {
+            controller.isStart.value = isStartTime;
+            showDateTimeDialog(context, isStartTime);
+          },
         ),
       ),
     );
