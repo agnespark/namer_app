@@ -51,9 +51,8 @@ class SapPage extends StatelessWidget {
               height: 38,
               child: SearchTextField(
                 hintText: "테이블 검색",
-                onChanged: (value) {
-                  controller.filterTableList(value);
-                },
+                onSubmitted: controller.CallTableList,
+                onPressed: controller.CallTableList,
               ),
             ),
           const SizedBox(height: 8),

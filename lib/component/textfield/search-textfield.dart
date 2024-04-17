@@ -4,8 +4,15 @@ import 'package:namer_app/config/themes.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? hintText;
-  final ValueChanged<String>? onChanged;
-  const SearchTextField({super.key, this.hintText, this.onChanged});
+  final VoidCallback? onPressed;
+  final VoidCallback? onSubmitted;
+
+  const SearchTextField({
+    Key? key,
+    this.hintText,
+    this.onPressed,
+    this.onSubmitted,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +20,8 @@ class SearchTextField extends StatelessWidget {
       child: TextField(
         style: Themes.light.textTheme.titleMedium,
         decoration: InputDecoration(
+          isCollapsed: true,
+          isDense: true,
           hintText: hintText,
           fillColor: Colors.white,
           filled: true,
@@ -26,10 +35,10 @@ class SearchTextField extends StatelessWidget {
             ),
             highlightColor: Colors.transparent,
             hoverColor: Colors.transparent,
-            onPressed: () {},
+            onPressed: onPressed,
           ),
         ),
-        onChanged: onChanged, // onChanged 콜백 등록
+        onSubmitted: (_) => onSubmitted?.call(),
       ),
     );
   }
