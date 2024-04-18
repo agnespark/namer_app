@@ -12,6 +12,7 @@ import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/main_controller.dart';
+import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/population/detail/main.dart';
 import 'package:namer_app/pages/table/table.dart';
@@ -63,13 +64,10 @@ class PopulationPage extends StatelessWidget {
                 ),
                 Accordion(),
                 FilterButton(children: [
-                  ButtonWidget("text", () {
-                    ToastWidget("에러가 발생했습니다.").red();
-                  }).red(),
-                  ButtonWidget("text", () {
-                    ToastWidget("성공했습니다.").blue();
-                  }).blue(),
-                  ButtonWidget("text", () {
+                  DropdownMenuPage(list: ['10개', '30개', '50개', '100개']),
+                  ButtonWidget("초기화", () {}).blue(),
+                  ButtonWidget("조회", () {}).blue(),
+                  ButtonWidget("XLSX", () {
                     ToastWidget("다시 시도해주세요.").green();
                   }).green(),
                 ])

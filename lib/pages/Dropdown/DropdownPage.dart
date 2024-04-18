@@ -1,69 +1,93 @@
 import 'package:flutter/material.dart';
-
-/// Flutter code sample for [DropdownMenu].
-
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-
-void main() => runApp(const DropdownMenuPage());
+import 'package:get/get.dart';
+import 'package:namer_app/config/color.dart';
 
 class DropdownMenuPage extends StatelessWidget {
-  const DropdownMenuPage({super.key});
+  final List<String> list;
 
+  DropdownMenuPage({
+    Key? key,
+    List<String>? list,
+  })  : this.list = list ?? ['one', 'two'],
+        super(key: key);
+
+  final DropdownController controller = DropdownController();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('DropdownMenu Sample')),
-        body: const Center(
-          child: DropdownMenuExample(),
+    return Container(
+      // padding: EdgeInsets.all(0),
+      // height: 28,
+      child: DropdownMenu<String>(
+        menuStyle: MenuStyle(
+          fixedSize: MaterialStatePropertyAll(Size(100, list.length * 40)),
         ),
+        width: 100,
+        textStyle: TextStyle(
+          color: primaryMain,
+          fontWeight: FontWeight.w500,
+          fontSize: 13,
+        ),
+        trailingIcon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.blue,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          iconColor: Colors.blue,
+          suffixIconColor: Colors.blue,
+          isCollapsed: true,
+          isDense: true,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          // constraints: BoxConstraints.tight(Size.fromHeight(28)),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blue,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blue,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blue,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+        ),
+        initialSelection: list.first,
+        onSelected: (String? name) {
+          if (name != null) {
+            controller.changeValue(name);
+          }
+        },
+        dropdownMenuEntries:
+            list.map<DropdownMenuEntry<String>>((String value) {
+          return DropdownMenuEntry<String>(
+              value: value,
+              label: value,
+              style: ButtonStyle(
+                  textStyle:
+                      MaterialStatePropertyAll(TextStyle(fontSize: 13))));
+        }).toList(),
       ),
     );
+    // ),
   }
 }
 
-class DropdownMenuExample extends StatefulWidget {
-  const DropdownMenuExample({super.key});
+class DropdownController extends GetxController {
+  static DropdownController get to => Get.find<DropdownController>();
 
-  @override
-  State<DropdownMenuExample> createState() => _DropdownMenuExampleState();
-}
+  Rx<String> dropdownValue = "".obs;
 
-class _DropdownMenuExampleState extends State<DropdownMenuExample> {
-  String dropdownValue = list.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownMenu<String>(
-      inputDecorationTheme: const InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.pink,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.pink,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.pink),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-      ),
-      initialSelection: list.first,
-      onSelected: (String? value) {
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
-        return DropdownMenuEntry<String>(value: value, label: value);
-      }).toList(),
-    );
-    // ),
+  void changeValue(String value) {
+    dropdownValue.value = value;
   }
 }

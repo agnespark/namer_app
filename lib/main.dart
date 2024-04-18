@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import "package:namer_app/config/color.dart";
 import "package:namer_app/global_scaffold_key.dart";
 import "package:namer_app/main_controller.dart";
 import "package:namer_app/nav_model.dart";
@@ -42,7 +43,7 @@ class MainPage extends StatelessWidget {
             () => Row(
               children: [
                 Container(
-                  width: 200, // 네비게이션 바의 고정된 너비
+                  width: 256, // 네비게이션 바의 고정된 너비
                   // color: Colors.blue,
                   child: ListView.builder(
                     itemCount: MyController.to.navList.length,
@@ -68,13 +69,18 @@ Widget navList(Menu menu) {
       onTap: () {
         MyController.to.changePage(menu.page!, menu.name, menu.depth);
       },
-      child: ListTile(
-        mouseCursor: SystemMouseCursors.click,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
-          child: Text(
-            menu.name,
-            style: TextStyle(fontSize: 16),
+      child: Container(
+        decoration: BoxDecoration(
+            border:
+                Border(bottom: BorderSide(width: 1, color: borderLightColor))),
+        child: ListTile(
+          mouseCursor: SystemMouseCursors.click,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0),
+            child: Text(
+              menu.name,
+              style: TextStyle(fontSize: 16),
+            ),
           ),
         ),
       ),
@@ -87,7 +93,7 @@ Widget navList(Menu menu) {
       child: ListTile(
         mouseCursor: SystemMouseCursors.click,
         title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24),
           child: Text(
             menu.name,
             style: TextStyle(fontSize: 16),
@@ -97,26 +103,31 @@ Widget navList(Menu menu) {
     );
   }
 
-  return ExpansionTile(
-    collapsedShape: RoundedRectangleBorder(
-      side: BorderSide.none,
-    ),
-    shape: RoundedRectangleBorder(
-      side: BorderSide.none,
-    ),
-    title: Padding(
-      padding: EdgeInsets.only(left: menu.depth * 24), // 깊이에 따라 왼쪽 패딩 적용
-      child: Text(
-        menu.name,
-        style: TextStyle(fontSize: 16),
+  return Container(
+    decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(width: 1, color: borderLightColor))),
+    child: ExpansionTile(
+      collapsedShape: RoundedRectangleBorder(
+        side: BorderSide.none,
       ),
+      shape: RoundedRectangleBorder(
+        side: BorderSide.none,
+      ),
+      title: Padding(
+        // padding: EdgeInsets.only(left: menu.depth * 24), // 깊이에 따라 왼쪽 패딩 적용
+        padding: EdgeInsets.fromLTRB(menu.depth * 24, 16.0, 24.0, 16.0),
+        child: Text(
+          menu.name,
+          style: TextStyle(fontSize: 16),
+        ),
+      ),
+      children: menu.subMenu!
+          .map((subMenu) => Padding(
+                padding: EdgeInsets.only(
+                    left: (menu.depth) * 24), // 자식 메뉴에 깊이에 따라 왼쪽 패딩 적용
+                child: navList(subMenu),
+              ))
+          .toList(),
     ),
-    children: menu.subMenu!
-        .map((subMenu) => Padding(
-              padding: EdgeInsets.only(
-                  left: (menu.depth) * 24), // 자식 메뉴에 깊이에 따라 왼쪽 패딩 적용
-              child: navList(subMenu),
-            ))
-        .toList(),
   );
 }
