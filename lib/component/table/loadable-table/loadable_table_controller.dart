@@ -12,16 +12,6 @@ class LoadableTableController extends GetxController {
     'Folko',
     'Furip',
     'Folig',
-    'Picco',
-    'Frans',
-    'Warth',
-    'Linod',
-    'Simop',
-    'Merep',
-    'Riscu',
-    'Seves',
-    'Vaffe',
-    'Alfki'
   ];
 
   final List<String> designations = <String>[
@@ -29,17 +19,16 @@ class LoadableTableController extends GetxController {
     'Developer',
     'Manager',
     'Designer',
-    'System Analyst',
     'CEO'
   ];
 
   @override
   void onInit() {
     super.onInit();
-    _populateEmployeeData(20);
+    loadData(20);
   }
 
-  void _populateEmployeeData(int count) {
+  void loadData(int count) {
     final Random random = Random();
     final List<Employee> employees = List.generate(count, (index) {
       return Employee(
@@ -49,10 +38,11 @@ class LoadableTableController extends GetxController {
         10000 + random.nextInt(10000),
       );
     });
-    employeeDataSource.addMoreRows(employees);
+    employeeDataSource.addRows(employees);
   }
 
-  void addMoreRows(int count) {
+  // 새로운 데이터를 생성하여 EmployeeDataSource에 전달하고, 새로운 데이터를 그리드에 추가하는 역할
+  void loadMoreData(int count) {
     final Random random = Random();
     final List<Employee> newEmployees = List.generate(count, (index) {
       return Employee(
@@ -62,6 +52,6 @@ class LoadableTableController extends GetxController {
         10000 + random.nextInt(10000),
       );
     });
-    employeeDataSource.addMoreRows(newEmployees);
+    employeeDataSource.addRows(newEmployees);
   }
 }
