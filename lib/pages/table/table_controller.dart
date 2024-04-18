@@ -8,6 +8,13 @@ class TableController extends GetxController {
   final int rowsPerPage = 5;
   final double dataPagerHeight = 60.0;
 
+  late RxMap<String, double> columnWidths = {
+    'orderID': double.nan,
+    'customerID': double.nan,
+    'orderDate': double.nan,
+    'freight': double.nan
+  }.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -52,11 +59,11 @@ class TableController extends GetxController {
 }
 
 // 모델 예시
-// class OrderInfo {
-//   final int orderID;
-//   final String customerID;
-//   final DateTime orderDate;
-//   final double freight;
+class OrderInfo {
+  final int orderID;
+  final String customerID;
+  final DateTime orderDate;
+  final double freight;
 
-//   OrderInfo(this.orderID, this.customerID, this.orderDate, this.freight);
-// }
+  OrderInfo(this.orderID, this.customerID, this.orderDate, this.freight);
+}

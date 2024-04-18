@@ -53,14 +53,30 @@ class _TablePageState extends State<TablePage> {
   Widget _buildDataGrid() {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
-          rowHoverColor: grayLight,
-          rowHoverTextStyle: TextStyle(
-            color: blackTextColor,
-            fontSize: 14,
-          ),
-          headerColor: primaryLight,
-          headerHoverColor: Colors.transparent),
+        rowHoverColor: grayLight,
+        rowHoverTextStyle: TextStyle(
+          color: blackTextColor,
+          fontSize: 14,
+        ),
+        headerColor: primaryLight,
+        headerHoverColor: Colors.transparent,
+        columnResizeIndicatorColor: primaryMain,
+        columnResizeIndicatorStrokeWidth: 2.0,
+      ),
       child: SfDataGrid(
+        allowColumnsResizing: true,
+        onColumnResizeStart: (ColumnResizeStartDetails details) {
+          if (details.column.columnName == 'orderID') {
+            return false;
+          }
+          return true;
+        },
+        onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
+          setState(() {
+            controller.columnWidths[details.column.columnName] = details.width;
+          });
+          return true;
+        },
         source: controller.dataSource,
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
@@ -69,6 +85,8 @@ class _TablePageState extends State<TablePage> {
         rowHeight: 40,
         columns: <GridColumn>[
           GridColumn(
+              width: controller.columnWidths['orderID']!,
+              minimumWidth: 50,
               columnName: 'orderID',
               label: Container(
                   alignment: Alignment.center,
@@ -77,14 +95,20 @@ class _TablePageState extends State<TablePage> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: controller.columnWidths['customerID']!,
+              minimumWidth: 50,
               columnName: 'customerID',
               label: Container(
                   alignment: Alignment.center, child: Text('Customer Name'))),
           GridColumn(
+              width: controller.columnWidths['orderDate']!,
+              minimumWidth: 50,
               columnName: 'orderDate',
               label: Container(
                   alignment: Alignment.center, child: Text('Order Date'))),
           GridColumn(
+              width: controller.columnWidths['freight']!,
+              minimumWidth: 50,
               columnName: 'freight',
               label: Container(
                   alignment: Alignment.center, child: Text('Freight'))),
