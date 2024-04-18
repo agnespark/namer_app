@@ -29,3 +29,5 @@ Color grayTextColor = Color(0xFF42526B); // gray[700]
 Color blackTextColor = Color(0xFF000000); // gray[1000]
 
 Color borderColor = Color(0xFFCDD2D8); // gray[200]
+
+Color borderLightColor = Color(0xFFE0E0E0); //#E0E0E0

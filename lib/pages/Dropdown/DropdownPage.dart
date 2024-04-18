@@ -16,7 +16,7 @@ class DropdownMenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // padding: EdgeInsets.all(0),
-      height: 28,
+      // height: 28,
       child: DropdownMenu<String>(
         menuStyle: MenuStyle(
           fixedSize: MaterialStatePropertyAll(Size(100, list.length * 40)),
@@ -27,26 +27,18 @@ class DropdownMenuPage extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontSize: 13,
         ),
-        trailingIcon: Container(
-          width: double.infinity,
-          height: 100,
-          color: Colors.red,
-          padding: EdgeInsets.all(0),
-          child: ListView(
-            children: [
-              Icon(
-                Icons.arrow_drop_down,
-              )
-            ],
-          ),
+        trailingIcon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.blue,
         ),
         inputDecorationTheme: InputDecorationTheme(
           iconColor: Colors.blue,
           suffixIconColor: Colors.blue,
+          isCollapsed: true,
           isDense: true,
           contentPadding:
               const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-          constraints: BoxConstraints.tight(Size.fromHeight(28)),
+          // constraints: BoxConstraints.tight(Size.fromHeight(28)),
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.blue,
