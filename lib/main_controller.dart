@@ -4,6 +4,7 @@ import 'package:english_words/english_words.dart';
 import 'package:namer_app/pages/button/button.dart';
 import 'package:namer_app/pages/datetime/datetime.dart';
 import 'package:namer_app/pages/design/design.dart';
+import 'package:namer_app/component/table/loadable-table/loadable_table.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime.dart';
 import 'package:namer_app/pages/population/population.dart';
