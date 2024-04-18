@@ -80,7 +80,7 @@ class SamplingPage extends StatelessWidget {
     // frameWidget 함수를 사용하여 전체 페이지를 구성
     return FrameWidget(
       title: 'PLC/Sampling/${MyController.to.currentMenu.value}',
-      body: _buildContent(),
+      child: _buildContent(),
     );
   }
 }

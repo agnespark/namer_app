@@ -15,8 +15,7 @@ class _TablePageState extends State<TablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
+    return Column(
       children: [
         PaginatedTable(),
         SizedBox(height: 50),
@@ -24,6 +23,6 @@ class _TablePageState extends State<TablePage> {
         SizedBox(height: 50),
         LoadableTable()
       ],
-    ));
+    );
   }
 }
