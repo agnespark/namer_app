@@ -17,40 +17,13 @@ class _TablePageState extends State<TablePage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // header
-        SizedBox(height: 8),
-        _buildDataGrid(),
-        // body
-        Container(
-          height: controller.dataPagerHeight,
-          width: Get.width / 3,
-          child: Center(
-            child: SfDataPagerTheme(
-              data: SfDataPagerThemeData(
-                itemColor: Colors.white,
-                selectedItemColor: Colors.blue,
-                // itemBorderRadius: BorderRadius.circular(5),
-                // backgroundColor: Colors.teal,
-              ),
-              // pagination
-              child: SfDataPager(
-                delegate: controller.dataSource,
-                pageCount: (controller.data.length / controller.rowsPerPage)
-                    .ceil()
-                    .toDouble(),
-                direction: Axis.horizontal,
-                // onPageNavigationStart: ,
-                // onPageNavigationEnd: ,
-                // onRowsPerPageChanged: ,
-              ),
-            ),
-          ),
-        ),
+        buildDataGrid(),
+        buildDataPager(),
       ],
     );
   }
 
-  Widget _buildDataGrid() {
+  Widget buildDataGrid() {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
           rowHoverColor: grayLight,
@@ -83,36 +56,29 @@ class _TablePageState extends State<TablePage> {
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
-        columns: <GridColumn>[
-          GridColumn(
-              width: controller.columnWidths['orderID']!,
-              minimumWidth: 50,
-              columnName: 'orderID',
-              label: Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Order ID',
-                    overflow: TextOverflow.ellipsis,
-                  ))),
-          GridColumn(
-              width: controller.columnWidths['customerID']!,
-              minimumWidth: 50,
-              columnName: 'customerID',
-              label: Container(
-                  alignment: Alignment.center, child: Text('Customer Name'))),
-          GridColumn(
-              width: controller.columnWidths['orderDate']!,
-              minimumWidth: 50,
-              columnName: 'orderDate',
-              label: Container(
-                  alignment: Alignment.center, child: Text('Order Date'))),
-          GridColumn(
-              width: controller.columnWidths['freight']!,
-              minimumWidth: 50,
-              columnName: 'freight',
-              label: Container(
-                  alignment: Alignment.center, child: Text('Freight'))),
-        ],
+        columns: controller.buildColumns(controller.columnWidths),
+      ),
+    );
+  }
+
+  Widget buildDataPager() {
+    return Container(
+      height: controller.dataPagerHeight,
+      width: Get.width / 3,
+      child: Center(
+        child: SfDataPagerTheme(
+          data: SfDataPagerThemeData(
+            itemColor: Colors.white,
+            selectedItemColor: Colors.blue,
+          ),
+          child: SfDataPager(
+            delegate: controller.dataSource,
+            pageCount: (controller.data.length / controller.rowsPerPage)
+                .ceil()
+                .toDouble(),
+            direction: Axis.horizontal,
+          ),
+        ),
       ),
     );
   }

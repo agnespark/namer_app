@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/pages/table/table.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class TableController extends GetxController {
   late RxList<dynamic> data;
@@ -22,39 +24,46 @@ class TableController extends GetxController {
     dataSource = DataSource(orders: data);
   }
 
+  // load data
   RxList<dynamic> getOrders() {
+    return List.generate(
+      30,
+      (index) => OrderInfo(
+        index + 10001,
+        String.fromCharCode('a'.codeUnitAt(0) + index),
+        DateTime.now(),
+        150.0,
+      ),
+    ).obs;
+  }
+
+  // header setting
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
     return [
-      OrderInfo(10001, 'James', DateTime.now(), 200.0),
-      OrderInfo(10002, 'Kathryn', DateTime.now(), 300.0),
-      OrderInfo(10003, 'Lara', DateTime.now(), 150.0),
-      OrderInfo(10004, 'Michael', DateTime.now(), 150.0),
-      OrderInfo(10005, 'Martin', DateTime.now(), 150.0),
-      OrderInfo(10006, 'Newberry', DateTime.now(), 150.0),
-      OrderInfo(10007, 'Balnc', DateTime.now(), 150.0),
-      OrderInfo(10008, 'Perry', DateTime.now(), 150.0),
-      OrderInfo(10009, 'Gable', DateTime.now(), 150.0),
-      OrderInfo(10010, 'Grimes', DateTime.now(), 150.0),
-      OrderInfo(10001, 'a', DateTime.now(), 200.0),
-      OrderInfo(10002, 'b', DateTime.now(), 300.0),
-      OrderInfo(10003, 'c', DateTime.now(), 150.0),
-      OrderInfo(10004, 'd', DateTime.now(), 150.0),
-      OrderInfo(10005, 'e', DateTime.now(), 150.0),
-      OrderInfo(10006, 'f', DateTime.now(), 150.0),
-      OrderInfo(10007, 'g', DateTime.now(), 150.0),
-      OrderInfo(10008, 'h', DateTime.now(), 150.0),
-      OrderInfo(10009, 'i', DateTime.now(), 150.0),
-      OrderInfo(10010, 'j', DateTime.now(), 150.0),
-      OrderInfo(10001, 'a', DateTime.now(), 200.0),
-      OrderInfo(10002, 'b', DateTime.now(), 300.0),
-      OrderInfo(10003, 'c', DateTime.now(), 150.0),
-      OrderInfo(10004, 'd', DateTime.now(), 150.0),
-      OrderInfo(10005, 'e', DateTime.now(), 150.0),
-      OrderInfo(10006, 'f', DateTime.now(), 150.0),
-      OrderInfo(10007, 'g', DateTime.now(), 150.0),
-      OrderInfo(10008, 'h', DateTime.now(), 150.0),
-      OrderInfo(10009, 'i', DateTime.now(), 150.0),
-      OrderInfo(10010, 'j', DateTime.now(), 150.0)
-    ].obs;
+      'orderID',
+      'customerID',
+      'orderDate',
+      'freight',
+    ]
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    return GridColumn(
+      width: columnWidths[columnName]!,
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
   }
 }
 
