@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_sheet.dart';
+import 'package:namer_app/component/filter/filter-button/filter_button.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
@@ -93,26 +94,29 @@ class PopulationSrdocList extends StatelessWidget {
           ),
           child: Column(
             children: [
-              FilterFrame(body: [
-                FilterRow(
-                  title: "DateTime",
-                  body: NewDateTimePage(),
-                ),
-                FilterRow(
-                  title: 'Search',
-                  body: BasicTextField(),
-                ),
-              ], button: [
-                ButtonWidget("text", () {
-                  ToastWidget("에러가 발생했습니다.").red();
-                }).red(),
-                ButtonWidget("text", () {
-                  ToastWidget("성공했습니다.").blue();
-                }).blue(),
-                ButtonWidget("text", () {
-                  ToastWidget("다시 시도해주세요.").green();
-                }).green(),
-              ]),
+              FilterFrame(
+                children: [
+                  FilterRow(
+                    title: "DateTime",
+                    child: NewDateTimePage(),
+                  ),
+                  FilterRow(
+                    title: 'Search',
+                    child: BasicTextField(),
+                  ),
+                  FilterButton(children: [
+                    ButtonWidget("text", () {
+                      ToastWidget("에러가 발생했습니다.").red();
+                    }).red(),
+                    ButtonWidget("text", () {
+                      ToastWidget("성공했습니다.").blue();
+                    }).blue(),
+                    ButtonWidget("text", () {
+                      ToastWidget("다시 시도해주세요.").green();
+                    }).green(),
+                  ])
+                ],
+              ),
             ],
           ),
           // content 영역
