@@ -53,16 +53,16 @@ class _TablePageState extends State<TablePage> {
   Widget _buildDataGrid() {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
-        rowHoverColor: grayLight,
-        rowHoverTextStyle: TextStyle(
-          color: blackTextColor,
-          fontSize: 14,
-        ),
-        headerColor: primaryLight,
-        headerHoverColor: Colors.transparent,
-        columnResizeIndicatorColor: primaryMain,
-        columnResizeIndicatorStrokeWidth: 2.0,
-      ),
+          rowHoverColor: grayLight,
+          rowHoverTextStyle: TextStyle(
+            color: blackTextColor,
+            fontSize: 14,
+          ),
+          headerColor: primaryLight,
+          headerHoverColor: Colors.transparent,
+          columnResizeIndicatorColor: primaryMain,
+          columnResizeIndicatorStrokeWidth: 2.0,
+          gridLineColor: borderColor),
       child: SfDataGrid(
         allowColumnsResizing: true,
         onColumnResizeStart: (ColumnResizeStartDetails details) {
