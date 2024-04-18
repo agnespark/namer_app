@@ -7,7 +7,7 @@ import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/pages/table/table.dart';
 
-class CreateMultiPost extends StatelessWidget {
+class CreateMultiLog extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -20,21 +20,7 @@ class CreateMultiPost extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // 버튼 변경될 내용
-              Container(
-                  // child:
-                  //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  //   IconButton(
-                  //     onPressed: () {
-                  //       Get.back();
-                  //     },
-                  //     icon: Icon(Icons.arrow_back_ios),
-                  //     iconSize: 24,
-                  //     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                  //     padding: EdgeInsets.zero,
-                  //   ),
-                  // ]),
-                  ),
+              Container(),
               Container(
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
@@ -44,6 +30,7 @@ class CreateMultiPost extends StatelessWidget {
                   ),
                   child: ButtonWidget('완료', () {
                     ToastWidget('결재문서 매핑이 완료되었습니다.').green();
+                    controller.pageName.value = "multi_complete";
                   }).blue()),
             ],
           ),
@@ -90,7 +77,9 @@ class CreateMultiPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          PlusButtonWidget(onPressed: () {}),
+                          PlusButtonWidget(onPressed: () {
+                            controller.pageName.value = "select";
+                          }),
                         ])
                       ],
                     ),
@@ -110,7 +99,9 @@ class CreateMultiPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
+                          ButtonWidget('결재문서 수정', () {
+                            controller.pageName.value = "srdocList";
+                          }).blue(),
                         ])
                       ],
                     ),

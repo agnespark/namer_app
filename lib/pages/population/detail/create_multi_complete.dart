@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/pages/table/table.dart';
 
@@ -59,12 +58,7 @@ class CreateMultiComplelet extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          PlusButtonWidget(onPressed: () {}),
-                        ])
-                      ],
+                      children: [Text('Total: 2'), Row(children: [])],
                     ),
                     TablePage(),
                   ],

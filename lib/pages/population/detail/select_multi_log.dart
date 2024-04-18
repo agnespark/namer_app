@@ -5,7 +5,7 @@ import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 
 class SelectMultiLog extends StatelessWidget {
-  final DetailController controller = Get.find<DetailController>();
+  final DetailController controller = Get.put(DetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class SelectMultiLog extends StatelessWidget {
                     ),
                   ),
                   child: ButtonWidget('완료', () {
-                    controller.pageName.value = "create";
+                    controller.pageName.value = "multi_create";
                   }).blue()),
             ],
           ),
