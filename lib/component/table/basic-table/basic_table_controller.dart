@@ -8,10 +8,10 @@ class BasicTableController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _populateEmployeeData();
+    loadData();
   }
 
-  void _populateEmployeeData() {
+  void loadData() {
     final List<Employee> employees = [
       Employee(10001, 'Jack', 'Manager', 120000),
       Employee(10002, 'Perry', 'Project Lead', 80000),
@@ -24,10 +24,10 @@ class BasicTableController extends GetxController {
       Employee(10009, 'Linda', 'Administrator', 36000),
       Employee(10010, 'Michael', 'Sales Associate', 35000)
     ];
-    employeeDataSource.addRows(_convertToDataGridRows(employees));
+    employeeDataSource.addRows(convertToDataGridRows(employees));
   }
 
-  List<DataGridRow> _convertToDataGridRows(List<Employee> employees) {
+  List<DataGridRow> convertToDataGridRows(List<Employee> employees) {
     return employees.map<DataGridRow>((e) {
       return DataGridRow(cells: [
         DataGridCell<int>(columnName: 'id', value: e.id),
@@ -36,9 +36,5 @@ class BasicTableController extends GetxController {
         DataGridCell<int>(columnName: 'salary', value: e.salary),
       ]);
     }).toList();
-  }
-
-  void addEmployeeData(List<Employee> newData) {
-    employeeDataSource.addRows(_convertToDataGridRows(newData));
   }
 }

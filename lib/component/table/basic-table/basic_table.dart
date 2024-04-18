@@ -6,76 +6,78 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
 class BasicTable extends StatelessWidget {
-  const BasicTable({Key? key}) : super(key: key);
+  BasicTable({Key? key}) : super(key: key);
+  final BasicTableController controller = Get.put(BasicTableController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BasicTableController>(
-      init: BasicTableController(),
-      builder: (controller) {
-        return Container(
-          child: SfDataGridTheme(
-            data: SfDataGridThemeData(gridLineColor: borderColor),
-            child: SfDataGrid(
-              columnWidthMode: ColumnWidthMode.fill,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              gridLinesVisibility: GridLinesVisibility.both,
-              source: controller.employeeDataSource,
-              columns: <GridColumn>[
-                GridColumn(
-                  columnName: 'id',
-                  label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text('ID'),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'name',
-                  label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text('Name'),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'designation',
-                  label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Designation',
-                      overflow: TextOverflow.ellipsis,
+    return Expanded(
+      child: Container(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SfDataGridTheme(
+              data: SfDataGridThemeData(gridLineColor: borderColor),
+              child: SfDataGrid(
+                columnWidthMode: ColumnWidthMode.fill,
+                headerGridLinesVisibility: GridLinesVisibility.both,
+                gridLinesVisibility: GridLinesVisibility.both,
+                source: controller.employeeDataSource,
+                columns: <GridColumn>[
+                  GridColumn(
+                    columnName: 'id',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text('ID'),
                     ),
                   ),
-                ),
-                GridColumn(
-                  columnName: 'salary',
-                  label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text('Salary'),
+                  GridColumn(
+                    columnName: 'name',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text('Name'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+                  GridColumn(
+                    columnName: 'designation',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Designation',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'salary',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text('Salary'),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
 class EmployeeDataSource extends DataGridSource {
-  List<DataGridRow> _employeeData = [];
+  List<DataGridRow> employeeData = [];
 
   void addRows(List<DataGridRow> rows) {
-    _employeeData.addAll(rows);
+    employeeData.addAll(rows);
     notifyListeners();
   }
 
   @override
-  List<DataGridRow> get rows => _employeeData;
+  List<DataGridRow> get rows => employeeData;
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
