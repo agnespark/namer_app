@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
-import 'package:namer_app/pages/sampling/sampling_detail/sampling_detail.dart';
+import 'package:namer_app/pages/sampling/detail/sampling_sr.dart';
+
+import 'detail/sampling_log.dart';
 
 class SamplingPage extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
@@ -20,32 +23,35 @@ class SamplingPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                controller.sampingDetailPage('sampling_log');
-                SamplingDetailWidget().Widget(context);
+                // controller.sampingDetailPage('sampling_log');
+                DetailSheet(child: SamplingLogDetail());
               },
               child: Text('sampling_log'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                controller.sampingDetailPage('sampling_log_doc');
-                SamplingDetailWidget().Widget(context);
+                DetailSheet(
+                    child: SamplingLogDetail(
+                  isBtn: false,
+                ));
               },
               child: Text('sampling_log_doc'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                controller.sampingDetailPage('sampling_sr');
-                SamplingDetailWidget().Widget(context);
+                DetailSheet(child: SamplingSrDetail());
               },
               child: Text('sampling_sr'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                controller.sampingDetailPage('sampling_sr_doc');
-                SamplingDetailWidget().Widget(context);
+                DetailSheet(
+                    child: SamplingSrDetail(
+                  isBtn: false,
+                ));
               },
               child: Text('sampling_sr_doc'),
             ),

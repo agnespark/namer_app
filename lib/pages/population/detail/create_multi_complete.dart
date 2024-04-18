@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/plusbutton.dart';
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/table/table.dart';
 
-class DashboardSrDetail extends StatelessWidget {
+class CreateMultiComplelet extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -17,40 +17,7 @@ class DashboardSrDetail extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 버튼 변경될 내용
-              Container(
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_circle_up_rounded),
-                    iconSize: 24,
-                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                    padding: EdgeInsets.zero,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_circle_down_rounded),
-                    iconSize: 24,
-                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                    padding: EdgeInsets.zero,
-                  ),
-                ]),
-              ),
-              Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.50, color: Color(0xFF148FEF)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: ButtonWidget('완료', () {}).blue()),
-            ],
+            children: [],
           ),
         ),
         SizedBox(height: 16),
@@ -69,7 +36,7 @@ class DashboardSrDetail extends StatelessWidget {
                 children: [
                   Text(
                     //title 변경
-                    'Detail',
+                    '로그 합치기',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -99,7 +66,7 @@ class DashboardSrDetail extends StatelessWidget {
                         ])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),
@@ -112,14 +79,9 @@ class DashboardSrDetail extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
-                        ])
-                      ],
+                      children: [Text('Total: 2'), Row(children: [])],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),
@@ -131,6 +93,3 @@ class DashboardSrDetail extends StatelessWidget {
     );
   }
 }
-
-// Get.snackbar("안녕", "ㅇㅇㅇㅇ");
-// 클릭 시 다이얼로그 띄우기

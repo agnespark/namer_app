@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:namer_app/component/button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/plusbutton.dart';
+import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/table/table.dart';
 
-class AddLogPost extends StatelessWidget {
+class CreateMultiPost extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -40,7 +42,9 @@ class AddLogPost extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: ButtonWidget('완료', () {}).blue()),
+                  child: ButtonWidget('완료', () {
+                    ToastWidget('결재문서 매핑이 완료되었습니다.').green();
+                  }).blue()),
             ],
           ),
         ),
@@ -86,13 +90,11 @@ class AddLogPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          PlusButtonWidget(onPressed: () {
-                            controller.sampingDetailPage("population_post");
-                          }),
+                          PlusButtonWidget(onPressed: () {}),
                         ])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),
@@ -108,13 +110,11 @@ class AddLogPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          ButtonWidget('결재문서 수정', () {
-                            controller.sampingDetailPage('sampling_sr_doc');
-                          }).blue(),
+                          ButtonWidget('결재문서 수정', () {}).blue(),
                         ])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),
