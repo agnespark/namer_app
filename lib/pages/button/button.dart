@@ -5,6 +5,7 @@ import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/component/filter/filter-button/filter_button.dart';
+import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
@@ -21,8 +22,11 @@ class ButtonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return FrameWidget(
+      title: "Button",
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ButtonWidget("text", () {
             ToastWidget("에러가 발생했습니다.").red();

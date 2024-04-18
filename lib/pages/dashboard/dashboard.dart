@@ -16,7 +16,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FrameWidget(
       title: 'Dashboard',
-      body: Column(
+      child: Column(
         children: [
           Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
           SelectableText('random number'),

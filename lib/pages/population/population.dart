@@ -26,67 +26,63 @@ class PopulationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FrameWidget(
         title: 'PLC/${MyController.to.currentMenu.value}',
-        body: Padding(
-          padding: EdgeInsets.all(8),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 24, 0, 16),
-                  width: Get.width,
-                  child: Text(
-                    'Population',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                    textAlign: TextAlign.start,
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 24, 0, 16),
+                width: Get.width,
+                child: Text(
+                  'Population',
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              FilterFrame(children: [
+                FilterRow(
+                  title: "DBMS Server",
+                  child: MultiCheckBoxPage(
+                      checkBoxList: btn_controller.checkBoxList,
+                      selectedCheckBox: btn_controller.selectedCheckBox),
+                ),
+                FilterRow(
+                  title: "Type",
+                  child: RadioPage(
+                    radioList: btn_controller.radioList,
+                    selectedRadio: btn_controller.selectedRadio,
                   ),
                 ),
-                FilterFrame(children: [
-                  FilterRow(
-                    title: "DBMS Server",
-                    child: MultiCheckBoxPage(
-                        checkBoxList: btn_controller.checkBoxList,
-                        selectedCheckBox: btn_controller.selectedCheckBox),
+                FilterRow(
+                  title: btn_controller.title,
+                  child: MultiCheckBoxPage(
+                    checkBoxList: btn_controller.checkBoxList,
+                    selectedCheckBox: btn_controller.selectedCheckBox,
                   ),
-                  FilterRow(
-                    title: "Type",
-                    child: RadioPage(
-                      radioList: btn_controller.radioList,
-                      selectedRadio: btn_controller.selectedRadio,
-                    ),
-                  ),
-                  FilterRow(
-                    title: btn_controller.title,
-                    child: MultiCheckBoxPage(
-                      checkBoxList: btn_controller.checkBoxList,
-                      selectedCheckBox: btn_controller.selectedCheckBox,
-                    ),
-                  ),
-                  Accordion(),
-                  FilterButton(children: [
-                    DropdownMenuPage(list: ['10개', '30개', '50개', '100개']),
-                    ButtonWidget("초기화", () {}).blue(),
-                    ButtonWidget("조회", () {}).blue(),
-                    ButtonWidget("XLSX", () {
-                      ToastWidget("다시 시도해주세요.").green();
-                    }).green(),
-                  ])
-                ]),
-                SizedBox(height: 8),
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  ButtonWidget('로그 합치기', () {
-                    // controller.pageName.value = 'select';
-                    DetailSheet(
-                      child: PopulationDetailWidget(),
-                    );
-                  }).blue(),
-                ]),
-                TablePage(),
-              ],
-            ),
+                ),
+                Accordion(),
+                FilterButton(children: [
+                  DropdownMenuPage(list: ['10개', '30개', '50개', '100개']),
+                  ButtonWidget("초기화", () {}).blue(),
+                  ButtonWidget("조회", () {}).blue(),
+                  ButtonWidget("XLSX", () {
+                    ToastWidget("다시 시도해주세요.").green();
+                  }).green(),
+                ])
+              ]),
+              SizedBox(height: 8),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                ButtonWidget('로그 합치기', () {
+                  controller.pageName.value = 'select';
+                  DetailSheet(
+                    child: PopulationDetailWidget(),
+                  );
+                }).blue(),
+              ]),
+              TablePage(),
+            ],
           ),
         ));
   }

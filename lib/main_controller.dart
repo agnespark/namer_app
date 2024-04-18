@@ -4,6 +4,7 @@ import 'package:english_words/english_words.dart';
 import 'package:namer_app/pages/button/button.dart';
 import 'package:namer_app/pages/datetime/datetime.dart';
 import 'package:namer_app/pages/design/design.dart';
+import 'package:namer_app/component/table/loadable-table/loadable_table.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
 import 'package:namer_app/pages/new_datetime/newdatetime.dart';
 import 'package:namer_app/pages/population/population.dart';
@@ -24,7 +25,7 @@ class MyController extends GetxController {
   Rx<WordPair> current = WordPair.random().obs;
   RxList<WordPair> favorites = <WordPair>[].obs;
 
-  Rx<Widget> currentWidget = Container(child: DashboardPage()).obs;
+  Rx<Widget> currentWidget = Container(child: TablePage()).obs;
   Rx<Widget> currentDetail = Container().obs;
 
   late Rx<Widget> currentPost;
