@@ -1,174 +1,202 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:namer_app/component/table/loadable-table/loadable_table_controller.dart';
-import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
 
 class LoadableTable extends StatefulWidget {
+  LoadableTable({Key? key}) : super(key: key);
+
   @override
-  State<LoadableTable> createState() => _LoadableTableState();
+  _LoadMoreInfiniteScrollingDemoState createState() =>
+      _LoadMoreInfiniteScrollingDemoState();
 }
 
-class _LoadableTableState extends State<LoadableTable> {
-  final LoadableTableController controller = Get.put(LoadableTableController());
+class _LoadMoreInfiniteScrollingDemoState extends State<LoadableTable> {
+  List<Employee> _employees = <Employee>[];
+  late EmployeeDataSource _employeeDataSource;
+
+  @override
+  void initState() {
+    _populateEmployeeData(20);
+    _employeeDataSource = EmployeeDataSource(employees: _employees);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        buildDataGrid(),
-        buildDataPager(),
-      ],
-    );
-  }
-
-  Widget buildDataGrid() {
-    return SfDataGridTheme(
-      data: SfDataGridThemeData(
-          rowHoverColor: grayLight,
-          rowHoverTextStyle: TextStyle(
-            color: blackTextColor,
-            fontSize: 14,
-          ),
-          headerColor: primaryLight,
-          headerHoverColor: Colors.transparent,
-          columnResizeIndicatorColor: primaryMain,
-          columnResizeIndicatorStrokeWidth: 2.0,
-          gridLineColor: borderColor),
-      child: SfDataGrid(
-        allowSorting: true,
-        allowFiltering: true,
-        // allowMultiColumnSorting: true,
-        showColumnHeaderIconOnHover: true,
-        // showCheckboxColumn: true,
-        // checkboxColumnSettings: DataGridCheckboxColumnSettings(
-        //     label: Text('check'), width: 100, showCheckboxOnHeader: false),
-        // selectionMode: SelectionMode.multiple,
-        allowColumnsResizing: true,
-        onColumnResizeStart: (ColumnResizeStartDetails details) {
-          if (details.column.columnName == 'orderID') {
-            return false;
-          }
-          return true;
-        },
-        onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-          setState(() {
-            controller.columnWidths[details.column.columnName] = details.width;
-          });
-          return true;
-        },
-        source: controller.dataSource,
-        columnWidthMode: ColumnWidthMode.fill,
-        headerGridLinesVisibility: GridLinesVisibility.both,
-        gridLinesVisibility: GridLinesVisibility.both,
-        headerRowHeight: 40,
-        rowHeight: 40,
-        columns: controller.buildColumns(controller.columnWidths),
-      ),
-    );
-  }
-
-  Widget buildDataPager() {
     return Container(
-      height: controller.dataPagerHeight,
-      width: Get.width / 3,
-      child: Center(
-        child: SfDataPagerTheme(
-          data: SfDataPagerThemeData(
-            itemColor: Colors.white,
-            selectedItemColor: Colors.blue,
-          ),
-          child: SfDataPager(
-            delegate: controller.dataSource,
-            pageCount: (controller.data.length / controller.rowsPerPage)
-                .ceil()
-                .toDouble(),
-            direction: Axis.horizontal,
-          ),
-        ),
+      child: SfDataGrid(
+        source: _employeeDataSource,
+        loadMoreViewBuilder: (BuildContext context, LoadMoreRows loadMoreRows) {
+          Future<String> loadRows() async {
+            await loadMoreRows();
+            return Future<String>.value('Completed');
+          }
+
+          return FutureBuilder<String>(
+            initialData: 'loading',
+            future: loadRows(),
+            builder: (context, snapShot) {
+              if (snapShot.data == 'loading') {
+                return Container(
+                    height: 60.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: BorderDirectional(
+                            top: BorderSide(
+                                width: 1.0,
+                                color: Color.fromRGBO(0, 0, 0, 0.26)))),
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator());
+              } else {
+                return SizedBox.fromSize(size: Size.zero);
+              }
+            },
+          );
+        },
+        columns: <GridColumn>[
+          GridColumn(
+              columnName: 'id',
+              label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'ID',
+                  ))),
+          GridColumn(
+              columnName: 'name',
+              label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
+                  child: Text('Name'))),
+          GridColumn(
+              width: 120.0,
+              columnName: 'designation',
+              label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Designation',
+                    overflow: TextOverflow.ellipsis,
+                  ))),
+          GridColumn(
+              columnName: 'salary',
+              label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
+                  child: Text('Salary'))),
+        ],
       ),
     );
+  }
+
+  void _populateEmployeeData(int count) {
+    final Random _random = Random();
+    int startIndex = _employees.isNotEmpty ? _employees.length : 0,
+        endIndex = startIndex + count;
+    for (int i = startIndex; i < endIndex; i++) {
+      _employees.add(Employee(
+        1000 + i,
+        _names[_random.nextInt(_names.length - 1)],
+        _designation[_random.nextInt(_designation.length - 1)],
+        10000 + _random.nextInt(10000),
+      ));
+    }
   }
 }
 
-class DataSource extends DataGridSource {
-  DataSource({required List<dynamic> datas}) {
-    _datas = datas;
-    // _paginatedOrders =
-    //     _orders.getRange(0, _rowsPerPage).toList(growable: false);
-    buildPaginatedDataGridRows();
+final List<String> _names = <String>[
+  'Welli',
+  'Blonp',
+  'Folko',
+  'Furip',
+  'Folig',
+  'Picco',
+  'Frans',
+  'Warth',
+  'Linod',
+  'Simop',
+  'Merep',
+  'Riscu',
+  'Seves',
+  'Vaffe',
+  'Alfki'
+];
+
+final List<String> _designation = <String>[
+  'Project Lead',
+  'Developer',
+  'Manager',
+  'Designer',
+  'System Analyst',
+  'CEO'
+];
+
+class Employee {
+  Employee(this.id, this.name, this.designation, this.salary);
+
+  final int id;
+
+  final String name;
+
+  final String designation;
+
+  final int salary;
+}
+
+class EmployeeDataSource extends DataGridSource {
+  EmployeeDataSource({required List<Employee> employees}) {
+    _employeeData = employees
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+              DataGridCell<int>(columnName: 'id', value: e.id),
+              DataGridCell<String>(columnName: 'name', value: e.name),
+              DataGridCell<String>(
+                  columnName: 'designation', value: e.designation),
+              DataGridCell<int>(columnName: 'salary', value: e.salary),
+            ]))
+        .toList();
   }
 
-  void buildPaginatedDataGridRows() {
-    dataGridRows = _paginatedOrders.map<DataGridRow>((dataGridRow) {
-      return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
-        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
-        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
-        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
-      ]);
-    }).toList(growable: false);
-  }
-
-  List<dynamic> _datas = [];
-  List<dynamic> _paginatedOrders = [];
-  final int _rowsPerPage = 5;
-
-  List<DataGridRow> dataGridRows = [];
+  List<DataGridRow> _employeeData = [];
 
   @override
-  List<DataGridRow> get rows => dataGridRows;
+  List<DataGridRow> get rows => _employeeData;
+
+  void _addMoreRows(int count) {
+    final Random _random = Random();
+    int startIndex = _employeeData.isNotEmpty ? _employeeData.length : 0,
+        endIndex = startIndex + count;
+    for (int i = startIndex; i < endIndex; i++) {
+      _employeeData.add(DataGridRow(cells: [
+        DataGridCell<int>(columnName: 'id', value: 1000 + i),
+        DataGridCell<String>(
+            columnName: 'name',
+            value: _names[_random.nextInt(_names.length - 1)]),
+        DataGridCell<String>(
+            columnName: 'designation',
+            value: _designation[_random.nextInt(_designation.length - 1)]),
+        DataGridCell<int>(
+            columnName: 'salary', value: 10000 + _random.nextInt(10000)),
+      ]));
+    }
+  }
+
+  @override
+  Future<void> handleLoadMoreRows() async {
+    await Future.delayed(Duration(seconds: 5));
+    _addMoreRows(10);
+    notifyListeners();
+  }
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((dataGridCell) {
-      if (dataGridCell.columnName == 'orderID') {
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.center,
-              child: Text(
-                dataGridCell.value.toString(),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        );
-      } else {
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.center,
-              child: Text(
-                dataGridCell.value.toString(),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        );
-      }
+        cells: row.getCells().map<Widget>((e) {
+      return Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text(e.value.toString()),
+      );
     }).toList());
-  }
-
-  @override
-  // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
-  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * _rowsPerPage;
-    int endIndex = startIndex + _rowsPerPage;
-    if (startIndex < _datas.length) {
-      _paginatedOrders =
-          _datas.getRange(startIndex, endIndex).toList(growable: false);
-    } else {
-      _paginatedOrders = [];
-    }
-    buildPaginatedDataGridRows();
-    notifyListeners();
-    return true;
   }
 }
