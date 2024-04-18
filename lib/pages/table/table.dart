@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/config/color.dart';
+import 'package:namer_app/pages/table/table_controller.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -10,55 +11,7 @@ class TablePage extends StatefulWidget {
 }
 
 class _TablePageState extends State<TablePage> {
-  List<OrderInfo> _orders = [];
-
-  late OrderInfoDataSource _orderInfoDataSource;
-
-  final int _rowsPerPage = 5;
-
-  final double _dataPagerHeight = 60.0;
-
-  @override
-  void initState() {
-    _orders = getOrders();
-    _orderInfoDataSource = OrderInfoDataSource(orders: _orders);
-    super.initState();
-  }
-
-  List<OrderInfo> getOrders() {
-    return [
-      OrderInfo(10001, 'James', DateTime.now(), 200.0),
-      OrderInfo(10002, 'Kathryn', DateTime.now(), 300.0),
-      OrderInfo(10003, 'Lara', DateTime.now(), 150.0),
-      OrderInfo(10004, 'Michael', DateTime.now(), 150.0),
-      OrderInfo(10005, 'Martin', DateTime.now(), 150.0),
-      OrderInfo(10006, 'Newberry', DateTime.now(), 150.0),
-      OrderInfo(10007, 'Balnc', DateTime.now(), 150.0),
-      OrderInfo(10008, 'Perry', DateTime.now(), 150.0),
-      OrderInfo(10009, 'Gable', DateTime.now(), 150.0),
-      OrderInfo(10010, 'Grimes', DateTime.now(), 150.0),
-      OrderInfo(10001, 'a', DateTime.now(), 200.0),
-      OrderInfo(10002, 'b', DateTime.now(), 300.0),
-      OrderInfo(10003, 'c', DateTime.now(), 150.0),
-      OrderInfo(10004, 'd', DateTime.now(), 150.0),
-      OrderInfo(10005, 'e', DateTime.now(), 150.0),
-      OrderInfo(10006, 'f', DateTime.now(), 150.0),
-      OrderInfo(10007, 'g', DateTime.now(), 150.0),
-      OrderInfo(10008, 'h', DateTime.now(), 150.0),
-      OrderInfo(10009, 'i', DateTime.now(), 150.0),
-      OrderInfo(10010, 'j', DateTime.now(), 150.0),
-      OrderInfo(10001, 'a', DateTime.now(), 200.0),
-      OrderInfo(10002, 'b', DateTime.now(), 300.0),
-      OrderInfo(10003, 'c', DateTime.now(), 150.0),
-      OrderInfo(10004, 'd', DateTime.now(), 150.0),
-      OrderInfo(10005, 'e', DateTime.now(), 150.0),
-      OrderInfo(10006, 'f', DateTime.now(), 150.0),
-      OrderInfo(10007, 'g', DateTime.now(), 150.0),
-      OrderInfo(10008, 'h', DateTime.now(), 150.0),
-      OrderInfo(10009, 'i', DateTime.now(), 150.0),
-      OrderInfo(10010, 'j', DateTime.now(), 150.0)
-    ];
-  }
+  final TableController controller = Get.put(TableController());
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +22,7 @@ class _TablePageState extends State<TablePage> {
         _buildDataGrid(),
         // body
         Container(
-          height: _dataPagerHeight,
+          height: controller.dataPagerHeight,
           width: Get.width / 3,
           child: Center(
             child: SfDataPagerTheme(
@@ -81,8 +34,10 @@ class _TablePageState extends State<TablePage> {
               ),
               // pagination
               child: SfDataPager(
-                delegate: _orderInfoDataSource,
-                pageCount: (_orders.length / _rowsPerPage).ceil().toDouble(),
+                delegate: controller.dataSource,
+                pageCount: (controller.data.length / controller.rowsPerPage)
+                    .ceil()
+                    .toDouble(),
                 direction: Axis.horizontal,
                 // onPageNavigationStart: ,
                 // onPageNavigationEnd: ,
@@ -106,7 +61,7 @@ class _TablePageState extends State<TablePage> {
           headerColor: primaryLight,
           headerHoverColor: Colors.transparent),
       child: SfDataGrid(
-        source: _orderInfoDataSource,
+        source: controller.dataSource,
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
         gridLinesVisibility: GridLinesVisibility.both,
@@ -139,16 +94,16 @@ class _TablePageState extends State<TablePage> {
   }
 }
 
-class OrderInfoDataSource extends DataGridSource {
-  OrderInfoDataSource({required List<OrderInfo> orders}) {
+class DataSource extends DataGridSource {
+  DataSource({required List<dynamic> orders}) {
     _orders = orders;
     // _paginatedOrders =
     //     _orders.getRange(0, _rowsPerPage).toList(growable: false);
     buildPaginatedDataGridRows();
   }
 
-  List<OrderInfo> _orders = [];
-  List<OrderInfo> _paginatedOrders = [];
+  List<dynamic> _orders = [];
+  List<dynamic> _paginatedOrders = [];
   final int _rowsPerPage = 5;
 
   List<DataGridRow> dataGridRows = [];
@@ -218,13 +173,4 @@ class OrderInfoDataSource extends DataGridSource {
       ]);
     }).toList(growable: false);
   }
-}
-
-class OrderInfo {
-  final int orderID;
-  final String customerID;
-  final DateTime orderDate;
-  final double freight;
-
-  OrderInfo(this.orderID, this.customerID, this.orderDate, this.freight);
 }
