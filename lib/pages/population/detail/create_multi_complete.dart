@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/table/table.dart';
 
-class AddLogPost extends StatelessWidget {
+class CreateMultiComplelet extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
 
   @override
@@ -17,31 +17,7 @@ class AddLogPost extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 버튼 변경될 내용
-              Container(
-                  // child:
-                  //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  //   IconButton(
-                  //     onPressed: () {
-                  //       Get.back();
-                  //     },
-                  //     icon: Icon(Icons.arrow_back_ios),
-                  //     iconSize: 24,
-                  //     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                  //     padding: EdgeInsets.zero,
-                  //   ),
-                  // ]),
-                  ),
-              Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.50, color: Color(0xFF148FEF)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: ButtonWidget('완료', () {}).blue()),
-            ],
+            children: [],
           ),
         ),
         SizedBox(height: 16),
@@ -86,13 +62,11 @@ class AddLogPost extends StatelessWidget {
                       children: [
                         Text('Total: 2'),
                         Row(children: [
-                          PlusButtonWidget(onPressed: () {
-                            controller.sampingDetailPage("population_post");
-                          }),
+                          PlusButtonWidget(onPressed: () {}),
                         ])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),
@@ -105,16 +79,9 @@ class AddLogPost extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {
-                            controller.sampingDetailPage('sampling_sr_doc');
-                          }).blue(),
-                        ])
-                      ],
+                      children: [Text('Total: 2'), Row(children: [])],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),

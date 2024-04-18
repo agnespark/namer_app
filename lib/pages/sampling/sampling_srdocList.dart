@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/filter/filter-button/filter_button.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
-import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/new_datetime/timepicker.dart';
+import 'package:namer_app/pages/sampling/detail/sampling_log.dart';
+import 'package:namer_app/pages/sampling/detail/sampling_sr.dart';
 
-class srdocListModal extends StatelessWidget {
+class SamplingSrdocList extends StatelessWidget {
   final bool isLog;
-  final DetailController controller = Get.put(DetailController());
 
-  srdocListModal({this.isLog = true});
+  SamplingSrdocList({this.isLog = true});
   final ButtonController btn_controller = Get.put(ButtonController());
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Row(
       children: [
         Container(
           padding: EdgeInsets.all(8),
@@ -36,8 +37,8 @@ class srdocListModal extends StatelessWidget {
                     onPressed: () {
                       // controller.goBack()
                       isLog
-                          ? controller.sampingDetailPage('sampling_log')
-                          : controller.sampingDetailPage('sampling_sr');
+                          ? DetailSheet(child: SamplingLogDetail())
+                          : DetailSheet(child: SamplingSrDetail());
                     },
                     icon: Icon(Icons.arrow_back_ios),
                     iconSize: 24,
@@ -55,8 +56,8 @@ class srdocListModal extends StatelessWidget {
                   ),
                   child: ButtonWidget('완료', () {
                     isLog
-                        ? controller.sampingDetailPage('sampling_log')
-                        : controller.sampingDetailPage('sampling_sr');
+                        ? DetailSheet(child: SamplingLogDetail())
+                        : DetailSheet(child: SamplingSrDetail());
                   }).blue()),
             ],
           ),
@@ -125,7 +126,7 @@ class srdocListModal extends StatelessWidget {
             ],
           ),
           // content 영역
-        )
+        ),
       ],
     );
   }

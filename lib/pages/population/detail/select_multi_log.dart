@@ -4,8 +4,8 @@ import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 
-class PopulationPost extends StatelessWidget {
-  final DetailController controller = Get.put(DetailController());
+class SelectMultiLog extends StatelessWidget {
+  final DetailController controller = Get.find<DetailController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,7 @@ class PopulationPost extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         Get.back();
+                        // controller.index.value = 0;
                       },
                       icon: Icon(Icons.arrow_back_ios),
                       iconSize: 24,
@@ -42,9 +43,7 @@ class PopulationPost extends StatelessWidget {
                     ),
                   ),
                   child: ButtonWidget('완료', () {
-                    controller.changeDetailPage('add_log_post');
-                    controller.sampingDetailPage("add_log_post");
-                    // DetailWidget().Widget(context);
+                    controller.pageName.value = "create";
                   }).blue()),
             ],
           ),

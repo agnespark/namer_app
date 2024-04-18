@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/button/outline_button.dart';
-import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/button/plusbutton.dart';
-import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/component/button.dart';
+import 'package:namer_app/component/detail_sheet.dart';
+import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
+import 'package:namer_app/component/filter/filter-row/filter_row.dart';
+import 'package:namer_app/component/textfield/basic-textfield.dart';
+import 'package:namer_app/component/toast.dart';
+import 'package:namer_app/pages/button/button_controller.dart';
+import 'package:namer_app/pages/new_datetime/newdatetime.dart';
+import 'package:namer_app/pages/sampling/detail/sampling_log.dart';
+import 'package:namer_app/pages/sampling/detail/sampling_sr.dart';
 
-class DashboardSrDetail extends StatelessWidget {
-  final DetailController controller = Get.put(DetailController());
+class PopulationSrdocList extends StatelessWidget {
+  final bool isLog;
+
+  PopulationSrdocList({this.isLog = true});
+  final ButtonController btn_controller = Get.put(ButtonController());
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Row(
       children: [
         Container(
           padding: EdgeInsets.all(8),
@@ -24,18 +33,12 @@ class DashboardSrDetail extends StatelessWidget {
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   IconButton(
                     onPressed: () {
-                      Get.back();
+                      // controller.goBack()
+                      isLog
+                          ? DetailSheet(child: SamplingLogDetail())
+                          : DetailSheet(child: SamplingSrDetail());
                     },
-                    icon: Icon(Icons.arrow_circle_up_rounded),
-                    iconSize: 24,
-                    constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                    padding: EdgeInsets.zero,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_circle_down_rounded),
+                    icon: Icon(Icons.arrow_back_ios),
                     iconSize: 24,
                     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
                     padding: EdgeInsets.zero,
@@ -49,7 +52,11 @@ class DashboardSrDetail extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: ButtonWidget('완료', () {}).blue()),
+                  child: ButtonWidget('완료', () {
+                    isLog
+                        ? DetailSheet(child: SamplingLogDetail())
+                        : DetailSheet(child: SamplingSrDetail());
+                  }).blue()),
             ],
           ),
         ),
@@ -69,7 +76,7 @@ class DashboardSrDetail extends StatelessWidget {
                 children: [
                   Text(
                     //title 변경
-                    'Detail',
+                    '결재문서 선택',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -86,47 +93,30 @@ class DashboardSrDetail extends StatelessWidget {
           ),
           child: Column(
             children: [
-              DetailAccordion(
-                title: "Log",
-                contentWidget: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          PlusButtonWidget(onPressed: () {}),
-                        ])
-                      ],
-                    ),
-                    Text('Table')
-                  ],
+              FilterFrame(body: [
+                FilterRow(
+                  title: "DateTime",
+                  body: NewDateTimePage(),
                 ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              DetailAccordion(
-                title: "결재문서",
-                contentWidget: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {}).blue(),
-                        ])
-                      ],
-                    ),
-                    Text('Table')
-                  ],
+                FilterRow(
+                  title: 'Search',
+                  body: BasicTextField(),
                 ),
-              ),
+              ], button: [
+                ButtonWidget("text", () {
+                  ToastWidget("에러가 발생했습니다.").red();
+                }).red(),
+                ButtonWidget("text", () {
+                  ToastWidget("성공했습니다.").blue();
+                }).blue(),
+                ButtonWidget("text", () {
+                  ToastWidget("다시 시도해주세요.").green();
+                }).green(),
+              ]),
             ],
           ),
           // content 영역
-        )
+        ),
       ],
     );
   }

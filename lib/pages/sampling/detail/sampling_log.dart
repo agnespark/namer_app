@@ -6,6 +6,7 @@ import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/table/table.dart';
 
 class SamplingLogDetail extends StatelessWidget {
   final bool isBtn;
@@ -64,7 +65,7 @@ class SamplingLogDetail extends StatelessWidget {
                         }).blue(),
                       )
                     ]
-                  : [Text('')]),
+                  : []),
         ),
         SizedBox(height: 16),
         Container(
@@ -174,14 +175,15 @@ class SamplingLogDetail extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {
-                            controller.sampingDetailPage("srdoc_list_log");
-                          }).blue(),
-                        ])
+                        Row(
+                            children: isBtn
+                                ? [
+                                    ButtonWidget('결재문서 수정', () {}).blue(),
+                                  ]
+                                : [])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),

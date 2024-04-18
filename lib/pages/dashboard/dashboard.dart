@@ -1,12 +1,13 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
 import 'package:namer_app/component/confirm_dialog.dart';
-import 'package:namer_app/component/detail.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/dashboard/dashboardDetailWidget.dart';
 
 class DashboardPage extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
@@ -60,26 +61,12 @@ class DashboardPage extends StatelessWidget {
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  controller.changeDetailPage('population_detail');
-                  DetailWidget().Widget(context);
+                  DetailSheet(
+                      child: DashboardDetailWidget(
+                    detailName: "loading",
+                  ));
                 },
-                child: Text('noneSR detailPage'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  controller.changeDetailPage('population_sr_detail');
-                  DetailWidget().Widget(context);
-                },
-                child: Text('SR detailPage'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  controller.changeDetailPage('population_post');
-                  DetailWidget().Widget(context);
-                },
-                child: Text('Post Page'),
+                child: Text('none page'),
               ),
             ],
           ),

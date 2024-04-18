@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
 import 'package:namer_app/pages/button/button.dart';
-import 'package:namer_app/pages/dashboard/dashboard_detail/dashboard_detail.dart';
 import 'package:namer_app/pages/datetime/datetime.dart';
 import 'package:namer_app/pages/design/design.dart';
 import 'package:namer_app/pages/lounge/lounge.dart';
@@ -11,13 +10,11 @@ import 'package:namer_app/pages/population/population.dart';
 import 'package:namer_app/pages/sampling/sampling.dart';
 import 'package:namer_app/pages/sap/sap.dart';
 import 'package:namer_app/pages/shimmer/news_page.dart';
-import 'package:namer_app/pages/sideSheet/sideSheet.dart';
 import 'package:namer_app/pages/table/table.dart';
 import 'package:namer_app/pages/textfield/textfield.dart';
 import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/multiSelect/multiSelectPage.dart';
 import 'package:namer_app/pages/TextFiled/TextFiled.dart';
-
 import 'nav_model.dart';
 import 'pages/dashboard/dashboard.dart';
 
@@ -27,8 +24,8 @@ class MyController extends GetxController {
   Rx<WordPair> current = WordPair.random().obs;
   RxList<WordPair> favorites = <WordPair>[].obs;
 
-  Rx<Widget> currentWidget = Container(child: ButtonPage()).obs;
-  Rx<Widget> currentDetail = Container(child: DashboardDetail()).obs;
+  Rx<Widget> currentWidget = Container(child: DashboardPage()).obs;
+  Rx<Widget> currentDetail = Container().obs;
 
   late Rx<Widget> currentPost;
   Rx<String> currentMenu = "".obs;
@@ -63,7 +60,6 @@ class MyController extends GetxController {
       Menu(name: "New DateTime", page: NewDateTimePage(), depth: 0),
       Menu(name: "Shimmer", page: NewsPage(), depth: 0),
       Menu(name: "Design", page: DesignPage(), depth: 0),
-      Menu(name: "SideSheet", page: SideSheetPage(), depth: 0),
       Menu(name: "TextFieed", page: TextFiledPage(), depth: 0),
       Menu(name: "DropdownMenu", page: DropdownMenuPage(), depth: 0),
       Menu(name: "MutiSelect", page: MutiSelectPage(), depth: 0),
@@ -78,8 +74,8 @@ class MyController extends GetxController {
     currentMenu.value = name;
   }
 
-  void changeDetail(widget) {
-    currentDetail.value = widget;
+  void changeDetail(Widget widget) {
+    currentDetail.value = Container(child: widget);
   }
 
   void getNext() {

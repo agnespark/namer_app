@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/button/plusbutton.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/toast.dart';
-import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/population/detail/select_multi_log.dart';
+import 'package:namer_app/pages/sampling/sampling_srdocList.dart';
+import 'package:namer_app/pages/table/table.dart';
 
 class SamplingSrDetail extends StatelessWidget {
   final bool isBtn;
-  final DetailController controller = Get.put(DetailController());
 
   SamplingSrDetail({this.isBtn = true});
   @override
@@ -49,7 +51,7 @@ class SamplingSrDetail extends StatelessWidget {
                           ToastWidget("성공했습니다.").blue();
                         }).blue()),
                   ]
-                : [Text('')],
+                : [],
           ),
         ),
         SizedBox(height: 16),
@@ -93,14 +95,17 @@ class SamplingSrDetail extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Total: 2'),
-                        Row(children: [
-                          PlusButtonWidget(onPressed: () {
-                            controller.sampingDetailPage("population_post");
-                          }),
-                        ])
+                        Row(
+                            children: isBtn
+                                ? [
+                                    PlusButtonWidget(onPressed: () {
+                                      DetailSheet(child: SelectMultiLog());
+                                    }),
+                                  ]
+                                : [])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),
@@ -115,14 +120,17 @@ class SamplingSrDetail extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {
-                            controller.sampingDetailPage("srdoc_list_sr");
-                          }).blue(),
-                        ])
+                        Row(
+                            children: isBtn
+                                ? [
+                                    ButtonWidget('결재문서 수정', () {
+                                      DetailSheet(child: SamplingSrdocList());
+                                    }).blue(),
+                                  ]
+                                : [])
                       ],
                     ),
-                    Text('Table')
+                    TablePage(),
                   ],
                 ),
               ),

@@ -9,9 +9,12 @@ class BasicTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // width: 350,
+
       child: TextField(
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          contentPadding: EdgeInsets.symmetric(vertical: 12.5, horizontal: 16),
+          isDense: true,
+          isCollapsed: true,
           border: OutlineInputBorder(),
           hintText: hintText,
         ),
