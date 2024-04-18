@@ -10,6 +10,7 @@ class TableController extends GetxController {
   final int rowsPerPage = 5;
   final double dataPagerHeight = 60.0;
 
+  // head title 이랑 flex 받아와서 세팅
   late RxMap<String, double> columnWidths = {
     'orderID': double.nan,
     'customerID': double.nan,
@@ -21,10 +22,10 @@ class TableController extends GetxController {
   void onInit() {
     super.onInit();
     data = getOrders();
-    dataSource = DataSource(orders: data);
+    dataSource = DataSource(datas: data);
   }
 
-  // load data
+  // load data - 데이터 받아와서 세팅
   RxList<dynamic> getOrders() {
     return List.generate(
       30,
@@ -51,8 +52,10 @@ class TableController extends GetxController {
 
   GridColumn buildColumn(
       String columnName, String label, Map<String, double> columnWidths) {
+    double width = columnName == 'orderID' ? 100 : columnWidths[columnName]!;
     return GridColumn(
-      width: columnWidths[columnName]!,
+      width: width,
+      autoFitPadding: EdgeInsets.all(10.0),
       minimumWidth: 50,
       maximumWidth: Get.width / 2,
       columnName: columnName,

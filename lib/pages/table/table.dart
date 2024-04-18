@@ -37,6 +37,13 @@ class _TablePageState extends State<TablePage> {
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
       child: SfDataGrid(
+        allowSorting: true,
+        allowFiltering: true,
+        showColumnHeaderIconOnHover: true,
+        // showCheckboxColumn: true,
+        // checkboxColumnSettings: DataGridCheckboxColumnSettings(
+        //     label: Text('check'), width: 100, showCheckboxOnHeader: false),
+        // selectionMode: SelectionMode.multiple,
         allowColumnsResizing: true,
         onColumnResizeStart: (ColumnResizeStartDetails details) {
           if (details.column.columnName == 'orderID') {
@@ -85,14 +92,25 @@ class _TablePageState extends State<TablePage> {
 }
 
 class DataSource extends DataGridSource {
-  DataSource({required List<dynamic> orders}) {
-    _orders = orders;
+  DataSource({required List<dynamic> datas}) {
+    _datas = datas;
     // _paginatedOrders =
     //     _orders.getRange(0, _rowsPerPage).toList(growable: false);
     buildPaginatedDataGridRows();
   }
 
-  List<dynamic> _orders = [];
+  void buildPaginatedDataGridRows() {
+    dataGridRows = _paginatedOrders.map<DataGridRow>((dataGridRow) {
+      return DataGridRow(cells: [
+        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
+        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
+        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
+        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
+      ]);
+    }).toList(growable: false);
+  }
+
+  List<dynamic> _datas = [];
   List<dynamic> _paginatedOrders = [];
   final int _rowsPerPage = 5;
 
@@ -142,25 +160,14 @@ class DataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     int startIndex = newPageIndex * _rowsPerPage;
     int endIndex = startIndex + _rowsPerPage;
-    if (startIndex < _orders.length) {
+    if (startIndex < _datas.length) {
       _paginatedOrders =
-          _orders.getRange(startIndex, endIndex).toList(growable: false);
+          _datas.getRange(startIndex, endIndex).toList(growable: false);
     } else {
       _paginatedOrders = [];
     }
     buildPaginatedDataGridRows();
     notifyListeners();
     return true;
-  }
-
-  void buildPaginatedDataGridRows() {
-    dataGridRows = _paginatedOrders.map<DataGridRow>((dataGridRow) {
-      return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
-        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
-        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
-        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
-      ]);
-    }).toList(growable: false);
   }
 }
