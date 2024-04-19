@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -9,11 +10,13 @@ class BasicTable extends StatefulWidget {
     required this.header,
     required this.width,
     required this.data,
+    this.detail,
   }) : super(key: key);
 
   final List<String> header;
   final List<double> width;
   final List<dynamic> data;
+  final Function(int)? detail;
 
   @override
   BasicTableState createState() => BasicTableState();
@@ -29,6 +32,7 @@ class BasicTableState extends State<BasicTable> {
       header: widget.header,
       width: widget.width,
       data: widget.data,
+      detail: widget.detail,
     );
   }
 
@@ -57,9 +61,7 @@ class BasicTableState extends State<BasicTable> {
         source: dataSource,
         columns: dataSource.buildColumns(),
         onCellTap: (DataGridCellTapDetails details) {
-          print(details.rowColumnIndex.rowIndex);
-          // 행을 탭했을 때 호출됩니다.
-          // dataSource.handleRowTap(details.rowIndex);
+          widget.detail?.call(details.rowColumnIndex.rowIndex);
         },
       ),
     );
@@ -71,6 +73,7 @@ class DataSource extends DataGridSource {
     required this.header,
     required this.width,
     required this.data,
+    this.detail,
   }) {
     _data = convertToDataGridRows();
   }
@@ -78,6 +81,7 @@ class DataSource extends DataGridSource {
   final List<String> header;
   final List<double> width;
   final List<dynamic> data;
+  final Function(int)? detail;
 
   List<DataGridRow> _data = [];
 
@@ -101,13 +105,6 @@ class DataSource extends DataGridSource {
       }
       return DataGridRow(cells: []);
     }).toList();
-  }
-
-  void handleRowTap(int rowIndex) {
-    // 행이 탭되었을 때 호출됩니다.
-    // 선택된 행의 ID를 가져와서 처리합니다.
-    // onRowSelected(_data[rowIndex].getCells()[0].value);
-    print(1);
   }
 
   List<GridColumn> buildColumns() {
@@ -156,10 +153,13 @@ class DataSource extends DataGridSource {
             },
           );
         } else {
-          return Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(e.value.toString()),
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(8.0),
+              child: Text(e.value.toString()),
+            ),
           );
         }
       }).toList(),

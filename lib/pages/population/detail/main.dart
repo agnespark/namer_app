@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/pages/population/detail/create_multi_complete.dart';
 import 'package:namer_app/pages/population/detail/create_multi_log.dart';
+import 'package:namer_app/pages/population/detail/log.dart';
 import 'package:namer_app/pages/population/detail/select_multi_log.dart';
 import 'package:namer_app/pages/population/detail/population_srdocList.dart';
 
@@ -28,6 +29,8 @@ class PopulationDetailWidget extends StatelessWidget {
         return CreateMultiComplelet();
       case "srdocList":
         return PopulationSrdocList();
+      case "log":
+        return LogDetail();
       default:
         return Text("Details loaded error");
     }

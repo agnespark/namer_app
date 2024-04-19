@@ -9,17 +9,20 @@ import 'package:namer_app/component/filter/filter-button/filter_button.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/frame.dart';
+import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/main_controller.dart';
 import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/population/detail/main.dart';
+import 'package:namer_app/pages/population/population_controller.dart';
 import 'package:namer_app/pages/table/table.dart';
 
 class PopulationPage extends StatelessWidget {
   final ButtonController btn_controller = Get.put(ButtonController());
-  final DetailController controller = Get.find<DetailController>();
+  final DetailController detail_controller = Get.find<DetailController>();
+  final PopulationController controller = Get.put(PopulationController());
   PopulationPage({super.key});
 
   @override
@@ -75,13 +78,25 @@ class PopulationPage extends StatelessWidget {
               SizedBox(height: 8),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 ButtonWidget('로그 합치기', () {
-                  controller.pageName.value = 'select';
+                  detail_controller.pageName.value = 'select';
                   DetailSheet(
                     child: PopulationDetailWidget(),
                   );
                 }).blue(),
               ]),
-              TablePage(),
+              BasicTable(
+                header: controller.basicTableDataHeader,
+                data: controller.basicTableData,
+                width: controller.basicTableDataWidth,
+                detail: (int index) {
+                  controller.rowClick(index);
+                  detail_controller.pageName.value = 'log';
+                  print('here');
+                  DetailSheet(
+                    child: PopulationDetailWidget(),
+                  );
+                },
+              ),
             ],
           ),
         ));
