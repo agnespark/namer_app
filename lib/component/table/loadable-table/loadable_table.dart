@@ -50,7 +50,44 @@ class _LoadableTableState extends State<LoadableTable> {
               },
             );
           },
-          columns: controller.buildColumns(controller.columnWidths),
+          columns: <GridColumn>[
+            GridColumn(
+              columnName: 'id',
+              label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: Text('ID'),
+              ),
+            ),
+            GridColumn(
+              columnName: 'name',
+              label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: Text('Name'),
+              ),
+            ),
+            GridColumn(
+              width: 120.0,
+              columnName: 'designation',
+              label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: Text(
+                  'Designation',
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            GridColumn(
+              columnName: 'salary',
+              label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: Text('Salary'),
+              ),
+            ),
+          ],
         ),
       ),
     );

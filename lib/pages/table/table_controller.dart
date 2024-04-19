@@ -3,7 +3,13 @@ import 'package:namer_app/component/table/basic-table/basic_table.dart';
 
 class TableController extends GetxController {
   late dynamic basicTableData = [];
-  final List<String> basicTableDataHeader = [];
+  final List<String> basicTableDataHeader = [
+    "orderID",
+    "customerID",
+    "orderDate",
+    "freight"
+  ];
+  final List<int> basicTableDataWidth = [100, 200, 300, 400];
 
   @override
   void onInit() {

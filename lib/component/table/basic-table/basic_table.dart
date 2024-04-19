@@ -6,8 +6,13 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
 class BasicTable extends StatelessWidget {
-  BasicTable({Key? key}) : super(key: key);
+  BasicTable(
+      {Key? key, required this.data, required this.width, required this.header})
+      : super(key: key);
   final BasicTableController controller = Get.put(BasicTableController());
+  final List<String> header;
+  final List<dynamic> data;
+  final List<int> width;
 
   @override
   Widget build(BuildContext context) {

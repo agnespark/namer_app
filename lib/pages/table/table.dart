@@ -22,7 +22,11 @@ class _TablePageState extends State<TablePage> {
         children: [
           PaginatedTable(),
           SizedBox(height: 50),
-          BasicTable(),
+          BasicTable(
+            data: controller.basicTableData,
+            header: controller.basicTableDataHeader,
+            width: controller.basicTableDataWidth,
+          ),
           SizedBox(height: 50),
           LoadableTable()
         ],
