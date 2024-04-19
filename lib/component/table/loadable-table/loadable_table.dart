@@ -88,6 +88,11 @@ class _LoadableTableState extends State<LoadableTable> {
               ),
             ),
           ],
+          onCellTap: (DataGridCellTapDetails details) {
+            print(details.rowColumnIndex.rowIndex);
+            // 행을 탭했을 때 호출됩니다.
+            // dataSource.handleRowTap(details.rowIndex);
+          },
         ),
       ),
     );

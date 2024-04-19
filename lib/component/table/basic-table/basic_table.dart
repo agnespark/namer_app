@@ -54,6 +54,11 @@ class BasicTableState extends State<BasicTable> {
         rowHeight: 40,
         source: dataSource,
         columns: dataSource.buildColumns(),
+        onCellTap: (DataGridCellTapDetails details) {
+          print(details.rowColumnIndex.rowIndex);
+          // 행을 탭했을 때 호출됩니다.
+          // dataSource.handleRowTap(details.rowIndex);
+        },
       ),
     );
   }
@@ -95,6 +100,13 @@ class DataSource extends DataGridSource {
       // Handle other data types as needed
       return DataGridRow(cells: []);
     }).toList();
+  }
+
+  void handleRowTap(int rowIndex) {
+    // 행이 탭되었을 때 호출됩니다.
+    // 선택된 행의 ID를 가져와서 처리합니다.
+    // onRowSelected(_data[rowIndex].getCells()[0].value);
+    print(1);
   }
 
   List<GridColumn> buildColumns() {
