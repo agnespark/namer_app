@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -153,7 +152,7 @@ class DataSource extends DataGridSource {
                 onChanged: (newValue) {
                   isChecked.value = newValue!;
                   final employee = data[rowIndex];
-                  employee.checked.value = newValue;
+                  employee.checked = newValue;
                 },
               );
             },
@@ -176,10 +175,7 @@ class Employee {
   late String name;
   late String designation;
   late int salary;
-  late RxBool checked;
-
-  Employee.withRxBool(
-      this.id, this.name, this.designation, this.salary, this.checked);
+  late bool checked;
 
   Map<String, dynamic> toJson() {
     return {
@@ -187,7 +183,7 @@ class Employee {
       'name': name,
       'designation': designation,
       'salary': salary,
-      'checked': checked.value,
+      'checked': checked,
     };
   }
 }
