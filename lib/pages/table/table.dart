@@ -16,21 +16,18 @@ class _TablePageState extends State<TablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FrameWidget(
-      title: "table",
-      child: Column(
-        children: [
-          PaginatedTable(),
-          SizedBox(height: 50),
-          BasicTable(
-            data: controller.basicTableData,
-            header: controller.basicTableDataHeader,
-            width: controller.basicTableDataWidth,
-          ),
-          SizedBox(height: 50),
-          LoadableTable()
-        ],
-      ),
+    return Column(
+      children: [
+        // PaginatedTable(),
+        SizedBox(height: 8),
+        BasicTable(
+          data: controller.basicTableData,
+          header: controller.basicTableDataHeader,
+          width: controller.basicTableDataWidth,
+        ),
+        // SizedBox(height: 50),
+        // LoadableTable()
+      ],
     );
   }
 }
