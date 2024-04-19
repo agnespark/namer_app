@@ -15,8 +15,8 @@ class DropdownMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: EdgeInsets.all(0),
-      // height: 28,
+      padding: EdgeInsets.all(0),
+      height: 28,
       child: DropdownMenu<String>(
         menuStyle: MenuStyle(
           fixedSize: MaterialStatePropertyAll(Size(100, list.length * 40)),
@@ -77,6 +77,28 @@ class DropdownMenuPage extends StatelessWidget {
                       MaterialStatePropertyAll(TextStyle(fontSize: 13))));
         }).toList(),
       ),
+      // child: DropdownButton<String>(
+      //   value: controller.dropdownValue.value,
+      //   icon: const Icon(Icons.arrow_downward),
+      //   elevation: 16,
+      //   style: const TextStyle(color: Colors.deepPurple),
+      //   underline: Container(
+      //     height: 2,
+      //     color: Colors.deepPurpleAccent,
+      //   ),
+      //   onChanged: (String? value) {
+      //     // This is called when the user selects an item.
+      //     if (value != null) {
+      //       controller.changeValue(value);
+      //     }
+      //   },
+      //   items: list.map<DropdownMenuItem<String>>((String value) {
+      //     return DropdownMenuItem<String>(
+      //       value: value,
+      //       child: Text(value),
+      //     );
+      //   }).toList(),
+      // ),
     );
     // ),
   }
@@ -85,9 +107,11 @@ class DropdownMenuPage extends StatelessWidget {
 class DropdownController extends GetxController {
   static DropdownController get to => Get.find<DropdownController>();
 
-  Rx<String> dropdownValue = "".obs;
+  Rx<String> dropdownValue = "value".obs;
 
-  void changeValue(String value) {
-    dropdownValue.value = value;
+  void changeValue(String? value) {
+    if (value != null) {
+      dropdownValue.value = value;
+    }
   }
 }
