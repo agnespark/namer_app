@@ -15,8 +15,6 @@ class DropdownMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(0),
-      height: 28,
       child: DropdownMenu<String>(
         menuStyle: MenuStyle(
           fixedSize: MaterialStatePropertyAll(Size(100, list.length * 40)),
