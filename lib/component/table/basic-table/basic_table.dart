@@ -11,73 +11,35 @@ class BasicTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SfDataGridTheme(
-              data: SfDataGridThemeData(gridLineColor: borderColor),
-              child: SfDataGrid(
-                columnWidthMode: ColumnWidthMode.fill,
-                headerGridLinesVisibility: GridLinesVisibility.both,
-                gridLinesVisibility: GridLinesVisibility.both,
-                source: controller.employeeDataSource,
-                columns: <GridColumn>[
-                  GridColumn(
-                    columnName: 'id',
-                    label: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: const Text('ID'),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'name',
-                    label: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: const Text('Name'),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'designation',
-                    label: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Designation',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'salary',
-                    label: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: const Text('Salary'),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+    return Container(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SfDataGridTheme(
+            data: SfDataGridThemeData(gridLineColor: borderColor),
+            child: SfDataGrid(
+              columnWidthMode: ColumnWidthMode.fill,
+              headerGridLinesVisibility: GridLinesVisibility.both,
+              gridLinesVisibility: GridLinesVisibility.both,
+              source: controller.dataSource,
+              columns: controller.buildColumns(controller.columnWidths),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class EmployeeDataSource extends DataGridSource {
-  List<DataGridRow> employeeData = [];
+class DataSource extends DataGridSource {
+  List<DataGridRow> data = [];
 
   void addRows(List<DataGridRow> rows) {
-    employeeData.addAll(rows);
+    data.addAll(rows);
     notifyListeners();
   }
 
   @override
-  List<DataGridRow> get rows => employeeData;
+  List<DataGridRow> get rows => data;
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {

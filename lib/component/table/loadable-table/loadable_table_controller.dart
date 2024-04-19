@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/loadable-table/loadable_table.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class LoadableTableController extends GetxController {
   final EmployeeDataSource employeeDataSource = EmployeeDataSource();
@@ -21,6 +23,13 @@ class LoadableTableController extends GetxController {
     'Designer',
     'CEO'
   ];
+
+  late Map<String, double> columnWidths = {
+    'ID': double.nan,
+    'Name': double.nan,
+    'Designation': double.nan,
+    'Salary': double.nan
+  };
 
   @override
   void onInit() {
@@ -53,5 +62,35 @@ class LoadableTableController extends GetxController {
       );
     });
     employeeDataSource.addRows(newEmployees);
+  }
+
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
+    return [
+      'ID',
+      'Name',
+      'Designation',
+      'Salary',
+    ]
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    double width = columnName == 'orderID' ? 100 : columnWidths[columnName]!;
+    return GridColumn(
+      width: width,
+      autoFitPadding: EdgeInsets.all(10.0),
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
   }
 }

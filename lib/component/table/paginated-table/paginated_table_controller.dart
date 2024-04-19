@@ -11,12 +11,12 @@ class PaginatedTableController extends GetxController {
   final double dataPagerHeight = 60.0;
 
   // head title 이랑 flex 받아와서 세팅
-  late RxMap<String, double> columnWidths = {
+  late Map<String, double> columnWidths = {
     'orderID': double.nan,
     'customerID': double.nan,
     'orderDate': double.nan,
     'freight': double.nan
-  }.obs;
+  };
 
   @override
   void onInit() {

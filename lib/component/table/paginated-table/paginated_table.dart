@@ -16,11 +16,13 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        buildDataGrid(),
-        buildDataPager(),
-      ],
+    return Container(
+      child: Column(
+        children: [
+          buildDataGrid(),
+          buildDataPager(),
+        ],
+      ),
     );
   }
 

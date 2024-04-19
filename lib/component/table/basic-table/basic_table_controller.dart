@@ -1,9 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class BasicTableController extends GetxController {
-  final EmployeeDataSource employeeDataSource = EmployeeDataSource();
+  final DataSource dataSource = DataSource();
+
+  // head title 이랑 flex 받아와서 세팅
+  late Map<String, double> columnWidths = {
+    'orderID': double.nan,
+    'customerID': double.nan,
+    'orderDate': double.nan,
+    'freight': double.nan
+  };
 
   @override
   void onInit() {
@@ -24,7 +33,7 @@ class BasicTableController extends GetxController {
       Employee(10009, 'Linda', 'Administrator', 36000),
       Employee(10010, 'Michael', 'Sales Associate', 35000)
     ];
-    employeeDataSource.addRows(convertToDataGridRows(employees));
+    dataSource.addRows(convertToDataGridRows(employees));
   }
 
   List<DataGridRow> convertToDataGridRows(List<Employee> employees) {
@@ -36,5 +45,36 @@ class BasicTableController extends GetxController {
         DataGridCell<int>(columnName: 'salary', value: e.salary),
       ]);
     }).toList();
+  }
+
+  // header setting
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
+    return [
+      'orderID',
+      'customerID',
+      'orderDate',
+      'freight',
+    ]
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    double width = columnName == 'orderID' ? 100 : columnWidths[columnName]!;
+    return GridColumn(
+      width: width,
+      autoFitPadding: EdgeInsets.all(10.0),
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
   }
 }
