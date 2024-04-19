@@ -7,7 +7,7 @@ import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
 import 'package:namer_app/controller/detailContainer.dart';
-import 'package:namer_app/pages/dashboard/dashboardDetailWidget.dart';
+import 'package:namer_app/pages/dashboard/detail/main.dart';
 
 class DashboardPage extends StatelessWidget {
   final DetailController controller = Get.put(DetailController());
@@ -72,10 +72,7 @@ class DashboardPage extends StatelessWidget {
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    DetailSheet(
-                        child: DashboardDetailWidget(
-                      detailName: "loading",
-                    ));
+                    DetailSheet(child: DashboardDetailWidget());
                   },
                   child: Text('none page'),
                 ),

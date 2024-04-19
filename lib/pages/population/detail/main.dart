@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/component/shimmer/loading.dart';
 import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/pages/population/detail/create_multi_complete.dart';
 import 'package:namer_app/pages/population/detail/create_multi_log.dart';
@@ -19,7 +20,7 @@ class PopulationDetailWidget extends StatelessWidget {
   Widget buildContent(String? name) {
     switch (name) {
       case "loading":
-        return Text("Loading...", textAlign: TextAlign.center);
+        return LoadingPage();
       case "select":
         return SelectMultiLog();
       case "multi_create":
