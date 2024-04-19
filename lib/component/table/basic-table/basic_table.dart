@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class BasicTable extends StatefulWidget {
   BasicTable({
@@ -32,12 +34,36 @@ class BasicTableState extends State<BasicTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SfDataGrid(
-        source: dataSource,
-        columnWidthMode: ColumnWidthMode.auto,
-        columns: dataSource.buildColumns(),
-      ),
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+          rowHoverColor: grayLight,
+          rowHoverTextStyle: TextStyle(
+            color: blackTextColor,
+            fontSize: 14,
+          ),
+          headerColor: primaryLight,
+          headerHoverColor: Colors.transparent,
+          columnResizeIndicatorColor: primaryMain,
+          columnResizeIndicatorStrokeWidth: 2.0,
+          gridLineColor: borderColor),
+      child: Builder(builder: (context) {
+        return Builder(builder: (context) {
+          return SfDataGrid(
+            columnWidthMode: ColumnWidthMode.fill,
+            headerGridLinesVisibility: GridLinesVisibility.both,
+            gridLinesVisibility: GridLinesVisibility.both,
+            headerRowHeight: 40,
+            rowHeight: 40,
+            source: dataSource,
+            columns: dataSource.buildColumns(),
+            onCellTap: (DataGridCellTapDetails details) {
+              print(details.rowColumnIndex.rowIndex);
+              // 행을 탭했을 때 호출됩니다.
+              // dataSource.handleRowTap(details.rowIndex);
+            },
+          );
+        });
+      }),
     );
   }
 }
@@ -67,7 +93,7 @@ class DataSource extends DataGridSource {
         });
         return DataGridRow(cells: cells);
       } else if (row is Employee) {
-        // If the row is an Employee object, convert it to a Map
+        // If the row is an object, convert it to a Map
         List<DataGridCell<dynamic>> cells = [];
         Map<String, dynamic> rowData = row.toJson();
         rowData.forEach((key, value) {
@@ -75,26 +101,37 @@ class DataSource extends DataGridSource {
         });
         return DataGridRow(cells: cells);
       }
-      // Handle other data types as needed
       return DataGridRow(cells: []);
     }).toList();
   }
 
+  void handleRowTap(int rowIndex) {
+    // 행이 탭되었을 때 호출됩니다.
+    // 선택된 행의 ID를 가져와서 처리합니다.
+    // onRowSelected(_data[rowIndex].getCells()[0].value);
+    print(1);
+  }
+
   List<GridColumn> buildColumns() {
-    return List.generate(header.length, (index) {
-      return GridColumn(
-        columnName: '$index',
-        label: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            header[index],
-            overflow: TextOverflow.ellipsis,
+    List<GridColumn> columns = [];
+    for (int i = 0; i < header.length; i++) {
+      columns.add(
+        GridColumn(
+          columnName: '$i',
+          label: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              header[i],
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
+          width: width[i],
         ),
-        width: width[index],
       );
-    });
+    }
+
+    return columns;
   }
 
   @override
@@ -102,24 +139,43 @@ class DataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
+    final rowIndex = _data.indexOf(row);
     return DataGridRowAdapter(
       cells: row.getCells().map<Widget>((e) {
-        return Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
-          child: Text(e.value.toString()),
-        );
+        if (e.value is bool) {
+          final isChecked = ValueNotifier<bool>(e.value as bool);
+          return ValueListenableBuilder<bool>(
+            valueListenable: isChecked,
+            builder: (context, value, child) {
+              return Checkbox(
+                value: value,
+                onChanged: (newValue) {
+                  isChecked.value = newValue!;
+                  final employee = data[rowIndex];
+                  employee.checked = newValue;
+                },
+              );
+            },
+          );
+        } else {
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(e.value.toString()),
+          );
+        }
       }).toList(),
     );
   }
 }
 
 class Employee {
-  Employee(this.id, this.name, this.designation, this.salary);
-  final int id;
-  final String name;
-  final String designation;
-  final int salary;
+  Employee(this.id, this.name, this.designation, this.salary, this.checked);
+  late int id;
+  late String name;
+  late String designation;
+  late int salary;
+  late bool checked;
 
   Map<String, dynamic> toJson() {
     return {
@@ -127,6 +183,7 @@ class Employee {
       'name': name,
       'designation': designation,
       'salary': salary,
+      'checked': checked,
     };
   }
 }
