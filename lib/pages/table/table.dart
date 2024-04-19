@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/component/table/loadable-table/loadable_table.dart';
 import 'package:namer_app/component/table/paginated-table/paginated_table.dart';
@@ -16,21 +15,18 @@ class _TablePageState extends State<TablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FrameWidget(
-      title: "table",
-      child: Column(
-        children: [
-          PaginatedTable(),
-          SizedBox(height: 50),
-          BasicTable(
-            data: controller.basicTableData,
-            header: controller.basicTableDataHeader,
-            width: controller.basicTableDataWidth,
-          ),
-          SizedBox(height: 50),
-          LoadableTable()
-        ],
-      ),
+    return Column(
+      children: [
+        PaginatedTable(),
+        SizedBox(height: 50),
+        BasicTable(
+          data: controller.basicTableData,
+          header: controller.basicTableDataHeader,
+          width: controller.basicTableDataWidth,
+        ),
+        SizedBox(height: 50),
+        LoadableTable()
+      ],
     );
   }
 }

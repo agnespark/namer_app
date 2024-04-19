@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class BasicTable extends StatefulWidget {
   BasicTable({
@@ -32,10 +34,25 @@ class BasicTableState extends State<BasicTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+          rowHoverColor: grayLight,
+          rowHoverTextStyle: TextStyle(
+            color: blackTextColor,
+            fontSize: 14,
+          ),
+          headerColor: primaryLight,
+          headerHoverColor: Colors.transparent,
+          columnResizeIndicatorColor: primaryMain,
+          columnResizeIndicatorStrokeWidth: 2.0,
+          gridLineColor: borderColor),
       child: SfDataGrid(
+        columnWidthMode: ColumnWidthMode.fill,
+        headerGridLinesVisibility: GridLinesVisibility.both,
+        gridLinesVisibility: GridLinesVisibility.both,
+        headerRowHeight: 40,
+        rowHeight: 40,
         source: dataSource,
-        columnWidthMode: ColumnWidthMode.auto,
         columns: dataSource.buildColumns(),
       ),
     );
@@ -67,7 +84,7 @@ class DataSource extends DataGridSource {
         });
         return DataGridRow(cells: cells);
       } else if (row is Employee) {
-        // If the row is an Employee object, convert it to a Map
+        // If the row is an object, convert it to a Map
         List<DataGridCell<dynamic>> cells = [];
         Map<String, dynamic> rowData = row.toJson();
         rowData.forEach((key, value) {

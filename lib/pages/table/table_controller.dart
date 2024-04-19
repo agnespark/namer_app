@@ -9,7 +9,12 @@ class TableController extends GetxController {
     "orderDate",
     "freight"
   ];
-  final List<double> basicTableDataWidth = [100, 200, 300, 400];
+  final List<double> basicTableDataWidth = [
+    100,
+    double.nan,
+    double.nan,
+    double.nan
+  ];
 
   @override
   void onInit() {

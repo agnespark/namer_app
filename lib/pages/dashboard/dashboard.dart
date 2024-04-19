@@ -16,61 +16,63 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FrameWidget(
       title: 'Dashboard',
-      child: Column(
-        children: [
-          Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
-          SelectableText('random number'),
-          BigCard(pair: MyController.to.current),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Obx(() {
-                IconData icon;
-                if (MyController.to.favorites
-                    .contains((MyController.to.current.value))) {
-                  icon = Icons.favorite;
-                } else {
-                  icon = Icons.favorite_border;
-                }
-                return ElevatedButton.icon(
+      child: Container(
+        child: Column(
+          children: [
+            Obx(() => Text(MyController.to.currentMenu.value)), // 현재 선택된 메뉴 표시
+            SelectableText('random number'),
+            BigCard(pair: MyController.to.current),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(() {
+                  IconData icon;
+                  if (MyController.to.favorites
+                      .contains((MyController.to.current.value))) {
+                    icon = Icons.favorite;
+                  } else {
+                    icon = Icons.favorite_border;
+                  }
+                  return ElevatedButton.icon(
+                    onPressed: () {
+                      // MyController.to.toggleFavorite();
+                      DialogWidget('결재문서 매핑을 해제하시겠습니까?', () {
+                        MyController.to.toggleFavorite();
+                        Get.back();
+                        {
+                          MyController.to.favorites
+                                  .contains(MyController.to.current.value)
+                              ? ToastWidget('보관되었습니다.').blue()
+                              : ToastWidget('해제되었습니다.').green();
+                        }
+                      }).confirm();
+                    },
+                    icon: Icon(icon),
+                    label: Text('Like'),
+                  );
+                }),
+                SizedBox(width: 10),
+                ElevatedButton(
                   onPressed: () {
-                    // MyController.to.toggleFavorite();
-                    DialogWidget('결재문서 매핑을 해제하시겠습니까?', () {
-                      MyController.to.toggleFavorite();
-                      Get.back();
-                      {
-                        MyController.to.favorites
-                                .contains(MyController.to.current.value)
-                            ? ToastWidget('보관되었습니다.').blue()
-                            : ToastWidget('해제되었습니다.').green();
-                      }
-                    }).confirm();
+                    MyController.to.getNext();
                   },
-                  icon: Icon(icon),
-                  label: Text('Like'),
-                );
-              }),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyController.to.getNext();
-                },
-                child: Text('Next'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  DetailSheet(
-                      child: DashboardDetailWidget(
-                    detailName: "loading",
-                  ));
-                },
-                child: Text('none page'),
-              ),
-            ],
-          ),
-        ],
+                  child: Text('Next'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    DetailSheet(
+                        child: DashboardDetailWidget(
+                      detailName: "loading",
+                    ));
+                  },
+                  child: Text('none page'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
