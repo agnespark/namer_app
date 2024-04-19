@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
-import 'package:namer_app/controller/detailContainer.dart';
 
 class PopulationController extends GetxController {
   late RxList<Employee> basicTableData = RxList();

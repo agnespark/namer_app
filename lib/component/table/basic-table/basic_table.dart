@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -11,12 +10,14 @@ class BasicTable extends StatefulWidget {
     required this.width,
     required this.data,
     this.detail,
+    this.isCheckable = true,
   }) : super(key: key);
 
   final List<String> header;
   final List<double> width;
   final List<dynamic> data;
   final Function(int)? detail;
+  final bool isCheckable;
 
   @override
   BasicTableState createState() => BasicTableState();
@@ -58,10 +59,19 @@ class BasicTableState extends State<BasicTable> {
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
+        showCheckboxColumn: widget.isCheckable ? true : false,
+        // checkboxColumnSettings:
+        //       DataGridCheckboxColumnSettings(backgroundColor: Colors.yellow),
+        selectionMode:
+            widget.isCheckable ? SelectionMode.multiple : SelectionMode.none,
         source: dataSource,
         columns: dataSource.buildColumns(),
         onCellTap: (DataGridCellTapDetails details) {
-          widget.detail?.call(details.rowColumnIndex.rowIndex);
+          if (widget.isCheckable) {
+            return;
+          } else {
+            widget.detail?.call(details.rowColumnIndex.rowIndex);
+          }
         },
       ),
     );
