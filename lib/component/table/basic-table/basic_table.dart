@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -46,20 +47,24 @@ class BasicTableState extends State<BasicTable> {
           columnResizeIndicatorColor: primaryMain,
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
-      child: SfDataGrid(
-        columnWidthMode: ColumnWidthMode.fill,
-        headerGridLinesVisibility: GridLinesVisibility.both,
-        gridLinesVisibility: GridLinesVisibility.both,
-        headerRowHeight: 40,
-        rowHeight: 40,
-        source: dataSource,
-        columns: dataSource.buildColumns(),
-        onCellTap: (DataGridCellTapDetails details) {
-          print(details.rowColumnIndex.rowIndex);
-          // 행을 탭했을 때 호출됩니다.
-          // dataSource.handleRowTap(details.rowIndex);
-        },
-      ),
+      child: Builder(builder: (context) {
+        return Builder(builder: (context) {
+          return SfDataGrid(
+            columnWidthMode: ColumnWidthMode.fill,
+            headerGridLinesVisibility: GridLinesVisibility.both,
+            gridLinesVisibility: GridLinesVisibility.both,
+            headerRowHeight: 40,
+            rowHeight: 40,
+            source: dataSource,
+            columns: dataSource.buildColumns(),
+            onCellTap: (DataGridCellTapDetails details) {
+              print(details.rowColumnIndex.rowIndex);
+              // 행을 탭했을 때 호출됩니다.
+              // dataSource.handleRowTap(details.rowIndex);
+            },
+          );
+        });
+      }),
     );
   }
 }
@@ -97,7 +102,6 @@ class DataSource extends DataGridSource {
         });
         return DataGridRow(cells: cells);
       }
-      // Handle other data types as needed
       return DataGridRow(cells: []);
     }).toList();
   }
@@ -110,20 +114,25 @@ class DataSource extends DataGridSource {
   }
 
   List<GridColumn> buildColumns() {
-    return List.generate(header.length, (index) {
-      return GridColumn(
-        columnName: '$index',
-        label: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            header[index],
-            overflow: TextOverflow.ellipsis,
+    List<GridColumn> columns = [];
+    for (int i = 0; i < header.length; i++) {
+      columns.add(
+        GridColumn(
+          columnName: '$i',
+          label: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              header[i],
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
+          width: width[i],
         ),
-        width: width[index],
       );
-    });
+    }
+
+    return columns;
   }
 
   @override
@@ -131,24 +140,46 @@ class DataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
+    final rowIndex = _data.indexOf(row);
     return DataGridRowAdapter(
       cells: row.getCells().map<Widget>((e) {
-        return Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
-          child: Text(e.value.toString()),
-        );
+        if (e.value is bool) {
+          final isChecked = ValueNotifier<bool>(e.value as bool);
+          return ValueListenableBuilder<bool>(
+            valueListenable: isChecked,
+            builder: (context, value, child) {
+              return Checkbox(
+                value: value,
+                onChanged: (newValue) {
+                  isChecked.value = newValue!;
+                  final employee = data[rowIndex];
+                  employee.checked.value = newValue;
+                },
+              );
+            },
+          );
+        } else {
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(e.value.toString()),
+          );
+        }
       }).toList(),
     );
   }
 }
 
 class Employee {
-  Employee(this.id, this.name, this.designation, this.salary);
-  final int id;
-  final String name;
-  final String designation;
-  final int salary;
+  Employee(this.id, this.name, this.designation, this.salary, this.checked);
+  late int id;
+  late String name;
+  late String designation;
+  late int salary;
+  late RxBool checked;
+
+  Employee.withRxBool(
+      this.id, this.name, this.designation, this.salary, this.checked);
 
   Map<String, dynamic> toJson() {
     return {
@@ -156,6 +187,7 @@ class Employee {
       'name': name,
       'designation': designation,
       'salary': salary,
+      'checked': checked.value,
     };
   }
 }

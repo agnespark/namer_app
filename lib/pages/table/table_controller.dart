@@ -2,15 +2,17 @@ import 'package:get/get.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
 
 class TableController extends GetxController {
-  late List<Employee> basicTableData = [];
+  late RxList<Employee> basicTableData = RxList();
   final List<String> basicTableDataHeader = [
     "orderID",
     "customerID",
     "orderDate",
-    "freight"
+    "freight",
+    "check"
   ];
   final List<double> basicTableDataWidth = [
     100,
+    double.nan,
     double.nan,
     double.nan,
     double.nan
@@ -24,16 +26,16 @@ class TableController extends GetxController {
 
   void loadData() {
     basicTableData.addAll([
-      Employee(10001, 'Jack', 'Manager', 120000),
-      Employee(10002, 'Perry', 'Project Lead', 80000),
-      Employee(10003, 'Lara', 'Developer', 45000),
-      Employee(10004, 'Ellis', 'Developer', 43000),
-      Employee(10005, 'Adams', 'Developer', 41000),
-      Employee(10006, 'Owens', 'QA Testing', 40000),
-      Employee(10007, 'Balnc', 'UX Designer', 39000),
-      Employee(10008, 'Steve', 'Support', 37000),
-      Employee(10009, 'Linda', 'Administrator', 36000),
-      Employee(10010, 'Michael', 'Sales Associate', 35000),
+      Employee(10001, 'Jack', 'Manager', 120000, true.obs),
+      Employee(10002, 'Perry', 'Project Lead', 80000, true.obs),
+      Employee(10003, 'Lara', 'Developer', 45000, false.obs),
+      Employee(10004, 'Ellis', 'Developer', 43000, true.obs),
+      Employee(10005, 'Adams', 'Developer', 41000, true.obs),
+      Employee(10006, 'Owens', 'QA Testing', 40000, true.obs),
+      Employee(10007, 'Balnc', 'UX Designer', 39000, true.obs),
+      Employee(10008, 'Steve', 'Support', 37000, true.obs),
+      Employee(10009, 'Linda', 'Administrator', 36000, true.obs),
+      Employee(10010, 'Michael', 'Sales Associate', 35000, true.obs),
     ]);
   }
 }
