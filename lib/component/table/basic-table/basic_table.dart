@@ -1,50 +1,104 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:namer_app/component/table/basic-table/basic_table_controller.dart';
-import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
 
-class BasicTable extends StatelessWidget {
-  BasicTable(
-      {Key? key, required this.data, required this.width, required this.header})
-      : super(key: key);
-  final BasicTableController controller = Get.put(BasicTableController());
+class BasicTable extends StatefulWidget {
+  BasicTable({
+    Key? key,
+    required this.header,
+    required this.width,
+    required this.data,
+  }) : super(key: key);
+
   final List<String> header;
+  final List<double> width;
   final List<dynamic> data;
-  final List<int> width;
+
+  @override
+  BasicTableState createState() => BasicTableState();
+}
+
+class BasicTableState extends State<BasicTable> {
+  late DataSource dataSource;
+
+  @override
+  void initState() {
+    super.initState();
+    dataSource = DataSource(
+      header: widget.header,
+      width: widget.width,
+      data: widget.data,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return SfDataGridTheme(
-            data: SfDataGridThemeData(gridLineColor: borderColor),
-            child: SfDataGrid(
-              columnWidthMode: ColumnWidthMode.fill,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              gridLinesVisibility: GridLinesVisibility.both,
-              source: controller.dataSource,
-              columns: controller.buildColumns(controller.columnWidths),
-            ),
-          );
-        },
+      child: SfDataGrid(
+        source: dataSource,
+        columnWidthMode: ColumnWidthMode.auto,
+        columns: dataSource.buildColumns(),
       ),
     );
   }
 }
 
 class DataSource extends DataGridSource {
-  List<DataGridRow> data = [];
+  DataSource({
+    required this.header,
+    required this.width,
+    required this.data,
+  }) {
+    _data = convertToDataGridRows();
+  }
 
-  void addRows(List<DataGridRow> rows) {
-    data.addAll(rows);
-    notifyListeners();
+  final List<String> header;
+  final List<double> width;
+  final List<dynamic> data;
+
+  List<DataGridRow> _data = [];
+
+  List<DataGridRow> convertToDataGridRows() {
+    return data.map<DataGridRow>((row) {
+      if (row is Map<String, dynamic>) {
+        // If the row is a Map, assume it is already in the correct format
+        List<DataGridCell<dynamic>> cells = [];
+        row.forEach((key, value) {
+          cells.add(DataGridCell<dynamic>(columnName: key, value: value));
+        });
+        return DataGridRow(cells: cells);
+      } else if (row is Employee) {
+        // If the row is an Employee object, convert it to a Map
+        List<DataGridCell<dynamic>> cells = [];
+        Map<String, dynamic> rowData = row.toJson();
+        rowData.forEach((key, value) {
+          cells.add(DataGridCell<dynamic>(columnName: key, value: value));
+        });
+        return DataGridRow(cells: cells);
+      }
+      // Handle other data types as needed
+      return DataGridRow(cells: []);
+    }).toList();
+  }
+
+  List<GridColumn> buildColumns() {
+    return List.generate(header.length, (index) {
+      return GridColumn(
+        columnName: '$index',
+        label: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            header[index],
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        width: width[index],
+      );
+    });
   }
 
   @override
-  List<DataGridRow> get rows => data;
+  List<DataGridRow> get rows => _data;
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
@@ -66,4 +120,13 @@ class Employee {
   final String name;
   final String designation;
   final int salary;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'designation': designation,
+      'salary': salary,
+    };
+  }
 }
