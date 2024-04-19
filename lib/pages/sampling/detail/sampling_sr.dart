@@ -25,20 +25,7 @@ class SamplingSrDetail extends StatelessWidget {
             children: isBtn
                 ? [
                     // 버튼 변경될 내용
-                    Container(
-                        // child:
-                        //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                        //   IconButton(
-                        //     onPressed: () {
-                        //       Get.back();
-                        //     },
-                        //     icon: Icon(Icons.arrow_back_ios),
-                        //     iconSize: 24,
-                        //     constraints: BoxConstraints(minHeight: 24, minWidth: 24),
-                        //     padding: EdgeInsets.zero,
-                        //   ),
-                        // ]),
-                        ),
+                    Container(),
                     Container(
                         decoration: ShapeDecoration(
                           shape: RoundedRectangleBorder(
