@@ -46,24 +46,22 @@ class BasicTableState extends State<BasicTable> {
           columnResizeIndicatorColor: primaryMain,
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
-      child: Builder(builder: (context) {
-        return Builder(builder: (context) {
-          return SfDataGrid(
-            columnWidthMode: ColumnWidthMode.fill,
-            headerGridLinesVisibility: GridLinesVisibility.both,
-            gridLinesVisibility: GridLinesVisibility.both,
-            headerRowHeight: 40,
-            rowHeight: 40,
-            source: dataSource,
-            columns: dataSource.buildColumns(),
-            onCellTap: (DataGridCellTapDetails details) {
-              print(details.rowColumnIndex.rowIndex);
-              // 행을 탭했을 때 호출됩니다.
-              // dataSource.handleRowTap(details.rowIndex);
-            },
-          );
-        });
-      }),
+      child: SfDataGrid(
+        rowsPerPage: dataSource._data.length,
+        shrinkWrapRows: true,
+        columnWidthMode: ColumnWidthMode.fill,
+        headerGridLinesVisibility: GridLinesVisibility.both,
+        gridLinesVisibility: GridLinesVisibility.both,
+        headerRowHeight: 40,
+        rowHeight: 40,
+        source: dataSource,
+        columns: dataSource.buildColumns(),
+        onCellTap: (DataGridCellTapDetails details) {
+          print(details.rowColumnIndex.rowIndex);
+          // 행을 탭했을 때 호출됩니다.
+          // dataSource.handleRowTap(details.rowIndex);
+        },
+      ),
     );
   }
 }
