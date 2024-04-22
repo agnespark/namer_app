@@ -12,10 +12,12 @@ class PopulationController extends GetxController {
     "customerID",
     "orderDate",
     "freight",
-    "check"
+    "check",
+    "download"
   ];
   final List<double> basicTableDataWidth = [
     100,
+    double.nan,
     double.nan,
     double.nan,
     double.nan,
@@ -32,11 +34,13 @@ class PopulationController extends GetxController {
   }
 
   void detailClick(int index) {
-    rowIndex.value = index;
-    detail_controller.pageName.value = 'log';
+    detail_controller.pageName.value = 'loading';
     DetailSheet(
       child: PopulationDetailWidget(),
     );
+    Future.delayed(Duration(seconds: 2), () {
+      detail_controller.pageName.value = 'log';
+    });
   }
 
   @override

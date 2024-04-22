@@ -13,7 +13,7 @@ class BasicTable extends StatefulWidget {
     required this.data,
     this.detail,
     this.isCheckable = false,
-    this.isDeletable = true,
+    this.isDeletable = false,
   }) : super(key: key);
 
   final List<String> header;
@@ -78,6 +78,8 @@ class BasicTableState extends State<BasicTable> {
                 : SelectionMode.none,
         onSelectionChanged:
             (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+          final index = dataSource._data.indexOf(addedRows.last);
+          print(widget.data[index]);
           var selectedIndex = dataGridController.selectedIndex;
           var selectedRow = dataGridController.currentCell;
           var selectedRows = dataGridController.selectedRows;
