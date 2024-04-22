@@ -78,18 +78,14 @@ class BasicTableState extends State<BasicTable> {
                 : SelectionMode.none,
         onSelectionChanged:
             (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
-          if (addedRows.isNotEmpty) {
-            // https://help.syncfusion.com/flutter/datagrid/column-types#checkbox-column
-            var selectedIndex = dataGridController.selectedIndex;
-            var selectedRow = dataGridController.selectedRow;
-            var selectedRows = dataGridController.selectedRows;
-
-            DialogWidget("삭제하시겠습니까?", () {
-              print(selectedIndex);
-              print(selectedRow);
-              print(selectedRows);
-            }).delete();
-          }
+          var selectedIndex = dataGridController.selectedIndex;
+          var selectedRow = dataGridController.currentCell;
+          var selectedRows = dataGridController.selectedRows;
+          // print(selectedIndex);
+          // print(selectedRow);
+          DialogWidget("삭제하시겠습니까?", () {
+            dataGridController.selectedIndex = -1;
+          }).delete();
         },
         checkboxShape: CircleBorder(),
         source: dataSource,
