@@ -76,6 +76,7 @@ class PopulationPage extends StatelessWidget {
                   controller.logCombineClick();
                 }).blue(),
               ]),
+              // 여기에서 if문을 걸고 로딩뷰 / 로딩이 다 끝나면 table이 나오도록 해야 함
               BasicTable(
                 header: controller.basicTableDataHeader,
                 data: controller.basicTableData,

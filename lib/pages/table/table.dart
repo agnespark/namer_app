@@ -32,7 +32,7 @@ class _TablePageState extends State<TablePage> {
             width: controller.basicTableDataWidth,
           ),
         ),
-        SizedBox(height: 50),
+        // SizedBox(height: 50),
         // LoadableTable()
       ],
     );
