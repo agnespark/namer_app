@@ -12,6 +12,8 @@ class PaginatedTable extends StatefulWidget {
     required this.header,
     required this.width,
     required this.data,
+    required this.rowsPerPage,
+    required this.totalPage,
     this.detail,
     this.isCheckable = false,
     this.isDeletable = false,
@@ -20,6 +22,8 @@ class PaginatedTable extends StatefulWidget {
   final List<String> header;
   final List<double> width;
   final List<dynamic> data;
+  final int rowsPerPage;
+  final int totalPage;
   final Function(int)? detail;
   final bool isCheckable;
   final bool isDeletable;
@@ -39,6 +43,8 @@ class _PaginatedTableState extends State<PaginatedTable> {
     super.initState();
     dataSource = DataSource(
       datas: widget.data,
+      header: widget.header,
+      rowsPerPage: widget.rowsPerPage,
     );
     columnWidths = <String, double>{}.obs;
     for (int i = 0; i < widget.header.length; i++) {
@@ -181,7 +187,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
           ),
           child: SfDataPager(
             delegate: dataSource,
-            pageCount: (widget.data.length / 5).toDouble(),
+            pageCount: widget.totalPage.toDouble(),
             direction: Axis.horizontal,
             onPageNavigationStart: (int pageIndex) {
               showLoadingIndicator.value = true;
@@ -224,16 +230,22 @@ class _PaginatedTableState extends State<PaginatedTable> {
 }
 
 class DataSource extends DataGridSource {
-  DataSource({required List<dynamic> datas}) {
+  DataSource(
+      {required List<dynamic> datas,
+      required List<String> header,
+      required int rowsPerPage}) {
     print(datas);
     _datas = datas;
-    paginatedOrders = datas.getRange(0, rowsPerPage).toList(growable: false);
-    buildPaginatedDataGridRows();
+    _rowsPerPage = rowsPerPage;
+    _header = header;
+    paginatedOrders = datas.getRange(0, _rowsPerPage).toList(growable: false);
+    buildPaginatedDataGridRows(_header);
   }
 
+  int _rowsPerPage = 0;
+  List<String> _header = [];
   List<dynamic> _datas = [];
   List<dynamic> paginatedOrders = [];
-  final int rowsPerPage = 5;
 
   List<DataGridRow> dataGridRows = [];
 
@@ -263,13 +275,13 @@ class DataSource extends DataGridSource {
   @override
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * rowsPerPage;
-    int endIndex = startIndex + rowsPerPage;
+    int startIndex = newPageIndex * _rowsPerPage;
+    int endIndex = startIndex + _rowsPerPage;
     if (startIndex < _datas.length && endIndex <= _datas.length) {
       await Future.delayed(Duration(milliseconds: 1000));
       paginatedOrders =
           _datas.getRange(startIndex, endIndex).toList(growable: false);
-      buildPaginatedDataGridRows();
+      buildPaginatedDataGridRows(_header);
       notifyListeners();
     } else {
       paginatedOrders = [];
@@ -278,14 +290,22 @@ class DataSource extends DataGridSource {
     return true;
   }
 
-  void buildPaginatedDataGridRows() {
+  void buildPaginatedDataGridRows(List<String> _header) {
     dataGridRows = paginatedOrders.map<DataGridRow>((dataGridRow) {
-      return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
-        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
-        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
-        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
-      ]);
+      List<DataGridCell> cells = [];
+      var dataMap = (dataGridRow as OrderInfo).toMap();
+      print(dataMap);
+
+      for (var columnName in _header) {
+        print(columnName);
+        print(dataMap[columnName]);
+        var value = dataMap[columnName.toLowerCase()];
+        print(value);
+
+        cells.add(DataGridCell(columnName: columnName, value: value));
+      }
+
+      return DataGridRow(cells: cells);
     }).toList(growable: false);
   }
 }
@@ -300,7 +320,7 @@ class OrderInfo {
 
   Map<String, dynamic> toJson() {
     return {
-      'orderID': customerID,
+      'orderID': orderID,
       'customerID': customerID,
       'orderDate': orderDate,
       'freight': freight,

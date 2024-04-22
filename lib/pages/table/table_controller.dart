@@ -5,6 +5,8 @@ import 'package:namer_app/component/table/paginated-table/paginated_table.dart';
 class TableController extends GetxController {
   late RxList<Employee> basicTableData = RxList();
   late RxList<OrderInfo> paginatedTableData = RxList();
+  final int rowsPerPage = 5;
+  final int totalPage = 3;
 
   final List<String> basicTableDataHeader = [
     "orderID",
@@ -37,16 +39,19 @@ class TableController extends GetxController {
     "freight",
   ];
 
-  List<OrderInfo> getOrders() {
-    return List.generate(
-      30,
-      (index) => OrderInfo(
-        index + 10001,
-        String.fromCharCode('a'.codeUnitAt(0) + index),
-        DateTime.now(),
-        150.0,
-      ),
-    );
+  dynamic pageClicked(int page) {
+    paginatedTableData.clear();
+    paginatedTableData.addAll([
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+    ]);
   }
 
   @override

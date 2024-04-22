@@ -62,7 +62,7 @@ class BasicTableState extends State<BasicTable> {
           columnResizeIndicatorColor: primaryMain,
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
-      child: Obx(() {
+      child: Builder(builder: (context) {
         return SfDataGrid(
           allowColumnsResizing: true,
           onColumnResizeStart: (ColumnResizeStartDetails details) {
