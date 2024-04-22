@@ -16,14 +16,23 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          SizedBox(child: _buildStack()),
-          buildDataGrid(),
-          buildDataPager(),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double pagerHeight = 60.0;
+
+        return Column(
+          children: [
+            SizedBox(
+              height: constraints.maxHeight - 60,
+              child: buildStack(constraints),
+            ),
+            Container(
+              height: pagerHeight,
+              child: buildDataPager(),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -108,7 +117,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
     );
   }
 
-  Widget _buildStack() {
+  Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
       final List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid());
@@ -116,8 +125,8 @@ class _PaginatedTableState extends State<PaginatedTable> {
       if (controller.showLoadingIndicator.value) {
         stackChildren.add(Container(
             color: Colors.black12,
-            width: Get.width,
-            height: Get.height,
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
             child: Align(
                 alignment: Alignment.center,
                 child: CircularProgressIndicator(
