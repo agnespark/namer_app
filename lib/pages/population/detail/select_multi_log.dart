@@ -24,8 +24,9 @@ class SelectMultiLog extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        Get.back();
-                        // controller.index.value = 0;
+                        // 처음 들어갔을때 , 수정으로 들어갔을 때 경로가 다름
+                        // Get.back();
+                        controller.pageName.value = "multi_create";
                       },
                       icon: Icon(Icons.arrow_back_ios),
                       iconSize: 24,

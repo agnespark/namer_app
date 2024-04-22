@@ -72,6 +72,7 @@ class DashboardPage extends StatelessWidget {
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
+                    controller.pageName.value = "loading";
                     DetailSheet(child: DashboardDetailWidget());
                   },
                   child: Text('none page'),
