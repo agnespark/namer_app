@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/config/color.dart';
@@ -29,6 +30,7 @@ class BasicTable extends StatefulWidget {
 
 class BasicTableState extends State<BasicTable> {
   late DataSource dataSource;
+  late RxMap<String, double> columnWidths;
   final DataGridController dataGridController = DataGridController();
 
   @override
@@ -40,6 +42,10 @@ class BasicTableState extends State<BasicTable> {
       data: widget.data,
       detail: widget.detail,
     );
+    columnWidths = <String, double>{}.obs;
+    for (int i = 0; i < widget.header.length; i++) {
+      columnWidths[widget.header[i]] = widget.width[i];
+    }
   }
 
   @override
@@ -56,50 +62,85 @@ class BasicTableState extends State<BasicTable> {
           columnResizeIndicatorColor: primaryMain,
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
-      child: SfDataGrid(
-        controller: dataGridController,
-        rowsPerPage: dataSource._data.length,
-        shrinkWrapRows: true,
-        columnWidthMode: ColumnWidthMode.fill,
-        headerGridLinesVisibility: GridLinesVisibility.both,
-        gridLinesVisibility: GridLinesVisibility.both,
-        headerRowHeight: 40,
-        rowHeight: 40,
-        showCheckboxColumn:
-            widget.isCheckable | widget.isDeletable ? true : false,
-        checkboxColumnSettings: widget.isDeletable
-            ? DataGridCheckboxColumnSettings(
-                label: Text("삭제"), showCheckboxOnHeader: false)
-            : DataGridCheckboxColumnSettings(),
-        selectionMode: widget.isCheckable
-            ? SelectionMode.multiple
-            : widget.isDeletable
-                ? SelectionMode.single
-                : SelectionMode.none,
-        onSelectionChanged:
-            (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
-          final index = dataSource._data.indexOf(addedRows.last);
-          print(widget.data[index]);
-          var selectedIndex = dataGridController.selectedIndex;
-          var selectedRow = dataGridController.currentCell;
-          var selectedRows = dataGridController.selectedRows;
-          // print(selectedIndex);
-          // print(selectedRow);
-          DialogWidget("삭제하시겠습니까?", () {
-            dataGridController.selectedIndex = -1;
-          }).delete();
-        },
-        checkboxShape: CircleBorder(),
-        source: dataSource,
-        columns: dataSource.buildColumns(),
-        onCellTap: (DataGridCellTapDetails details) {
-          if (widget.isCheckable) {
-            return;
-          } else if (widget.isDeletable) {
-          } else {
-            widget.detail?.call(details.rowColumnIndex.rowIndex);
-          }
-        },
+      child: Obx(() {
+        return SfDataGrid(
+          allowColumnsResizing: true,
+          onColumnResizeStart: (ColumnResizeStartDetails details) {
+            return true;
+          },
+          onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
+            columnWidths[details.column.columnName] = details.width;
+            return true;
+          },
+          controller: dataGridController,
+          rowsPerPage: dataSource._data.length,
+          shrinkWrapRows: true,
+          columnWidthMode: ColumnWidthMode.fill,
+          headerGridLinesVisibility: GridLinesVisibility.both,
+          gridLinesVisibility: GridLinesVisibility.both,
+          headerRowHeight: 40,
+          rowHeight: 40,
+          showCheckboxColumn:
+              widget.isCheckable | widget.isDeletable ? true : false,
+          checkboxColumnSettings: widget.isDeletable
+              ? DataGridCheckboxColumnSettings(
+                  label: Text("삭제"), showCheckboxOnHeader: false)
+              : DataGridCheckboxColumnSettings(),
+          selectionMode: widget.isCheckable
+              ? SelectionMode.multiple
+              : widget.isDeletable
+                  ? SelectionMode.single
+                  : SelectionMode.none,
+          onSelectionChanged:
+              (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+            final index = dataSource._data.indexOf(addedRows.last);
+            print(widget.data[index]);
+            var selectedIndex = dataGridController.selectedIndex;
+            var selectedRow = dataGridController.currentCell;
+            var selectedRows = dataGridController.selectedRows;
+            // print(selectedIndex);
+            // print(selectedRow);
+            DialogWidget("삭제하시겠습니까?", () {
+              dataGridController.selectedIndex = -1;
+            }).delete();
+          },
+          checkboxShape: CircleBorder(),
+          source: dataSource,
+          columns: buildColumns(columnWidths),
+          onCellTap: (DataGridCellTapDetails details) {
+            if (widget.isCheckable) {
+              return;
+            } else if (widget.isDeletable) {
+            } else {
+              widget.detail?.call(details.rowColumnIndex.rowIndex);
+            }
+          },
+        );
+      }),
+    );
+  }
+
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
+    return widget.header
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    double width = columnWidths[columnName]!;
+    return GridColumn(
+      width: width,
+      autoFitPadding: EdgeInsets.all(10.0),
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }
@@ -142,28 +183,6 @@ class DataSource extends DataGridSource {
       }
       return DataGridRow(cells: []);
     }).toList();
-  }
-
-  List<GridColumn> buildColumns() {
-    List<GridColumn> columns = [];
-    for (int i = 0; i < header.length; i++) {
-      columns.add(
-        GridColumn(
-          columnName: '$i',
-          label: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              header[i],
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: width[i],
-        ),
-      );
-    }
-
-    return columns;
   }
 
   @override

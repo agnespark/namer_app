@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -31,6 +32,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
   late DataSource dataSource;
   late RxMap<String, double> columnWidths;
   RxBool showLoadingIndicator = true.obs;
+  final DataGridController dataGridController = DataGridController();
 
   @override
   void initState() {
@@ -92,9 +94,6 @@ class _PaginatedTableState extends State<PaginatedTable> {
         // selectionMode: SelectionMode.multiple,
         allowColumnsResizing: true,
         onColumnResizeStart: (ColumnResizeStartDetails details) {
-          if (details.column.columnName == 'orderID') {
-            return false;
-          }
           return true;
         },
         onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
@@ -102,16 +101,44 @@ class _PaginatedTableState extends State<PaginatedTable> {
           return true;
         },
         source: dataSource,
+        shrinkWrapRows: true,
+
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
         columns: buildColumns(columnWidths),
+        showCheckboxColumn:
+            widget.isCheckable | widget.isDeletable ? true : false,
+        checkboxColumnSettings: widget.isDeletable
+            ? DataGridCheckboxColumnSettings(
+                label: Text("삭제"), showCheckboxOnHeader: false)
+            : DataGridCheckboxColumnSettings(),
+        selectionMode: widget.isCheckable
+            ? SelectionMode.multiple
+            : widget.isDeletable
+                ? SelectionMode.single
+                : SelectionMode.none,
+        onSelectionChanged:
+            (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+          var selectedIndex = dataGridController.selectedIndex;
+          var selectedRow = dataGridController.currentCell;
+          var selectedRows = dataGridController.selectedRows;
+          // print(selectedIndex);
+          // print(selectedRow);
+          DialogWidget("삭제하시겠습니까?", () {
+            dataGridController.selectedIndex = -1;
+          }).delete();
+        },
+        checkboxShape: CircleBorder(),
         onCellTap: (DataGridCellTapDetails details) {
-          print(details.rowColumnIndex.rowIndex);
-          // 행을 탭했을 때 호출됩니다.
-          // dataSource.handleRowTap(details.rowIndex);
+          if (widget.isCheckable) {
+            return;
+          } else if (widget.isDeletable) {
+          } else {
+            widget.detail?.call(details.rowColumnIndex.rowIndex);
+          }
         },
       ),
     );
