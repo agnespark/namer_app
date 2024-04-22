@@ -1,19 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
 class PaginatedTable extends StatefulWidget {
+  PaginatedTable({
+    Key? key,
+    required this.header,
+    required this.width,
+    required this.data,
+    this.detail,
+    this.isCheckable = false,
+    this.isDeletable = false,
+  }) : super(key: key);
+
+  final List<String> header;
+  final List<double> width;
+  final List<dynamic> data;
+  final Function(int)? detail;
+  final bool isCheckable;
+  final bool isDeletable;
+
   @override
   State<PaginatedTable> createState() => _PaginatedTableState();
 }
 
 class _PaginatedTableState extends State<PaginatedTable> {
-  final PaginatedTableController controller =
-      Get.put(PaginatedTableController());
+  late DataSource dataSource;
+  late RxMap<String, double> columnWidths;
+  RxBool showLoadingIndicator = true.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    dataSource = DataSource(
+      datas: widget.data,
+    );
+    columnWidths = <String, double>{}.obs;
+    for (int i = 0; i < widget.header.length; i++) {
+      columnWidths[widget.header[i]] = widget.width[i];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +50,20 @@ class _PaginatedTableState extends State<PaginatedTable> {
       builder: (context, constraints) {
         final double pagerHeight = 60.0;
 
-        return Column(
-          children: [
-            SizedBox(
-              height: constraints.maxHeight - 60,
-              child: buildStack(constraints),
-            ),
-            Container(
-              height: pagerHeight,
-              child: buildDataPager(),
-            ),
-          ],
-        );
+        return Obx(() {
+          return Column(
+            children: [
+              SizedBox(
+                height: constraints.maxHeight - 60,
+                child: buildStack(constraints),
+              ),
+              Container(
+                height: pagerHeight,
+                child: buildDataPager(),
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -67,23 +98,46 @@ class _PaginatedTableState extends State<PaginatedTable> {
           return true;
         },
         onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-          setState(() {
-            controller.columnWidths[details.column.columnName] = details.width;
-          });
+          columnWidths[details.column.columnName] = details.width;
           return true;
         },
-        source: controller.dataSource,
+        source: dataSource,
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
-        columns: controller.buildColumns(controller.columnWidths),
+        columns: buildColumns(columnWidths),
         onCellTap: (DataGridCellTapDetails details) {
           print(details.rowColumnIndex.rowIndex);
           // 행을 탭했을 때 호출됩니다.
           // dataSource.handleRowTap(details.rowIndex);
         },
+      ),
+    );
+  }
+
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
+    return widget.header
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    double width = columnName == 'orderID' ? 100 : columnWidths[columnName]!;
+    return GridColumn(
+      width: width,
+      autoFitPadding: EdgeInsets.all(10.0),
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }
@@ -99,18 +153,14 @@ class _PaginatedTableState extends State<PaginatedTable> {
             selectedItemColor: Colors.blue,
           ),
           child: SfDataPager(
-            delegate: controller.dataSource,
-            pageCount: (controller.data.length / 5).ceil().toDouble(),
+            delegate: dataSource,
+            pageCount: (widget.data.length / 5).toDouble(),
             direction: Axis.horizontal,
             onPageNavigationStart: (int pageIndex) {
-              setState(() {
-                controller.showLoadingIndicator.value = true;
-              });
+              showLoadingIndicator.value = true;
             },
             onPageNavigationEnd: (int pageIndex) {
-              setState(() {
-                controller.showLoadingIndicator.value = false;
-              });
+              showLoadingIndicator.value = false;
             },
           ),
         ),
@@ -123,7 +173,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
       final List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid());
 
-      if (controller.showLoadingIndicator.value) {
+      if (showLoadingIndicator.value) {
         stackChildren.add(
           Shimmer.fromColors(
             baseColor: Colors.red,
@@ -134,12 +184,6 @@ class _PaginatedTableState extends State<PaginatedTable> {
               color: Colors.white,
             ),
           ),
-          // Align(
-          //   alignment: Alignment.center,
-          //   child: CircularProgressIndicator(
-          //     strokeWidth: 3,
-          //   ),
-          // ),
         );
       }
 
@@ -154,6 +198,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
 class DataSource extends DataGridSource {
   DataSource({required List<dynamic> datas}) {
+    print(datas);
     _datas = datas;
     paginatedOrders = datas.getRange(0, rowsPerPage).toList(growable: false);
     buildPaginatedDataGridRows();
@@ -162,12 +207,6 @@ class DataSource extends DataGridSource {
   List<dynamic> _datas = [];
   List<dynamic> paginatedOrders = [];
   final int rowsPerPage = 5;
-  final List<String> tableHeader = [
-    "orderID",
-    "customerID",
-    "orderDate",
-    "freight",
-  ];
 
   List<DataGridRow> dataGridRows = [];
 

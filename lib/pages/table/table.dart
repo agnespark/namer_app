@@ -19,10 +19,10 @@ class _TablePageState extends State<TablePage> {
       children: [
         Expanded(
           child: PaginatedTable(
-              // data: controller.basicTableData,
-              // header: controller.basicTableDataHeader,
-              // width: controller.basicTableDataWidth,
-              ),
+            data: controller.paginatedTableData,
+            header: controller.paginatedTableHeader,
+            width: controller.paginatedTableDataWidth,
+          ),
         ),
         SizedBox(height: 50),
         Expanded(
