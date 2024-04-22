@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/button/outline_button.dart';
+import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -10,7 +12,8 @@ class BasicTable extends StatefulWidget {
     required this.width,
     required this.data,
     this.detail,
-    this.isCheckable = true,
+    this.isCheckable = false,
+    this.isDeletable = false,
   }) : super(key: key);
 
   final List<String> header;
@@ -18,6 +21,7 @@ class BasicTable extends StatefulWidget {
   final List<dynamic> data;
   final Function(int)? detail;
   final bool isCheckable;
+  final bool isDeletable;
 
   @override
   BasicTableState createState() => BasicTableState();
@@ -25,6 +29,7 @@ class BasicTable extends StatefulWidget {
 
 class BasicTableState extends State<BasicTable> {
   late DataSource dataSource;
+  final DataGridController dataGridController = DataGridController();
 
   @override
   void initState() {
@@ -52,6 +57,7 @@ class BasicTableState extends State<BasicTable> {
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
       child: SfDataGrid(
+        controller: dataGridController,
         rowsPerPage: dataSource._data.length,
         shrinkWrapRows: true,
         columnWidthMode: ColumnWidthMode.fill,
@@ -59,16 +65,37 @@ class BasicTableState extends State<BasicTable> {
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
-        showCheckboxColumn: widget.isCheckable ? true : false,
-        // checkboxColumnSettings:
-        //       DataGridCheckboxColumnSettings(backgroundColor: Colors.yellow),
-        selectionMode:
-            widget.isCheckable ? SelectionMode.multiple : SelectionMode.none,
+        showCheckboxColumn:
+            widget.isCheckable | widget.isDeletable ? true : false,
+        checkboxColumnSettings: widget.isDeletable
+            ? DataGridCheckboxColumnSettings(
+                label: Text("삭제"), showCheckboxOnHeader: false)
+            : DataGridCheckboxColumnSettings(),
+        selectionMode: widget.isCheckable
+            ? SelectionMode.multiple
+            : widget.isDeletable
+                ? SelectionMode.single
+                : SelectionMode.none,
+        onSelectionChanged:
+            (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+          final index = dataSource._data.indexOf(addedRows.last);
+          print(widget.data[index]);
+          var selectedIndex = dataGridController.selectedIndex;
+          var selectedRow = dataGridController.currentCell;
+          var selectedRows = dataGridController.selectedRows;
+          // print(selectedIndex);
+          // print(selectedRow);
+          DialogWidget("삭제하시겠습니까?", () {
+            dataGridController.selectedIndex = -1;
+          }).delete();
+        },
+        checkboxShape: CircleBorder(),
         source: dataSource,
         columns: dataSource.buildColumns(),
         onCellTap: (DataGridCellTapDetails details) {
           if (widget.isCheckable) {
             return;
+          } else if (widget.isDeletable) {
           } else {
             widget.detail?.call(details.rowColumnIndex.rowIndex);
           }
@@ -147,7 +174,21 @@ class DataSource extends DataGridSource {
     final rowIndex = _data.indexOf(row);
     return DataGridRowAdapter(
       cells: row.getCells().map<Widget>((e) {
-        if (e.value is bool) {
+        if (e.columnName == "download") {
+          if (e.value == 100) {
+            return Container(
+                alignment: Alignment.center,
+                child: ButtonWidget("다운로드", () {
+                  print(e.value);
+                }).green());
+          } else {
+            return Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(8.0),
+              child: Text("${e.value.toString()}%"),
+            );
+          }
+        } else if (e.value is bool) {
           final isChecked = ValueNotifier<bool>(e.value as bool);
           return ValueListenableBuilder<bool>(
             valueListenable: isChecked,
@@ -178,12 +219,14 @@ class DataSource extends DataGridSource {
 }
 
 class Employee {
-  Employee(this.id, this.name, this.designation, this.salary, this.checked);
+  Employee(this.id, this.name, this.designation, this.salary, this.checked,
+      this.download);
   late int id;
   late String name;
   late String designation;
   late int salary;
   late bool checked;
+  late int download;
 
   Map<String, dynamic> toJson() {
     return {
@@ -192,6 +235,7 @@ class Employee {
       'designation': designation,
       'salary': salary,
       'checked': checked,
+      'download': download,
     };
   }
 }

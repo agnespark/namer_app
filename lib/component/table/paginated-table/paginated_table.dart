@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
 import 'package:namer_app/config/color.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -16,13 +17,23 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          buildDataGrid(),
-          buildDataPager(),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double pagerHeight = 60.0;
+
+        return Column(
+          children: [
+            SizedBox(
+              height: constraints.maxHeight - 60,
+              child: buildStack(constraints),
+            ),
+            Container(
+              height: pagerHeight,
+              child: buildDataPager(),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -79,7 +90,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
   Widget buildDataPager() {
     return Container(
-      height: controller.dataPagerHeight,
+      height: 60,
       width: Get.width / 3,
       child: Center(
         child: SfDataPagerTheme(
@@ -89,13 +100,54 @@ class _PaginatedTableState extends State<PaginatedTable> {
           ),
           child: SfDataPager(
             delegate: controller.dataSource,
-            pageCount: (controller.data.length / controller.rowsPerPage)
-                .ceil()
-                .toDouble(),
+            pageCount: (controller.data.length / 5).ceil().toDouble(),
             direction: Axis.horizontal,
+            onPageNavigationStart: (int pageIndex) {
+              setState(() {
+                controller.showLoadingIndicator.value = true;
+              });
+            },
+            onPageNavigationEnd: (int pageIndex) {
+              setState(() {
+                controller.showLoadingIndicator.value = false;
+              });
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildStack(BoxConstraints constraints) {
+    List<Widget> _getChildren() {
+      final List<Widget> stackChildren = [];
+      stackChildren.add(buildDataGrid());
+
+      if (controller.showLoadingIndicator.value) {
+        stackChildren.add(
+          Shimmer.fromColors(
+            baseColor: Colors.red,
+            highlightColor: Colors.blue,
+            child: Container(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              color: Colors.white,
+            ),
+          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: CircularProgressIndicator(
+          //     strokeWidth: 3,
+          //   ),
+          // ),
+        );
+      }
+
+      return stackChildren;
+    }
+
+    return Stack(
+      children: _getChildren(),
     );
   }
 }
@@ -103,25 +155,19 @@ class _PaginatedTableState extends State<PaginatedTable> {
 class DataSource extends DataGridSource {
   DataSource({required List<dynamic> datas}) {
     _datas = datas;
-    // _paginatedOrders =
-    //     _orders.getRange(0, _rowsPerPage).toList(growable: false);
+    paginatedOrders = datas.getRange(0, rowsPerPage).toList(growable: false);
     buildPaginatedDataGridRows();
   }
 
-  void buildPaginatedDataGridRows() {
-    dataGridRows = _paginatedOrders.map<DataGridRow>((dataGridRow) {
-      return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
-        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
-        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
-        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
-      ]);
-    }).toList(growable: false);
-  }
-
   List<dynamic> _datas = [];
-  List<dynamic> _paginatedOrders = [];
-  final int _rowsPerPage = 5;
+  List<dynamic> paginatedOrders = [];
+  final int rowsPerPage = 5;
+  final List<String> tableHeader = [
+    "orderID",
+    "customerID",
+    "orderDate",
+    "freight",
+  ];
 
   List<DataGridRow> dataGridRows = [];
 
@@ -132,51 +178,75 @@ class DataSource extends DataGridSource {
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
-      if (dataGridCell.columnName == 'orderID') {
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.center,
-              child: Text(
-                dataGridCell.value.toString(),
-                overflow: TextOverflow.ellipsis,
-              ),
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.center,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-        );
-      } else {
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.center,
-              child: Text(
-                dataGridCell.value.toString(),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        );
-      }
+        ),
+      );
     }).toList());
   }
 
   @override
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * _rowsPerPage;
-    int endIndex = startIndex + _rowsPerPage;
-    if (startIndex < _datas.length) {
-      _paginatedOrders =
+    int startIndex = newPageIndex * rowsPerPage;
+    int endIndex = startIndex + rowsPerPage;
+    if (startIndex < _datas.length && endIndex <= _datas.length) {
+      await Future.delayed(Duration(milliseconds: 1000));
+      paginatedOrders =
           _datas.getRange(startIndex, endIndex).toList(growable: false);
+      buildPaginatedDataGridRows();
+      notifyListeners();
     } else {
-      _paginatedOrders = [];
+      paginatedOrders = [];
     }
-    buildPaginatedDataGridRows();
-    notifyListeners();
+
     return true;
+  }
+
+  void buildPaginatedDataGridRows() {
+    dataGridRows = paginatedOrders.map<DataGridRow>((dataGridRow) {
+      return DataGridRow(cells: [
+        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
+        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
+        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
+        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
+      ]);
+    }).toList(growable: false);
+  }
+}
+
+class OrderInfo {
+  final int orderID;
+  final String customerID;
+  final DateTime orderDate;
+  final double freight;
+
+  OrderInfo(this.orderID, this.customerID, this.orderDate, this.freight);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'orderID': customerID,
+      'customerID': customerID,
+      'orderDate': orderDate,
+      'freight': freight,
+    };
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'orderID': orderID,
+      'customerID': customerID,
+      'orderDate': orderDate,
+      'freight': freight,
+    };
   }
 }

@@ -183,7 +183,7 @@ class LogDetail extends StatelessWidget {
                                 : [])
                       ],
                     ),
-                    TablePage(),
+                    // TablePage(),
                   ],
                 ),
               ),
