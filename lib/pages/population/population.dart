@@ -4,24 +4,19 @@ import 'package:namer_app/component/accordion.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/checkbox/multi_checkbox.dart';
 import 'package:namer_app/component/checkbox/radio.dart';
-import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/filter/filter-button/filter_button.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/component/toast.dart';
-import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/main_controller.dart';
 import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
-import 'package:namer_app/pages/population/detail/main.dart';
 import 'package:namer_app/pages/population/population_controller.dart';
-import 'package:namer_app/pages/table/table.dart';
 
 class PopulationPage extends StatelessWidget {
   final ButtonController btn_controller = Get.put(ButtonController());
-  final DetailController detail_controller = Get.find<DetailController>();
   final PopulationController controller = Get.put(PopulationController());
   PopulationPage({super.key});
 
@@ -78,10 +73,7 @@ class PopulationPage extends StatelessWidget {
               SizedBox(height: 8),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 ButtonWidget('로그 합치기', () {
-                  detail_controller.pageName.value = 'select';
-                  DetailSheet(
-                    child: PopulationDetailWidget(),
-                  );
+                  controller.logCombineClick();
                 }).blue(),
               ]),
               BasicTable(
@@ -89,12 +81,7 @@ class PopulationPage extends StatelessWidget {
                 data: controller.basicTableData,
                 width: controller.basicTableDataWidth,
                 detail: (int index) {
-                  controller.rowClick(index);
-                  detail_controller.pageName.value = 'log';
-                  print('here');
-                  DetailSheet(
-                    child: PopulationDetailWidget(),
-                  );
+                  controller.detailClick(index);
                 },
               ),
             ],

@@ -17,13 +17,17 @@ class _TablePageState extends State<TablePage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PaginatedTable(),
+        PaginatedTable(
+            // data: controller.basicTableData,
+            // header: controller.basicTableDataHeader,
+            // width: controller.basicTableDataWidth,
+            ),
         SizedBox(height: 50),
-        BasicTable(
-          data: controller.basicTableData,
-          header: controller.basicTableDataHeader,
-          width: controller.basicTableDataWidth,
-        ),
+        // BasicTable(
+        //   data: controller.basicTableData,
+        //   header: controller.basicTableDataHeader,
+        //   width: controller.basicTableDataWidth,
+        // ),
         SizedBox(height: 50),
         // LoadableTable()
       ],

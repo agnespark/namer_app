@@ -10,7 +10,7 @@ class BasicTable extends StatefulWidget {
     required this.width,
     required this.data,
     this.detail,
-    this.isCheckable = true,
+    this.isCheckable = false,
   }) : super(key: key);
 
   final List<String> header;

@@ -7,8 +7,7 @@ class PaginatedTableController extends GetxController {
   late RxList<dynamic> data;
   late DataSource dataSource;
 
-  final int rowsPerPage = 5;
-  final double dataPagerHeight = 60.0;
+  RxBool showLoadingIndicator = true.obs;
 
   // head title 이랑 flex 받아와서 세팅
   late Map<String, double> columnWidths = {
@@ -17,6 +16,13 @@ class PaginatedTableController extends GetxController {
     'orderDate': double.nan,
     'freight': double.nan
   };
+
+  final List<String> tableHeader = [
+    "orderID",
+    "customerID",
+    "orderDate",
+    "freight",
+  ];
 
   @override
   void onInit() {

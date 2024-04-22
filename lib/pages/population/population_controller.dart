@@ -1,7 +1,11 @@
 import 'package:get/get.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
+import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/population/detail/main.dart';
 
 class PopulationController extends GetxController {
+  final DetailController detail_controller = Get.find<DetailController>();
   late RxList<Employee> basicTableData = RxList();
   final List<String> basicTableDataHeader = [
     "orderID",
@@ -20,9 +24,19 @@ class PopulationController extends GetxController {
 
   RxInt rowIndex = 0.obs;
 
-  void rowClick(int index) {
-    print('rowclick');
+  void logCombineClick() {
+    detail_controller.pageName.value = 'select';
+    DetailSheet(
+      child: PopulationDetailWidget(),
+    );
+  }
+
+  void detailClick(int index) {
     rowIndex.value = index;
+    detail_controller.pageName.value = 'log';
+    DetailSheet(
+      child: PopulationDetailWidget(),
+    );
   }
 
   @override
