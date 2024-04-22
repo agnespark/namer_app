@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -175,7 +176,21 @@ class DataSource extends DataGridSource {
     final rowIndex = _data.indexOf(row);
     return DataGridRowAdapter(
       cells: row.getCells().map<Widget>((e) {
-        if (e.value is bool) {
+        if (e.columnName == "download") {
+          if (e.value == 100) {
+            return Container(
+                alignment: Alignment.center,
+                child: ButtonWidget("다운로드", () {
+                  print(e.value);
+                }).green());
+          } else {
+            return Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(8.0),
+              child: Text("${e.value.toString()}%"),
+            );
+          }
+        } else if (e.value is bool) {
           final isChecked = ValueNotifier<bool>(e.value as bool);
           return ValueListenableBuilder<bool>(
             valueListenable: isChecked,
@@ -206,12 +221,14 @@ class DataSource extends DataGridSource {
 }
 
 class Employee {
-  Employee(this.id, this.name, this.designation, this.salary, this.checked);
+  Employee(this.id, this.name, this.designation, this.salary, this.checked,
+      this.download);
   late int id;
   late String name;
   late String designation;
   late int salary;
   late bool checked;
+  late int download;
 
   Map<String, dynamic> toJson() {
     return {
@@ -220,6 +237,7 @@ class Employee {
       'designation': designation,
       'salary': salary,
       'checked': checked,
+      'download': download,
     };
   }
 }
