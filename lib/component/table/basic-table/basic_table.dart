@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -11,6 +12,7 @@ class BasicTable extends StatefulWidget {
     required this.data,
     this.detail,
     this.isCheckable = false,
+    this.isDeletable = true,
   }) : super(key: key);
 
   final List<String> header;
@@ -18,6 +20,7 @@ class BasicTable extends StatefulWidget {
   final List<dynamic> data;
   final Function(int)? detail;
   final bool isCheckable;
+  final bool isDeletable;
 
   @override
   BasicTableState createState() => BasicTableState();
@@ -25,6 +28,7 @@ class BasicTable extends StatefulWidget {
 
 class BasicTableState extends State<BasicTable> {
   late DataSource dataSource;
+  final DataGridController dataGridController = DataGridController();
 
   @override
   void initState() {
@@ -52,6 +56,7 @@ class BasicTableState extends State<BasicTable> {
           columnResizeIndicatorStrokeWidth: 2.0,
           gridLineColor: borderColor),
       child: SfDataGrid(
+        controller: dataGridController,
         rowsPerPage: dataSource._data.length,
         shrinkWrapRows: true,
         columnWidthMode: ColumnWidthMode.fill,
@@ -59,16 +64,39 @@ class BasicTableState extends State<BasicTable> {
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
-        showCheckboxColumn: widget.isCheckable ? true : false,
-        // checkboxColumnSettings:
-        //       DataGridCheckboxColumnSettings(backgroundColor: Colors.yellow),
-        selectionMode:
-            widget.isCheckable ? SelectionMode.multiple : SelectionMode.none,
+        showCheckboxColumn:
+            widget.isCheckable | widget.isDeletable ? true : false,
+        checkboxColumnSettings: widget.isDeletable
+            ? DataGridCheckboxColumnSettings(
+                label: Text("삭제"), showCheckboxOnHeader: false)
+            : DataGridCheckboxColumnSettings(),
+        selectionMode: widget.isCheckable
+            ? SelectionMode.multiple
+            : widget.isDeletable
+                ? SelectionMode.single
+                : SelectionMode.none,
+        onSelectionChanged:
+            (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+          if (addedRows.isNotEmpty) {
+            // https://help.syncfusion.com/flutter/datagrid/column-types#checkbox-column
+            var selectedIndex = dataGridController.selectedIndex;
+            var selectedRow = dataGridController.selectedRow;
+            var selectedRows = dataGridController.selectedRows;
+
+            DialogWidget("삭제하시겠습니까?", () {
+              print(selectedIndex);
+              print(selectedRow);
+              print(selectedRows);
+            }).delete();
+          }
+        },
+        checkboxShape: CircleBorder(),
         source: dataSource,
         columns: dataSource.buildColumns(),
         onCellTap: (DataGridCellTapDetails details) {
           if (widget.isCheckable) {
             return;
+          } else if (widget.isDeletable) {
           } else {
             widget.detail?.call(details.rowColumnIndex.rowIndex);
           }

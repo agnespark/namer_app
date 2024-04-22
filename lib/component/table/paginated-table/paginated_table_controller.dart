@@ -75,13 +75,3 @@ class PaginatedTableController extends GetxController {
     );
   }
 }
-
-// 모델 예시
-class OrderInfo {
-  final int orderID;
-  final String customerID;
-  final DateTime orderDate;
-  final double freight;
-
-  OrderInfo(this.orderID, this.customerID, this.orderDate, this.freight);
-}

@@ -191,7 +191,7 @@ class DataSource extends DataGridSource {
     int startIndex = newPageIndex * rowsPerPage;
     int endIndex = startIndex + rowsPerPage;
     if (startIndex < _datas.length && endIndex <= _datas.length) {
-      await Future.delayed(Duration(milliseconds: 2000));
+      await Future.delayed(Duration(milliseconds: 1000));
       paginatedOrders =
           _datas.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
