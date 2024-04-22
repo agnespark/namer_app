@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
 import 'package:namer_app/config/color.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -123,15 +124,23 @@ class _PaginatedTableState extends State<PaginatedTable> {
       stackChildren.add(buildDataGrid());
 
       if (controller.showLoadingIndicator.value) {
-        stackChildren.add(Container(
-            color: Colors.black12,
-            width: constraints.maxWidth,
-            height: constraints.maxHeight,
-            child: Align(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                ))));
+        stackChildren.add(
+          Shimmer.fromColors(
+            baseColor: Colors.red,
+            highlightColor: Colors.blue,
+            child: Container(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              color: Colors.white,
+            ),
+          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: CircularProgressIndicator(
+          //     strokeWidth: 3,
+          //   ),
+          // ),
+        );
       }
 
       return stackChildren;
