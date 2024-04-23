@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PaginatedTableController extends DataGridSource {
@@ -7,7 +8,8 @@ class PaginatedTableController extends DataGridSource {
       required this.header,
       required this.rowsPerPage,
       required this.totalPage,
-      required this.onPageClicked}) {
+      required this.onPageClicked,
+      required this.showLoadingIndicator}) {
     dataPerPage = datas.getRange(0, rowsPerPage).toList();
     buildPaginatedDataGridRows(header);
   }
@@ -19,6 +21,7 @@ class PaginatedTableController extends DataGridSource {
   List<dynamic> datas = [];
   List<dynamic> dataPerPage = [];
   late Function(int) onPageClicked;
+  RxBool showLoadingIndicator;
 
   List<DataGridRow> dataGridRows = [];
 
@@ -50,6 +53,7 @@ class PaginatedTableController extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     int startIndex = newPageIndex * rowsPerPage;
     int endIndex = startIndex + rowsPerPage;
+    showLoadingIndicator.value = true;
     dataPagerController.lastPage();
     if (newPageIndex != 0) {
       var additionalData = await onPageClicked(startIndex);

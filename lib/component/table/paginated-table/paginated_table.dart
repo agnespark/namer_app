@@ -51,6 +51,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
       rowsPerPage: widget.rowsPerPage,
       totalPage: widget.totalPage,
       onPageClicked: widget.onPageClicked,
+      showLoadingIndicator: showLoadingIndicator,
     );
     columnWidths = <String, double>{}.obs;
     for (int i = 0; i < widget.header.length; i++) {
@@ -210,6 +211,10 @@ class _PaginatedTableState extends State<PaginatedTable> {
             selectedItemColor: Colors.blue,
           ),
           child: SfDataPager(
+            // firstPageItemVisible: false,
+            // lastPageItemVisible: false,
+            // nextPageItemVisible: false,
+            // previousPageItemVisible: fa,
             delegate: dataSource,
             pageCount: widget.totalPage.toDouble(),
             direction: Axis.horizontal,
