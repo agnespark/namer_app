@@ -6,7 +6,6 @@ import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/controller/detailContainer.dart';
-import 'package:namer_app/pages/table/table.dart';
 
 class LogDetail extends StatelessWidget {
   final bool isBtn;
@@ -183,7 +182,6 @@ class LogDetail extends StatelessWidget {
                                 : [])
                       ],
                     ),
-                    // TablePage(),
                   ],
                 ),
               ),

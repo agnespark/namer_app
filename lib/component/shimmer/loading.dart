@@ -61,7 +61,7 @@ class LoadingPage extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.only(left: 64, right: 64, bottom: 8),
-          child: TableSkeleton(count: 5).Widget(),
+          child: TableSkeleton().Widget(),
         )
       ],
     );

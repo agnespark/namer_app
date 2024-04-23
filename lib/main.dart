@@ -67,19 +67,24 @@ Widget navList(Menu menu) {
   if (menu.subMenu == null && menu.depth == 0) {
     return GestureDetector(
       onTap: () {
-        MyController.to.changePage(menu.page!, menu.name, menu.depth);
+        MyController.to.changePage(menu);
       },
       child: Container(
         decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(width: 1, color: borderLightColor))),
+          border: Border(bottom: BorderSide(width: 1, color: borderLightColor)),
+        ),
         child: ListTile(
           mouseCursor: SystemMouseCursors.click,
           title: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0),
             child: Text(
               menu.name,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: 16,
+                color: MyController.to.currentMenu.value == menu.name
+                    ? primaryMain
+                    : Colors.black,
+              ),
             ),
           ),
         ),
@@ -88,25 +93,32 @@ Widget navList(Menu menu) {
   } else if (menu.subMenu == null) {
     return GestureDetector(
       onTap: () {
-        MyController.to.changePage(menu.page!, menu.name, menu.depth);
+        MyController.to.changePage(menu);
       },
-      child: ListTile(
-        mouseCursor: SystemMouseCursors.click,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24),
-          child: Text(
-            menu.name,
-            style: TextStyle(fontSize: 16),
+      child: Container(
+        child: ListTile(
+          mouseCursor: SystemMouseCursors.click,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24),
+            child: Text(
+              menu.name,
+              style: TextStyle(
+                fontSize: 16,
+                color: MyController.to.currentMenu.value == menu.name
+                    ? primaryMain
+                    : Colors.black,
+              ),
+            ),
           ),
         ),
       ),
     );
   }
-
   return Container(
     decoration: BoxDecoration(
         border: Border(bottom: BorderSide(width: 1, color: borderLightColor))),
     child: ExpansionTile(
+      key: GlobalKey(),
       collapsedShape: RoundedRectangleBorder(
         side: BorderSide.none,
       ),
@@ -118,7 +130,9 @@ Widget navList(Menu menu) {
         padding: EdgeInsets.fromLTRB(menu.depth * 24, 16.0, 24.0, 16.0),
         child: Text(
           menu.name,
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+            fontSize: 16,
+          ),
         ),
       ),
       children: menu.subMenu!
@@ -128,6 +142,7 @@ Widget navList(Menu menu) {
                 child: navList(subMenu),
               ))
           .toList(),
+      initiallyExpanded: !MyController.to.isAllClosed.value,
     ),
   );
 }
