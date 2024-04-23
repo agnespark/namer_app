@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
-import 'package:namer_app/component/table/paginated-table/paginated_table.dart';
+import 'package:namer_app/model/order_model.dart';
 
 class TableController extends GetxController {
   late RxList<Employee> basicTableData = RxList();
   late RxList<OrderInfo> paginatedTableData = RxList();
   final int rowsPerPage = 5;
-  final int totalPage = 3;
+  final int totalPage = 10;
 
   final List<String> basicTableDataHeader = [
     "orderID",
@@ -39,19 +39,15 @@ class TableController extends GetxController {
     "freight",
   ];
 
-  dynamic pageClicked(int page) {
-    paginatedTableData.clear();
-    paginatedTableData.addAll([
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-      OrderInfo(10001, 'Perry', DateTime.now(), 100),
-    ]);
+  Future<List<OrderInfo>> onPageClicked(int page) async {
+    // 비동기 작업 (예: 데이터베이스, API 요청)
+    return [
+      OrderInfo(10001, 'Perry1', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry2', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry3', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry4', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry5', DateTime.now(), 100),
+    ];
   }
 
   @override
@@ -74,15 +70,11 @@ class TableController extends GetxController {
       Employee(10010, 'Michael', 'Sales Associate', 35000, true, 100),
     ]);
     paginatedTableData.addAll([
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack1', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack2', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack3', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack4', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack5', DateTime.now(), 100),
     ]);
   }
 }
