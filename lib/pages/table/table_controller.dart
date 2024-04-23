@@ -1,8 +1,13 @@
 import 'package:get/get.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
+import 'package:namer_app/component/table/paginated-table/paginated_table.dart';
 
 class TableController extends GetxController {
   late RxList<Employee> basicTableData = RxList();
+  late RxList<OrderInfo> paginatedTableData = RxList();
+  final int rowsPerPage = 5;
+  final int totalPage = 3;
+
   final List<String> basicTableDataHeader = [
     "orderID",
     "customerID",
@@ -19,6 +24,35 @@ class TableController extends GetxController {
     double.nan,
     double.nan,
   ];
+
+  final List<double> paginatedTableDataWidth = [
+    100,
+    double.nan,
+    double.nan,
+    double.nan,
+  ];
+
+  final List<String> paginatedTableHeader = [
+    "orderID",
+    "customerID",
+    "orderDate",
+    "freight",
+  ];
+
+  dynamic pageClicked(int page) {
+    paginatedTableData.clear();
+    paginatedTableData.addAll([
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+      OrderInfo(10001, 'Perry', DateTime.now(), 100),
+    ]);
+  }
 
   @override
   void onInit() {
@@ -38,6 +72,17 @@ class TableController extends GetxController {
       Employee(10008, 'Steve', 'Support', 37000, true, 100),
       Employee(10009, 'Linda', 'Administrator', 36000, true, 100),
       Employee(10010, 'Michael', 'Sales Associate', 35000, true, 100),
+    ]);
+    paginatedTableData.addAll([
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack', DateTime.now(), 100),
     ]);
   }
 }

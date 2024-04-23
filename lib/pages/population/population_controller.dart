@@ -6,6 +6,8 @@ import 'package:namer_app/pages/population/detail/main.dart';
 
 class PopulationController extends GetxController {
   final DetailController detail_controller = Get.find<DetailController>();
+  final int rowsPerPage = 5;
+  final int totalPage = 3;
   late RxList<Employee> basicTableData = RxList();
   final List<String> basicTableDataHeader = [
     "orderID",

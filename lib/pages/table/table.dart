@@ -19,10 +19,13 @@ class _TablePageState extends State<TablePage> {
       children: [
         Expanded(
           child: PaginatedTable(
-              // data: controller.basicTableData,
-              // header: controller.basicTableDataHeader,
-              // width: controller.basicTableDataWidth,
-              ),
+            data: controller.paginatedTableData,
+            header: controller.paginatedTableHeader,
+            width: controller.paginatedTableDataWidth,
+            rowsPerPage: controller.rowsPerPage,
+            totalPage: controller.totalPage,
+            // pageClicked: controller.pageClicked,
+          ),
         ),
         SizedBox(height: 50),
         Expanded(
@@ -31,7 +34,7 @@ class _TablePageState extends State<TablePage> {
             header: controller.basicTableDataHeader,
             width: controller.basicTableDataWidth,
           ),
-        ),
+        )
         // SizedBox(height: 50),
         // LoadableTable()
       ],

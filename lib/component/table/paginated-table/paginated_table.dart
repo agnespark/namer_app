@@ -1,19 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
+import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
 class PaginatedTable extends StatefulWidget {
+  PaginatedTable({
+    Key? key,
+    required this.header,
+    required this.width,
+    required this.data,
+    required this.rowsPerPage,
+    required this.totalPage,
+    this.detail,
+    this.isCheckable = false,
+    this.isDeletable = false,
+  }) : super(key: key);
+
+  final List<String> header;
+  final List<double> width;
+  final List<dynamic> data;
+  final int rowsPerPage;
+  final int totalPage;
+  final Function(int)? detail;
+  final bool isCheckable;
+  final bool isDeletable;
+
   @override
   State<PaginatedTable> createState() => _PaginatedTableState();
 }
 
 class _PaginatedTableState extends State<PaginatedTable> {
-  final PaginatedTableController controller =
-      Get.put(PaginatedTableController());
+  late DataSource dataSource;
+  late RxMap<String, double> columnWidths;
+  RxBool showLoadingIndicator = true.obs;
+  final DataGridController dataGridController = DataGridController();
+
+  @override
+  void initState() {
+    super.initState();
+    dataSource = DataSource(
+      datas: widget.data,
+      header: widget.header,
+      rowsPerPage: widget.rowsPerPage,
+    );
+    columnWidths = <String, double>{}.obs;
+    for (int i = 0; i < widget.header.length; i++) {
+      columnWidths[widget.header[i]] = widget.width[i];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +58,20 @@ class _PaginatedTableState extends State<PaginatedTable> {
       builder: (context, constraints) {
         final double pagerHeight = 60.0;
 
-        return Column(
-          children: [
-            SizedBox(
-              height: constraints.maxHeight - 60,
-              child: buildStack(constraints),
-            ),
-            Container(
-              height: pagerHeight,
-              child: buildDataPager(),
-            ),
-          ],
-        );
+        return Obx(() {
+          return Column(
+            children: [
+              SizedBox(
+                height: constraints.maxHeight - 60,
+                child: buildStack(constraints),
+              ),
+              Container(
+                height: pagerHeight,
+                child: buildDataPager(),
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -61,29 +100,77 @@ class _PaginatedTableState extends State<PaginatedTable> {
         // selectionMode: SelectionMode.multiple,
         allowColumnsResizing: true,
         onColumnResizeStart: (ColumnResizeStartDetails details) {
-          if (details.column.columnName == 'orderID') {
-            return false;
-          }
           return true;
         },
         onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-          setState(() {
-            controller.columnWidths[details.column.columnName] = details.width;
-          });
+          columnWidths[details.column.columnName] = details.width;
           return true;
         },
-        source: controller.dataSource,
+        source: dataSource,
+        shrinkWrapRows: true,
+
         columnWidthMode: ColumnWidthMode.fill,
         headerGridLinesVisibility: GridLinesVisibility.both,
         gridLinesVisibility: GridLinesVisibility.both,
         headerRowHeight: 40,
         rowHeight: 40,
-        columns: controller.buildColumns(controller.columnWidths),
-        onCellTap: (DataGridCellTapDetails details) {
-          print(details.rowColumnIndex.rowIndex);
-          // 행을 탭했을 때 호출됩니다.
-          // dataSource.handleRowTap(details.rowIndex);
+        columns: buildColumns(columnWidths),
+        showCheckboxColumn:
+            widget.isCheckable | widget.isDeletable ? true : false,
+        checkboxColumnSettings: widget.isDeletable
+            ? DataGridCheckboxColumnSettings(
+                label: Text("삭제"), showCheckboxOnHeader: false)
+            : DataGridCheckboxColumnSettings(),
+        selectionMode: widget.isCheckable
+            ? SelectionMode.multiple
+            : widget.isDeletable
+                ? SelectionMode.single
+                : SelectionMode.none,
+        onSelectionChanged:
+            (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+          var selectedIndex = dataGridController.selectedIndex;
+          var selectedRow = dataGridController.currentCell;
+          var selectedRows = dataGridController.selectedRows;
+          // print(selectedIndex);
+          // print(selectedRow);
+          DialogWidget("삭제하시겠습니까?", () {
+            dataGridController.selectedIndex = -1;
+          }).delete();
         },
+        checkboxShape: CircleBorder(),
+        onCellTap: (DataGridCellTapDetails details) {
+          if (widget.isCheckable) {
+            return;
+          } else if (widget.isDeletable) {
+          } else {
+            widget.detail?.call(details.rowColumnIndex.rowIndex);
+          }
+        },
+      ),
+    );
+  }
+
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
+    return widget.header
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    double width = columnName == 'orderID' ? 100 : columnWidths[columnName]!;
+    return GridColumn(
+      width: width,
+      autoFitPadding: EdgeInsets.all(10.0),
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }
@@ -99,18 +186,14 @@ class _PaginatedTableState extends State<PaginatedTable> {
             selectedItemColor: Colors.blue,
           ),
           child: SfDataPager(
-            delegate: controller.dataSource,
-            pageCount: (controller.data.length / 5).ceil().toDouble(),
+            delegate: dataSource,
+            pageCount: widget.totalPage.toDouble(),
             direction: Axis.horizontal,
             onPageNavigationStart: (int pageIndex) {
-              setState(() {
-                controller.showLoadingIndicator.value = true;
-              });
+              showLoadingIndicator.value = true;
             },
             onPageNavigationEnd: (int pageIndex) {
-              setState(() {
-                controller.showLoadingIndicator.value = false;
-              });
+              showLoadingIndicator.value = false;
             },
           ),
         ),
@@ -123,7 +206,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
       final List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid());
 
-      if (controller.showLoadingIndicator.value) {
+      if (showLoadingIndicator.value) {
         stackChildren.add(
           Shimmer.fromColors(
             baseColor: Colors.red,
@@ -134,12 +217,6 @@ class _PaginatedTableState extends State<PaginatedTable> {
               color: Colors.white,
             ),
           ),
-          // Align(
-          //   alignment: Alignment.center,
-          //   child: CircularProgressIndicator(
-          //     strokeWidth: 3,
-          //   ),
-          // ),
         );
       }
 
@@ -153,21 +230,22 @@ class _PaginatedTableState extends State<PaginatedTable> {
 }
 
 class DataSource extends DataGridSource {
-  DataSource({required List<dynamic> datas}) {
+  DataSource(
+      {required List<dynamic> datas,
+      required List<String> header,
+      required int rowsPerPage}) {
+    print(datas);
     _datas = datas;
-    paginatedOrders = datas.getRange(0, rowsPerPage).toList(growable: false);
-    buildPaginatedDataGridRows();
+    _rowsPerPage = rowsPerPage;
+    _header = header;
+    paginatedOrders = datas.getRange(0, _rowsPerPage).toList(growable: false);
+    buildPaginatedDataGridRows(_header);
   }
 
+  int _rowsPerPage = 0;
+  List<String> _header = [];
   List<dynamic> _datas = [];
   List<dynamic> paginatedOrders = [];
-  final int rowsPerPage = 5;
-  final List<String> tableHeader = [
-    "orderID",
-    "customerID",
-    "orderDate",
-    "freight",
-  ];
 
   List<DataGridRow> dataGridRows = [];
 
@@ -197,13 +275,13 @@ class DataSource extends DataGridSource {
   @override
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * rowsPerPage;
-    int endIndex = startIndex + rowsPerPage;
+    int startIndex = newPageIndex * _rowsPerPage;
+    int endIndex = startIndex + _rowsPerPage;
     if (startIndex < _datas.length && endIndex <= _datas.length) {
       await Future.delayed(Duration(milliseconds: 1000));
       paginatedOrders =
           _datas.getRange(startIndex, endIndex).toList(growable: false);
-      buildPaginatedDataGridRows();
+      buildPaginatedDataGridRows(_header);
       notifyListeners();
     } else {
       paginatedOrders = [];
@@ -212,14 +290,22 @@ class DataSource extends DataGridSource {
     return true;
   }
 
-  void buildPaginatedDataGridRows() {
+  void buildPaginatedDataGridRows(List<String> _header) {
     dataGridRows = paginatedOrders.map<DataGridRow>((dataGridRow) {
-      return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
-        DataGridCell(columnName: 'customerID', value: dataGridRow.customerID),
-        DataGridCell(columnName: 'orderDate', value: dataGridRow.orderDate),
-        DataGridCell(columnName: 'freight', value: dataGridRow.freight),
-      ]);
+      List<DataGridCell> cells = [];
+      var dataMap = (dataGridRow as OrderInfo).toMap();
+      print(dataMap);
+
+      for (var columnName in _header) {
+        print(columnName);
+        print(dataMap[columnName]);
+        var value = dataMap[columnName.toLowerCase()];
+        print(value);
+
+        cells.add(DataGridCell(columnName: columnName, value: value));
+      }
+
+      return DataGridRow(cells: cells);
     }).toList(growable: false);
   }
 }
@@ -234,7 +320,7 @@ class OrderInfo {
 
   Map<String, dynamic> toJson() {
     return {
-      'orderID': customerID,
+      'orderID': orderID,
       'customerID': customerID,
       'orderDate': orderDate,
       'freight': freight,
