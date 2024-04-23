@@ -74,15 +74,15 @@ class TableController extends GetxController {
       Employee(10010, 'Michael', 'Sales Associate', 35000, true, 100),
     ]);
     paginatedTableData.addAll([
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
-      OrderInfo(10001, 'Jack', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack1', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack2', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack3', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack4', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack5', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack6', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack7', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack8', DateTime.now(), 100),
+      OrderInfo(10001, 'Jack9', DateTime.now(), 100),
     ]);
   }
 }

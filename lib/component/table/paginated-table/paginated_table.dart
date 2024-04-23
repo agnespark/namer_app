@@ -275,6 +275,7 @@ class DataSource extends DataGridSource {
   @override
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
+    print(_datas);
     int startIndex = newPageIndex * _rowsPerPage;
     int endIndex = startIndex + _rowsPerPage;
     if (startIndex < _datas.length && endIndex <= _datas.length) {
@@ -293,14 +294,10 @@ class DataSource extends DataGridSource {
   void buildPaginatedDataGridRows(List<String> _header) {
     dataGridRows = paginatedOrders.map<DataGridRow>((dataGridRow) {
       List<DataGridCell> cells = [];
-      var dataMap = (dataGridRow as OrderInfo).toMap();
-      print(dataMap);
+      var dataMap = dataGridRow.toMap();
 
       for (var columnName in _header) {
-        print(columnName);
-        print(dataMap[columnName]);
-        var value = dataMap[columnName.toLowerCase()];
-        print(value);
+        var value = dataMap[columnName];
 
         cells.add(DataGridCell(columnName: columnName, value: value));
       }
