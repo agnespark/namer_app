@@ -24,7 +24,7 @@ class _TablePageState extends State<TablePage> {
             width: controller.paginatedTableDataWidth,
             rowsPerPage: controller.rowsPerPage,
             totalPage: controller.totalPage,
-            // pageClicked: controller.pageClicked,
+            onPageClicked: controller.onPageClicked,
           ),
         ),
         SizedBox(height: 50),

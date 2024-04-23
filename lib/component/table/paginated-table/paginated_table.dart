@@ -14,6 +14,7 @@ class PaginatedTable extends StatefulWidget {
     required this.data,
     required this.rowsPerPage,
     required this.totalPage,
+    required this.onPageClicked,
     this.detail,
     this.isCheckable = false,
     this.isDeletable = false,
@@ -24,6 +25,7 @@ class PaginatedTable extends StatefulWidget {
   final List<dynamic> data;
   final int rowsPerPage;
   final int totalPage;
+  final Function(int) onPageClicked;
   final Function(int)? detail;
   final bool isCheckable;
   final bool isDeletable;
@@ -45,6 +47,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
       datas: widget.data,
       header: widget.header,
       rowsPerPage: widget.rowsPerPage,
+      onPageClicked: widget.onPageClicked,
     );
     columnWidths = <String, double>{}.obs;
     for (int i = 0; i < widget.header.length; i++) {
@@ -56,17 +59,24 @@ class _PaginatedTableState extends State<PaginatedTable> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double pagerHeight = 60.0;
-
         return Obx(() {
           return Column(
             children: [
-              SizedBox(
-                height: constraints.maxHeight - 60,
-                child: buildStack(constraints),
+              Expanded(
+                child: showLoadingIndicator.value
+                    ? Shimmer.fromColors(
+                        baseColor: Colors.red,
+                        highlightColor: Colors.blue,
+                        child: Container(
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                          color: Colors.white,
+                        ),
+                      )
+                    : buildDataGrid(),
               ),
               Container(
-                height: pagerHeight,
+                height: 60,
                 child: buildDataPager(),
               ),
             ],
@@ -158,10 +168,9 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
   GridColumn buildColumn(
       String columnName, String label, Map<String, double> columnWidths) {
-    double width = columnName == 'orderID' ? 100 : columnWidths[columnName]!;
     return GridColumn(
-      width: width,
-      autoFitPadding: EdgeInsets.all(10.0),
+      width: columnWidths[columnName]!,
+      autoFitPadding: EdgeInsets.all(10),
       minimumWidth: 50,
       maximumWidth: Get.width / 2,
       columnName: columnName,
@@ -200,52 +209,23 @@ class _PaginatedTableState extends State<PaginatedTable> {
       ),
     );
   }
-
-  Widget buildStack(BoxConstraints constraints) {
-    List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
-      stackChildren.add(buildDataGrid());
-
-      if (showLoadingIndicator.value) {
-        stackChildren.add(
-          Shimmer.fromColors(
-            baseColor: Colors.red,
-            highlightColor: Colors.blue,
-            child: Container(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              color: Colors.white,
-            ),
-          ),
-        );
-      }
-
-      return stackChildren;
-    }
-
-    return Stack(
-      children: _getChildren(),
-    );
-  }
 }
 
 class DataSource extends DataGridSource {
   DataSource(
-      {required List<dynamic> datas,
-      required List<String> header,
-      required int rowsPerPage}) {
-    print(datas);
-    _datas = datas;
-    _rowsPerPage = rowsPerPage;
-    _header = header;
-    paginatedOrders = datas.getRange(0, _rowsPerPage).toList(growable: false);
-    buildPaginatedDataGridRows(_header);
+      {required this.datas,
+      required this.header,
+      required this.rowsPerPage,
+      required this.onPageClicked}) {
+    dataPerPage = datas.getRange(0, rowsPerPage).toList();
+    buildPaginatedDataGridRows(header);
   }
 
-  int _rowsPerPage = 0;
-  List<String> _header = [];
-  List<dynamic> _datas = [];
-  List<dynamic> paginatedOrders = [];
+  int rowsPerPage = 0;
+  List<String> header = [];
+  List<dynamic> datas = [];
+  List<dynamic> dataPerPage = [];
+  late Function(int) onPageClicked;
 
   List<DataGridRow> dataGridRows = [];
 
@@ -275,61 +255,37 @@ class DataSource extends DataGridSource {
   @override
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    print(_datas);
-    int startIndex = newPageIndex * _rowsPerPage;
-    int endIndex = startIndex + _rowsPerPage;
-    if (startIndex < _datas.length && endIndex <= _datas.length) {
+    int startIndex = newPageIndex * rowsPerPage;
+    int endIndex = startIndex + rowsPerPage;
+
+    if (newPageIndex != 0) {
+      var additionalData = await onPageClicked(newPageIndex);
+      if (additionalData is List) {
+        datas.addAll(additionalData);
+      }
+    }
+
+    if (startIndex < datas.length && endIndex <= datas.length) {
       await Future.delayed(Duration(milliseconds: 1000));
-      paginatedOrders =
-          _datas.getRange(startIndex, endIndex).toList(growable: false);
-      buildPaginatedDataGridRows(_header);
+      dataPerPage = datas.getRange(startIndex, endIndex).toList();
+      buildPaginatedDataGridRows(header);
       notifyListeners();
     } else {
-      paginatedOrders = [];
+      dataPerPage = [];
     }
 
     return true;
   }
 
   void buildPaginatedDataGridRows(List<String> _header) {
-    dataGridRows = paginatedOrders.map<DataGridRow>((dataGridRow) {
+    dataGridRows = dataPerPage.map<DataGridRow>((dataGridRow) {
       List<DataGridCell> cells = [];
       var dataMap = dataGridRow.toMap();
-
       for (var columnName in _header) {
         var value = dataMap[columnName];
-
         cells.add(DataGridCell(columnName: columnName, value: value));
       }
-
       return DataGridRow(cells: cells);
-    }).toList(growable: false);
-  }
-}
-
-class OrderInfo {
-  final int orderID;
-  final String customerID;
-  final DateTime orderDate;
-  final double freight;
-
-  OrderInfo(this.orderID, this.customerID, this.orderDate, this.freight);
-
-  Map<String, dynamic> toJson() {
-    return {
-      'orderID': orderID,
-      'customerID': customerID,
-      'orderDate': orderDate,
-      'freight': freight,
-    };
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'orderID': orderID,
-      'customerID': customerID,
-      'orderDate': orderDate,
-      'freight': freight,
-    };
+    }).toList();
   }
 }
