@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/dialog.dart';
+import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -17,7 +18,7 @@ class PaginatedTable extends StatefulWidget {
     required this.onPageClicked,
     this.detail,
     this.isCheckable = false,
-    this.isDeletable = false,
+    this.isDeletable = true,
   }) : super(key: key);
 
   final List<String> header;
@@ -35,18 +36,20 @@ class PaginatedTable extends StatefulWidget {
 }
 
 class _PaginatedTableState extends State<PaginatedTable> {
-  late DataSource dataSource;
+  late PaginatedTableController dataSource;
   late RxMap<String, double> columnWidths;
-  RxBool showLoadingIndicator = true.obs;
   final DataGridController dataGridController = DataGridController();
+
+  RxBool showLoadingIndicator = true.obs;
 
   @override
   void initState() {
     super.initState();
-    dataSource = DataSource(
+    dataSource = PaginatedTableController(
       datas: widget.data,
       header: widget.header,
       rowsPerPage: widget.rowsPerPage,
+      totalPage: widget.totalPage,
       onPageClicked: widget.onPageClicked,
     );
     columnWidths = <String, double>{}.obs;
@@ -87,76 +90,89 @@ class _PaginatedTableState extends State<PaginatedTable> {
   }
 
   Widget buildDataGrid() {
-    return SfDataGridTheme(
-      data: SfDataGridThemeData(
-          rowHoverColor: grayLight,
-          rowHoverTextStyle: TextStyle(
-            color: blackTextColor,
-            fontSize: 14,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: SfDataGridTheme(
+            data: SfDataGridThemeData(
+                rowHoverColor: grayLight,
+                rowHoverTextStyle: TextStyle(
+                  color: blackTextColor,
+                  fontSize: 14,
+                ),
+                headerColor: primaryLight,
+                headerHoverColor: Colors.transparent,
+                columnResizeIndicatorColor: primaryMain,
+                columnResizeIndicatorStrokeWidth: 2,
+                gridLineColor: borderColor),
+            child: SfDataGrid(
+              allowSorting: true,
+              allowFiltering: true,
+              showColumnHeaderIconOnHover: true,
+              allowColumnsResizing: true,
+              onColumnResizeStart: (ColumnResizeStartDetails details) {
+                if (details.columnIndex == 0 ||
+                    details.columnIndex == widget.header.length - 1) {
+                  return false;
+                }
+                return true;
+              },
+              onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
+                columnWidths[details.column.columnName] = details.width;
+                return true;
+              },
+              source: dataSource,
+              shrinkWrapRows: true,
+              columnWidthMode: ColumnWidthMode.fill,
+              headerGridLinesVisibility: GridLinesVisibility.both,
+              gridLinesVisibility: GridLinesVisibility.both,
+              headerRowHeight: 40,
+              rowHeight: 40,
+              columns: buildColumns(columnWidths),
+              showCheckboxColumn: widget.isCheckable ? true : false,
+              selectionMode: widget.isCheckable
+                  ? SelectionMode.multiple
+                  : SelectionMode.none,
+              checkboxShape: CircleBorder(),
+              onCellTap: (DataGridCellTapDetails details) {
+                if (widget.isCheckable) {
+                  return;
+                } else if (widget.isDeletable) {
+                } else {
+                  widget.detail?.call(details.rowColumnIndex.rowIndex);
+                }
+              },
+            ),
           ),
-          headerColor: primaryLight,
-          headerHoverColor: Colors.transparent,
-          columnResizeIndicatorColor: primaryMain,
-          columnResizeIndicatorStrokeWidth: 2.0,
-          gridLineColor: borderColor),
-      child: SfDataGrid(
-        allowSorting: true,
-        allowFiltering: true,
-        // allowMultiColumnSorting: true,
-        showColumnHeaderIconOnHover: true,
-        // showCheckboxColumn: true,
-        // checkboxColumnSettings: DataGridCheckboxColumnSettings(
-        //     label: Text('check'), width: 100, showCheckboxOnHeader: false),
-        // selectionMode: SelectionMode.multiple,
-        allowColumnsResizing: true,
-        onColumnResizeStart: (ColumnResizeStartDetails details) {
-          return true;
-        },
-        onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-          columnWidths[details.column.columnName] = details.width;
-          return true;
-        },
-        source: dataSource,
-        shrinkWrapRows: true,
-
-        columnWidthMode: ColumnWidthMode.fill,
-        headerGridLinesVisibility: GridLinesVisibility.both,
-        gridLinesVisibility: GridLinesVisibility.both,
-        headerRowHeight: 40,
-        rowHeight: 40,
-        columns: buildColumns(columnWidths),
-        showCheckboxColumn:
-            widget.isCheckable | widget.isDeletable ? true : false,
-        checkboxColumnSettings: widget.isDeletable
-            ? DataGridCheckboxColumnSettings(
-                label: Text("삭제"), showCheckboxOnHeader: false)
-            : DataGridCheckboxColumnSettings(),
-        selectionMode: widget.isCheckable
-            ? SelectionMode.multiple
-            : widget.isDeletable
-                ? SelectionMode.single
-                : SelectionMode.none,
-        onSelectionChanged:
-            (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
-          var selectedIndex = dataGridController.selectedIndex;
-          var selectedRow = dataGridController.currentCell;
-          var selectedRows = dataGridController.selectedRows;
-          // print(selectedIndex);
-          // print(selectedRow);
-          DialogWidget("삭제하시겠습니까?", () {
-            dataGridController.selectedIndex = -1;
-          }).delete();
-        },
-        checkboxShape: CircleBorder(),
-        onCellTap: (DataGridCellTapDetails details) {
-          if (widget.isCheckable) {
-            return;
-          } else if (widget.isDeletable) {
-          } else {
-            widget.detail?.call(details.rowColumnIndex.rowIndex);
-          }
-        },
-      ),
+        ),
+        if (widget.isDeletable)
+          SizedBox(
+            width: 40,
+            child: ListView.builder(
+                itemCount: widget.rowsPerPage + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0)
+                    return IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.transparent,
+                        ));
+                  return IconButton(
+                    onPressed: () {
+                      DialogWidget("삭제하시겠습니까?", () {
+                        dataGridController.selectedIndex = -1;
+                      }).delete();
+                    },
+                    icon: Icon(Icons.do_disturb_on_outlined),
+                    color: redMain,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                  );
+                }),
+          ),
+      ],
     );
   }
 
@@ -186,7 +202,6 @@ class _PaginatedTableState extends State<PaginatedTable> {
 
   Widget buildDataPager() {
     return Container(
-      height: 60,
       width: Get.width / 3,
       child: Center(
         child: SfDataPagerTheme(
@@ -208,84 +223,5 @@ class _PaginatedTableState extends State<PaginatedTable> {
         ),
       ),
     );
-  }
-}
-
-class DataSource extends DataGridSource {
-  DataSource(
-      {required this.datas,
-      required this.header,
-      required this.rowsPerPage,
-      required this.onPageClicked}) {
-    dataPerPage = datas.getRange(0, rowsPerPage).toList();
-    buildPaginatedDataGridRows(header);
-  }
-
-  int rowsPerPage = 0;
-  List<String> header = [];
-  List<dynamic> datas = [];
-  List<dynamic> dataPerPage = [];
-  late Function(int) onPageClicked;
-
-  List<DataGridRow> dataGridRows = [];
-
-  @override
-  List<DataGridRow> get rows => dataGridRows;
-
-  @override
-  DataGridRowAdapter? buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((dataGridCell) {
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.center,
-            child: Text(
-              dataGridCell.value.toString(),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
-      );
-    }).toList());
-  }
-
-  @override
-  // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
-  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * rowsPerPage;
-    int endIndex = startIndex + rowsPerPage;
-
-    if (newPageIndex != 0) {
-      var additionalData = await onPageClicked(newPageIndex);
-      if (additionalData is List) {
-        datas.addAll(additionalData);
-      }
-    }
-
-    if (startIndex < datas.length && endIndex <= datas.length) {
-      await Future.delayed(Duration(milliseconds: 1000));
-      dataPerPage = datas.getRange(startIndex, endIndex).toList();
-      buildPaginatedDataGridRows(header);
-      notifyListeners();
-    } else {
-      dataPerPage = [];
-    }
-
-    return true;
-  }
-
-  void buildPaginatedDataGridRows(List<String> _header) {
-    dataGridRows = dataPerPage.map<DataGridRow>((dataGridRow) {
-      List<DataGridCell> cells = [];
-      var dataMap = dataGridRow.toMap();
-      for (var columnName in _header) {
-        var value = dataMap[columnName];
-        cells.add(DataGridCell(columnName: columnName, value: value));
-      }
-      return DataGridRow(cells: cells);
-    }).toList();
   }
 }

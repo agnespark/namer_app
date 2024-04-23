@@ -6,7 +6,7 @@ class TableController extends GetxController {
   late RxList<Employee> basicTableData = RxList();
   late RxList<OrderInfo> paginatedTableData = RxList();
   final int rowsPerPage = 5;
-  final int totalPage = 3;
+  final int totalPage = 10;
 
   final List<String> basicTableDataHeader = [
     "orderID",
