@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/%08dropdown.dart';
+import 'package:namer_app/component/dropdown.dart';
 import 'package:namer_app/component/accordion.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/checkbox/multi_checkbox.dart';
