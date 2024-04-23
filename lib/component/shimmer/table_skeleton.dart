@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 

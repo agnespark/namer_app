@@ -94,7 +94,7 @@ class BasicTableState extends State<BasicTable> {
           onSelectionChanged:
               (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
             final index = dataSource._data.indexOf(addedRows.last);
-            print(widget.data[index]);
+            // print(widget.data[index]);
             var selectedIndex = dataGridController.selectedIndex;
             var selectedRow = dataGridController.currentCell;
             var selectedRows = dataGridController.selectedRows;
@@ -198,8 +198,9 @@ class DataSource extends DataGridSource {
             return Container(
                 alignment: Alignment.center,
                 child: ButtonWidget("다운로드", () {
-                  print(e.value);
-                }).green());
+                  // print(e.value);
+                })
+                    .green());
           } else {
             return Container(
               alignment: Alignment.center,

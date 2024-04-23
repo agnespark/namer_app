@@ -10,10 +10,8 @@ import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/shimmer/table_skeleton.dart';
-import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
-import 'package:namer_app/pages/Dropdown/DropdownPage.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/population/population_controller.dart';
 

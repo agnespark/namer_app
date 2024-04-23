@@ -32,6 +32,8 @@ class MyController extends GetxController {
 
   RxList navList = RxList();
 
+  RxBool isAllClosed = true.obs;
+
   @override
   void onInit() {
     setNav();
@@ -69,9 +71,9 @@ class MyController extends GetxController {
     ].obs;
   }
 
-  void changePage(Widget widget, String name, double depth) {
-    currentWidget.value = Container(child: widget);
-    currentMenu.value = name;
+  void changePage(Menu menu) {
+    currentWidget.value = Container(child: menu.page);
+    currentMenu.value = menu.name;
   }
 
   void changeDetail(Widget widget) {
