@@ -1,5 +1,6 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
+import 'package:namer_app/component/%08dropdown.dart';
 import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/frame.dart';
@@ -76,6 +77,10 @@ class DashboardPage extends StatelessWidget {
                     DetailSheet(child: DashboardDetailWidget());
                   },
                   child: Text('none page'),
+                ),
+                SizedBox(width: 30),
+                Container(
+                  child: DropdownButtonWidget().Widget(),
                 ),
               ],
             ),

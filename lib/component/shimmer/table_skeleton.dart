@@ -4,38 +4,23 @@ import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TableSkeleton {
-  const TableSkeleton({required this.count});
-  final int count;
+  const TableSkeleton();
   Widget() {
-    print(Get.width * 0.6 / count / 2);
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-          headingRowColor: MaterialStatePropertyAll(primaryLight),
-          dataRowMinHeight: 39,
-          columns: List.generate(
-              count,
-              (index) => DataColumn(
-                      label: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 100,
-                      height: 16,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white),
-                    ),
-                  ))),
-          rows: List.generate(
-            10,
-            (index) => DataRow(
-                cells: List.generate(
-              count,
-              (cellIndex) => DataCell(shimmerRow()),
-            )),
-          )),
-    );
+    return DataTable(
+        headingRowColor: MaterialStatePropertyAll(primaryLight),
+        columns: [
+          DataColumn(
+              label: Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: SizedBox(
+              height: 16,
+            ),
+          ))
+        ],
+        rows: [
+          for (int i = 0; i < 9; i++) DataRow(cells: [DataCell(shimmerRow())])
+        ]);
   }
 }
 
