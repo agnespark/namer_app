@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/dialog.dart';
+import 'package:namer_app/component/shimmer/table_skeleton.dart';
 import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
@@ -68,15 +69,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
             children: [
               Expanded(
                 child: showLoadingIndicator.value
-                    ? Shimmer.fromColors(
-                        baseColor: Colors.red,
-                        highlightColor: Colors.blue,
-                        child: Container(
-                          width: constraints.maxWidth,
-                          height: constraints.maxHeight,
-                          color: Colors.white,
-                        ),
-                      )
+                    ? TableSkeleton(rows: widget.rowsPerPage).Widget()
                     : buildDataGrid(),
               ),
               Container(

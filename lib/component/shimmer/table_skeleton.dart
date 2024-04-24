@@ -3,7 +3,9 @@ import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TableSkeleton {
-  const TableSkeleton();
+  final int rows;
+
+  const TableSkeleton({this.rows = 9});
   Widget() {
     return DataTable(
         headingRowColor: MaterialStatePropertyAll(primaryLight),
@@ -18,7 +20,8 @@ class TableSkeleton {
           ))
         ],
         rows: [
-          for (int i = 0; i < 9; i++) DataRow(cells: [DataCell(shimmerRow())])
+          for (int i = 0; i < rows; i++)
+            DataRow(cells: [DataCell(shimmerRow())])
         ]);
   }
 }
