@@ -28,80 +28,77 @@ class _LoadableTableState extends State<LoadableTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SfDataGridTheme(
-        data: SfDataGridThemeData(gridLineColor: borderColor),
-        child: SfDataGrid(
-          columnWidthMode: ColumnWidthMode.fill,
-          headerGridLinesVisibility: GridLinesVisibility.both,
-          gridLinesVisibility: GridLinesVisibility.both,
-          source: dataSource,
-          loadMoreViewBuilder:
-              (BuildContext context, LoadMoreRows loadMoreRows) {
-            Future<String> loadRows() async {
-              await loadMoreRows();
-              return 'Completed';
-            }
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(gridLineColor: borderColor),
+      child: SfDataGrid(
+        columnWidthMode: ColumnWidthMode.fill,
+        headerGridLinesVisibility: GridLinesVisibility.both,
+        gridLinesVisibility: GridLinesVisibility.both,
+        source: dataSource,
+        loadMoreViewBuilder: (BuildContext context, LoadMoreRows loadMoreRows) {
+          Future<String> loadRows() async {
+            await loadMoreRows();
+            return 'Completed';
+          }
 
-            return FutureBuilder<String>(
-              initialData: 'loading',
-              future: loadRows(),
-              builder: (context, snapshot) {
-                if (snapshot.data == 'loading') {
-                  return Container(
-                    height: 60.0,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return SizedBox.fromSize(size: Size.zero);
-                }
-              },
-            );
-          },
-          columns: <GridColumn>[
-            GridColumn(
-              columnName: 'id',
-              label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.center,
-                child: Text('ID'),
+          return FutureBuilder<String>(
+            initialData: 'loading',
+            future: loadRows(),
+            builder: (context, snapshot) {
+              if (snapshot.data == 'loading') {
+                return Container(
+                  height: 60.0,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return SizedBox.fromSize(size: Size.zero);
+              }
+            },
+          );
+        },
+        columns: <GridColumn>[
+          GridColumn(
+            columnName: 'id',
+            label: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text('ID'),
+            ),
+          ),
+          GridColumn(
+            columnName: 'name',
+            label: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text('Name'),
+            ),
+          ),
+          GridColumn(
+            width: 120.0,
+            columnName: 'designation',
+            label: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text(
+                'Designation',
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            GridColumn(
-              columnName: 'name',
-              label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.center,
-                child: Text('Name'),
-              ),
+          ),
+          GridColumn(
+            columnName: 'salary',
+            label: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text('Salary'),
             ),
-            GridColumn(
-              width: 120.0,
-              columnName: 'designation',
-              label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.center,
-                child: Text(
-                  'Designation',
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            GridColumn(
-              columnName: 'salary',
-              label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.center,
-                child: Text('Salary'),
-              ),
-            ),
-          ],
-          onCellTap: (DataGridCellTapDetails details) {
-            // dataSource.handleRowTap(details.rowIndex);
-          },
-        ),
+          ),
+        ],
+        onCellTap: (DataGridCellTapDetails details) {
+          // dataSource.handleRowTap(details.rowIndex);
+        },
       ),
     );
   }
