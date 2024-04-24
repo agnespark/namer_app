@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/population/detail/detail_controller.dart';
 import 'package:namer_app/pages/table/table.dart';
 
 class CreateMultiComplelet extends StatelessWidget {
-  final DetailController controller = Get.put(DetailController());
+  final PopulationDetailController controller =
+      Get.put(PopulationDetailController());
 
   @override
   Widget build(BuildContext context) {

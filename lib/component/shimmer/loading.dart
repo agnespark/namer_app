@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/shimmer/table_skeleton.dart';
 import 'package:shimmer/shimmer.dart';
 
-class LoadingPage extends StatelessWidget {
-  const LoadingPage({super.key});
+class DetailLoadingPage extends StatelessWidget {
+  const DetailLoadingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +58,6 @@ class LoadingPage extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          padding: EdgeInsets.only(left: 64, right: 64, bottom: 8),
-          child: TableSkeleton().Widget(),
-        )
       ],
     );
   }

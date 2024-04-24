@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/table/basic-table/basic_table.dart';
-import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/population/detail/detail_controller.dart';
 import 'package:namer_app/pages/population/detail/main.dart';
 
 class PopulationController extends GetxController {
-  final DetailController detail_controller = Get.find<DetailController>();
+  final PopulationDetailController detail_controller =
+      Get.put(PopulationDetailController());
   final int rowsPerPage = 5;
   final int totalPage = 3;
   late RxList<Employee> basicTableData = RxList();

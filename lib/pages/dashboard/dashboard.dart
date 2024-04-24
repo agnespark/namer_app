@@ -1,17 +1,19 @@
 import "package:english_words/english_words.dart";
 import 'package:flutter/material.dart';
-import 'package:namer_app/component/dropdown.dart';
+import 'package:namer_app/component/dropdownbutton/dropdown.dart';
 import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
-import 'package:namer_app/controller/detailContainer.dart';
+// import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/dashboard/detail/detail_controller.dart';
 import 'package:namer_app/pages/dashboard/detail/main.dart';
 
 class DashboardPage extends StatelessWidget {
-  final DetailController controller = Get.put(DetailController());
+  final DashboardDetailController controller =
+      Get.put(DashboardDetailController());
 
   @override
   Widget build(BuildContext context) {

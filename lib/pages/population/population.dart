@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/dropdown.dart';
+import 'package:namer_app/component/dropdownbutton/dropdown.dart';
 import 'package:namer_app/component/accordion.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/checkbox/multi_checkbox.dart';
@@ -9,7 +9,7 @@ import 'package:namer_app/component/filter/filter-button/filter_button.dart';
 import 'package:namer_app/component/filter/filter-frame/filter_frame.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/frame.dart';
-import 'package:namer_app/component/shimmer/table_skeleton.dart';
+import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
@@ -77,16 +77,17 @@ class PopulationPage extends StatelessWidget {
                   controller.logCombineClick();
                 }).blue(),
               ]),
+              SizedBox(height: 8),
               // 여기에서 if문을 걸고 로딩뷰 / 로딩이 다 끝나면 table이 나오도록 해야 함
-              // BasicTable(
-              //   header: controller.basicTableDataHeader,
-              //   data: controller.basicTableData,
-              //   width: controller.basicTableDataWidth,
-              //   detail: (int index) {
-              //     controller.detailClick(index);
-              //   },
-              // ),
-              TableSkeleton().Widget(),
+              // TableSkeleton().Widget(),
+              BasicTable(
+                header: controller.basicTableDataHeader,
+                data: controller.basicTableData,
+                width: controller.basicTableDataWidth,
+                detail: (int index) {
+                  controller.detailClick(index);
+                },
+              ),
             ],
           ),
         ));
