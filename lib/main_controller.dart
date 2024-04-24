@@ -12,7 +12,6 @@ import 'package:namer_app/pages/sap/sap.dart';
 import 'package:namer_app/pages/shimmer/news_page.dart';
 import 'package:namer_app/pages/table/table.dart';
 import 'package:namer_app/pages/textfield/textfield.dart';
-import 'package:namer_app/pages/multiSelect/multiSelectPage.dart';
 import 'package:namer_app/pages/TextFiled/TextFiled.dart';
 import 'nav_model.dart';
 import 'pages/dashboard/dashboard.dart';
@@ -62,7 +61,6 @@ class MyController extends GetxController {
       Menu(name: "Shimmer", page: NewsPage(), depth: 0),
       Menu(name: "Design", page: DesignPage(), depth: 0),
       Menu(name: "TextFieed", page: TextFiledPage(), depth: 0),
-      Menu(name: "MutiSelect", page: MutiSelectPage(), depth: 0),
       Menu(name: "Button", page: ButtonPage(), depth: 0),
       Menu(name: "SAP", page: SapPage(), depth: 0),
       // Menu(name: "Checkbox", page: CheckBoxPage(), depth: 0),

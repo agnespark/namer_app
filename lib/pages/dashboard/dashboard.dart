@@ -9,6 +9,7 @@ import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
 import 'package:namer_app/pages/dashboard/detail/controller.dart';
 import 'package:namer_app/pages/dashboard/detail/layout.dart';
+import 'package:namer_app/pages/multiSelect/multiSelectWidget.dart';
 
 class DashboardPage extends StatelessWidget {
   final DashboardDetailController controller =
@@ -86,6 +87,9 @@ class DashboardPage extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 30),
+            MutiSelectWidget(
+                list: ['list1', 'list2', 'list3', 'list4', 'list5'])
           ],
         ),
       ),
