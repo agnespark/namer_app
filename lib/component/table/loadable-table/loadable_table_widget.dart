@@ -5,16 +5,16 @@ import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
-class LoadableTable extends StatefulWidget {
-  LoadableTable({Key? key, required this.header}) : super(key: key);
+class LoadableTableWidget extends StatefulWidget {
+  LoadableTableWidget({Key? key, required this.header}) : super(key: key);
 
   final List<String> header;
 
   @override
-  _LoadableTableState createState() => _LoadableTableState();
+  _LoadableTableWidgetState createState() => _LoadableTableWidgetState();
 }
 
-class _LoadableTableState extends State<LoadableTable> {
+class _LoadableTableWidgetState extends State<LoadableTableWidget> {
   late LoadableTableDataGridController dataSource;
 
   @override

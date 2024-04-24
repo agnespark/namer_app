@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/table/basic-table/basic_table.dart';
-import 'package:namer_app/component/table/loadable-table/loadable_table.dart';
-import 'package:namer_app/component/table/paginated-table/paginated_table.dart';
+import 'package:namer_app/component/table/basic-table/basic_table_widget.dart';
+import 'package:namer_app/component/table/loadable-table/loadable_table_widget.dart';
+import 'package:namer_app/component/table/paginated-table/paginated_table_widget.dart';
 import 'package:namer_app/pages/table/table_controller.dart';
 
 class TablePage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _TablePageState extends State<TablePage> {
     return Column(
       children: [
         Expanded(
-          child: PaginatedTable(
+          child: PaginatedTableWidget(
             data: controller.paginatedTableData,
             header: controller.paginatedTableHeader,
             width: controller.paginatedTableDataWidth,
@@ -29,14 +29,14 @@ class _TablePageState extends State<TablePage> {
         ),
         SizedBox(height: 50),
         Expanded(
-          child: BasicTable(
+          child: BasicTableWidget(
             data: controller.basicTableData,
             header: controller.basicTableDataHeader,
             width: controller.basicTableDataWidth,
           ),
         ),
         SizedBox(height: 50),
-        LoadableTable(header: controller.loadableDataHeader)
+        LoadableTableWidget(header: controller.loadableDataHeader)
       ],
     );
   }

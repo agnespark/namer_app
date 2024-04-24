@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-class DetailLoadingPage extends StatelessWidget {
-  const DetailLoadingPage({super.key});
+class DetailSkeleton extends StatelessWidget {
+  const DetailSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

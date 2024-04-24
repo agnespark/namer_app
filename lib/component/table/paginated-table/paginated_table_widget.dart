@@ -7,8 +7,8 @@ import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
-class PaginatedTable extends StatefulWidget {
-  PaginatedTable({
+class PaginatedTableWidget extends StatefulWidget {
+  PaginatedTableWidget({
     Key? key,
     required this.header,
     required this.width,
@@ -32,10 +32,10 @@ class PaginatedTable extends StatefulWidget {
   final bool isDeletable;
 
   @override
-  State<PaginatedTable> createState() => _PaginatedTableState();
+  State<PaginatedTableWidget> createState() => _PaginatedTableWidgetState();
 }
 
-class _PaginatedTableState extends State<PaginatedTable> {
+class _PaginatedTableWidgetState extends State<PaginatedTableWidget> {
   late PaginatedTableController dataSource;
   final DataGridController dataGridController = DataGridController();
 
