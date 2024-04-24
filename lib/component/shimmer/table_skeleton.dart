@@ -3,6 +3,10 @@ import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TableSkeleton extends StatelessWidget {
+  TableSkeleton({super.key, required this.rows});
+
+  final int rows;
+
   @override
   Widget build(BuildContext context) {
     return DataTable(
@@ -23,7 +27,8 @@ class TableSkeleton extends StatelessWidget {
           ))
         ],
         rows: [
-          for (int i = 0; i < 9; i++) DataRow(cells: [DataCell(shimmerRow())])
+          for (int i = 0; i < rows; i++)
+            DataRow(cells: [DataCell(shimmerRow())])
         ]);
   }
 }

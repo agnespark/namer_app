@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/textfield/search-textfield.dart';
+import 'package:namer_app/component/textfield/search_textfield.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:namer_app/config/themes.dart';
 import 'package:namer_app/pages/sap/sap_controller.dart';
