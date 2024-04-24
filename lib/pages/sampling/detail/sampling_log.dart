@@ -5,12 +5,13 @@ import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
-import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/pages/sampling/detail/controller.dart';
 import 'package:namer_app/pages/table/table.dart';
 
 class SamplingLogDetail extends StatelessWidget {
   final bool isBtn;
-  final DetailController controller = Get.put(DetailController());
+  final SamplingDetailController controller =
+      Get.put(SamplingDetailController());
 
   SamplingLogDetail({this.isBtn = true});
   @override

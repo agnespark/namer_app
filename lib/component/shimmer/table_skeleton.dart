@@ -11,11 +11,16 @@ class TableSkeleton {
         headingRowColor: MaterialStatePropertyAll(primaryLight),
         columns: [
           DataColumn(
-              label: Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            child: SizedBox(
-              height: 16,
+              label: Expanded(
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                height: 16,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white),
+              ),
             ),
           ))
         ],

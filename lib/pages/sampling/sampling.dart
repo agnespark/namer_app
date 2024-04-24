@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/frame.dart';
-import 'package:namer_app/controller/detailContainer.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
-import 'package:namer_app/pages/sampling/detail/sampling_sr.dart';
-
-import 'detail/sampling_log.dart';
+import 'package:namer_app/pages/sampling/detail/controller.dart';
+import 'package:namer_app/pages/sampling/detail/main.dart';
 
 class SamplingPage extends StatelessWidget {
-  final DetailController controller = Get.put(DetailController());
+  final SamplingDetailController controller =
+      Get.put(SamplingDetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,34 +23,28 @@ class SamplingPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // controller.sampingDetailPage('sampling_log');
-                DetailSheet(child: SamplingLogDetail());
+                DetailSheet(child: SamplingDetailWidget());
               },
               child: Text('sampling_log'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                DetailSheet(
-                    child: SamplingLogDetail(
-                  isBtn: false,
-                ));
+                DetailSheet(child: SamplingDetailWidget());
               },
               child: Text('sampling_log_doc'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                DetailSheet(child: SamplingSrDetail());
+                DetailSheet(child: SamplingDetailWidget());
               },
               child: Text('sampling_sr'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                DetailSheet(
-                    child: SamplingSrDetail(
-                  isBtn: false,
-                ));
+                DetailSheet(child: SamplingDetailWidget());
               },
               child: Text('sampling_sr_doc'),
             ),
