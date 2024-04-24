@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:namer_app/component/table/basic-table/basic_table.dart';
+import 'package:namer_app/model/employ_model.dart';
 import 'package:namer_app/model/order_model.dart';
 
 class TableController extends GetxController {
@@ -37,6 +37,13 @@ class TableController extends GetxController {
     "customerID",
     "orderDate",
     "freight",
+  ];
+
+  final List<String> loadableDataHeader = [
+    "ID",
+    "Name",
+    "Designation",
+    "Salary",
   ];
 
   Future<List<OrderInfo>> onPageClicked(int page) async {

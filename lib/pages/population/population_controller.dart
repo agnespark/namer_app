@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:namer_app/component/detail_sheet.dart';
-import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/controller/detailContainer.dart';
+import 'package:namer_app/model/employ_model.dart';
 import 'package:namer_app/pages/population/detail/main.dart';
 
 class PopulationController extends GetxController {

@@ -1,11 +1,15 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:namer_app/model/employ_model.dart';
 
-import 'package:get/get.dart';
-import 'package:namer_app/component/table/loadable-table/loadable_table.dart';
+class LoadableTableDataGridController extends DataGridSource {
+  LoadableTableDataGridController({required this.header}) {}
 
-class LoadableTableController extends GetxController {
-  final EmployeeDataSource employeeDataSource = EmployeeDataSource();
+  List<String> header = [];
+  late Function(int) onPageClicked;
 
+  final List<Employee> data = [];
   final List<String> names = <String>[
     'Welli',
     'Blonp',
@@ -19,21 +23,15 @@ class LoadableTableController extends GetxController {
     'Developer',
     'Manager',
     'Designer',
-    'CEO'
+    'CEO',
   ];
 
   late Map<String, double> columnWidths = {
     'ID': double.nan,
     'Name': double.nan,
     'Designation': double.nan,
-    'Salary': double.nan
+    'Salary': double.nan,
   };
-
-  @override
-  void onInit() {
-    super.onInit();
-    loadData(20);
-  }
 
   void loadData(int count) {
     final Random random = Random();
@@ -43,22 +41,67 @@ class LoadableTableController extends GetxController {
         names[random.nextInt(names.length)],
         designations[random.nextInt(designations.length)],
         10000 + random.nextInt(10000),
+        true,
+        100,
       );
     });
-    employeeDataSource.addRows(employees);
+    addRows(employees);
   }
 
-  // 새로운 데이터를 생성하여 EmployeeDataSource에 전달하고, 새로운 데이터를 그리드에 추가하는 역할
   void loadMoreData(int count) {
     final Random random = Random();
     final List<Employee> newEmployees = List.generate(count, (index) {
       return Employee(
-        1000 + employeeDataSource.rows.length + index,
+        1000 + data.length + index,
         names[random.nextInt(names.length)],
         designations[random.nextInt(designations.length)],
         10000 + random.nextInt(10000),
+        true,
+        100,
       );
     });
-    employeeDataSource.addRows(newEmployees);
+    addRows(newEmployees);
+  }
+
+  // 행 추가 및 데이터 그리드에 변경사항을 알림
+  void addRows(List<Employee> newData) {
+    data.addAll(newData);
+    notifyListeners();
+  }
+
+  @override
+  List<DataGridRow> get rows => data.map<DataGridRow>((e) {
+        List<DataGridCell> cells = [];
+        var dataMap = e.toJson();
+        for (var columnName in header) {
+          var value = dataMap[columnName.toLowerCase()];
+          cells.add(DataGridCell(columnName: columnName, value: value));
+        }
+        return DataGridRow(cells: cells);
+      }).toList();
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((dataGridCell) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.center,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      );
+    }).toList());
+  }
+
+  Future<void> handleLoadMoreRows() async {
+    await Future.delayed(Duration(seconds: 1));
+    loadMoreData(10);
   }
 }

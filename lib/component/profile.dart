@@ -69,7 +69,6 @@ class ProfileWidget {
                     child: InkWell(
                       onTap: () {
                         // 클릭 시 동작, onSelected 콜백이 있으면 필요 없을 수 있음
-                        print("InkWell tapped");
                       },
                       child: Icon(
                         Icons.edit,
@@ -118,7 +117,6 @@ class ProfileWidget {
                     child: InkWell(
                       onTap: () {
                         // 클릭 시 동작, onSelected 콜백이 있으면 필요 없을 수 있음
-                        print("InkWell tapped");
                       },
                       child: Icon(
                         Icons.edit,
@@ -154,7 +152,6 @@ class ProfileWidget {
                     child: InkWell(
                       onTap: () {
                         // 클릭 시 동작, onSelected 콜백이 있으면 필요 없을 수 있음
-                        print("InkWell tapped");
                       },
                       child: Icon(
                         Icons.edit,
@@ -168,7 +165,7 @@ class ProfileWidget {
         const PopupMenuDivider(),
         PopupMenuItem<_Menu>(
           value: _Menu.Logout,
-          onTap: () => print('logout 되었습니다.'),
+          onTap: () => {},
           child: ListTile(
             leading: Icon(Icons.logout_outlined),
             title: Text('Logout'),

@@ -4,8 +4,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PaginatedTableController extends DataGridSource {
   PaginatedTableController(
-      {required this.datas,
-      required this.header,
+      {required this.header,
+      required this.datas,
       required this.rowsPerPage,
       required this.totalPage,
       required this.onPageClicked,
@@ -51,10 +51,11 @@ class PaginatedTableController extends DataGridSource {
   @override
   // Syncfusion DataPager에서 페이지가 변경될 때 호출되는 콜백 함수
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
+    showLoadingIndicator.value = true;
+    await Future.delayed(Duration(milliseconds: 1000));
+
     int startIndex = newPageIndex * rowsPerPage;
     int endIndex = startIndex + rowsPerPage;
-    showLoadingIndicator.value = true;
-    dataPagerController.lastPage();
     if (newPageIndex != 0) {
       var additionalData = await onPageClicked(startIndex);
       if (additionalData is List) {
@@ -63,7 +64,6 @@ class PaginatedTableController extends DataGridSource {
     }
 
     if (startIndex < datas.length && endIndex <= datas.length) {
-      await Future.delayed(Duration(milliseconds: 1000));
       dataPerPage = datas.getRange(startIndex, endIndex).toList();
       buildPaginatedDataGridRows(header);
       notifyListeners();
@@ -77,7 +77,7 @@ class PaginatedTableController extends DataGridSource {
   void buildPaginatedDataGridRows(List<String> header) {
     dataGridRows = dataPerPage.map<DataGridRow>((dataGridRow) {
       List<DataGridCell> cells = [];
-      var dataMap = dataGridRow.toMap();
+      var dataMap = dataGridRow.toJson();
       for (var columnName in header) {
         var value = dataMap[columnName];
         cells.add(DataGridCell(columnName: columnName, value: value));
@@ -85,14 +85,4 @@ class PaginatedTableController extends DataGridSource {
       return DataGridRow(cells: cells);
     }).toList();
   }
-
-  void previousPage() {}
-
-  void onNextPageClicked() {
-    print('bye');
-  }
-
-  void onFirstPageClicked() {}
-
-  void onLastPageClicked() {}
 }

@@ -135,7 +135,6 @@ class _PaginatedTableState extends State<PaginatedTable> {
               selectionMode: widget.isCheckable
                   ? SelectionMode.multiple
                   : SelectionMode.none,
-              checkboxShape: CircleBorder(),
               onCellTap: (DataGridCellTapDetails details) {
                 if (widget.isCheckable) {
                   return;
@@ -211,10 +210,6 @@ class _PaginatedTableState extends State<PaginatedTable> {
             selectedItemColor: Colors.blue,
           ),
           child: SfDataPager(
-            // firstPageItemVisible: false,
-            // lastPageItemVisible: false,
-            // nextPageItemVisible: false,
-            // previousPageItemVisible: fa,
             delegate: dataSource,
             pageCount: widget.totalPage.toDouble(),
             direction: Axis.horizontal,

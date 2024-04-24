@@ -10,9 +10,7 @@ class DetailController extends GetxController {
   TextEditingController textController = TextEditingController();
 
   void changeDetailPage(String name) {
-    print(pageName);
     pageName.value = name;
-    print(pageName);
   }
 
   loadData() async {

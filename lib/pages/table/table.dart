@@ -36,7 +36,7 @@ class _TablePageState extends State<TablePage> {
           ),
         ),
         SizedBox(height: 50),
-        LoadableTable()
+        LoadableTable(header: controller.loadableDataHeader)
       ],
     );
   }

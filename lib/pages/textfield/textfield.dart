@@ -39,9 +39,7 @@ class TextFieldPage extends StatelessWidget {
                     ),
                   ),
                   hintText: '',
-                  onChanged: (x) {
-                    print(x);
-                  },
+                  onChanged: (x) {},
                   border: PasswordBorder(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),

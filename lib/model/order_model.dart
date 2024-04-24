@@ -14,13 +14,4 @@ class OrderInfo {
       'freight': freight,
     };
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'orderID': orderID,
-      'customerID': customerID,
-      'orderDate': orderDate,
-      'freight': freight,
-    };
-  }
 }
