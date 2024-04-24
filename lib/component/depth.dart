@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DepthWidget {
+class DepthWidget extends StatelessWidget {
   DepthWidget(this.title);
   final String title;
 
-  Widget buildWidget() {
+  @override
+  Widget build(BuildContext context) {
     List<String> depths = title.split('/');
     List<Widget> widgets = []; // 위젯을 담을 리스트를 선언합니다.
 

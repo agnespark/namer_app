@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/textfield/basic-textfield.dart';
-import 'package:namer_app/pages/population/detail/detail_controller.dart';
+import 'package:namer_app/pages/population/detail/controller.dart';
 
 class SelectMultiLog extends StatelessWidget {
   final PopulationDetailController controller =

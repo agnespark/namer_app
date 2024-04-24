@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/shimmer/loading.dart';
-import 'package:namer_app/pages/population/detail/detail_controller.dart';
-import 'package:namer_app/pages/population/detail/create_multi_complete.dart';
-import 'package:namer_app/pages/population/detail/create_multi_log.dart';
-import 'package:namer_app/pages/population/detail/log.dart';
-import 'package:namer_app/pages/population/detail/select_multi_log.dart';
-import 'package:namer_app/pages/population/detail/population_srdocList.dart';
+import 'package:namer_app/pages/population/detail/controller.dart';
+import 'package:namer_app/pages/population/detail/pages/create_multi_complete.dart';
+import 'package:namer_app/pages/population/detail/pages/create_multi_log.dart';
+import 'package:namer_app/pages/population/detail/pages/log.dart';
+import 'package:namer_app/pages/population/detail/pages/select_multi_log.dart';
+import 'package:namer_app/pages/population/detail/pages/population_srdocList.dart';
 
 class PopulationDetailWidget extends StatelessWidget {
   PopulationDetailWidget({super.key});

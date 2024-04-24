@@ -10,8 +10,8 @@ import 'package:namer_app/component/textfield/basic-textfield.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
 import 'package:namer_app/pages/new_datetime/timepicker.dart';
-import 'package:namer_app/pages/sampling/detail/sampling_log.dart';
-import 'package:namer_app/pages/sampling/detail/sampling_sr.dart';
+import 'package:namer_app/pages/sampling/detail/pages/sampling_log.dart';
+import 'package:namer_app/pages/sampling/detail/pages/sampling_sr.dart';
 
 class SamplingSrdocList extends StatelessWidget {
   final bool isLog;

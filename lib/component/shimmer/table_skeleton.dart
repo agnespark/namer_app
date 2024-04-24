@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:shimmer/shimmer.dart';
 
-class TableSkeleton {
-  final int rows;
-
-  const TableSkeleton({this.rows = 9});
-  Widget() {
+class TableSkeleton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return DataTable(
         headingRowColor: MaterialStatePropertyAll(primaryLight),
         columns: [
@@ -25,8 +23,7 @@ class TableSkeleton {
           ))
         ],
         rows: [
-          for (int i = 0; i < rows; i++)
-            DataRow(cells: [DataCell(shimmerRow())])
+          for (int i = 0; i < 9; i++) DataRow(cells: [DataCell(shimmerRow())])
         ]);
   }
 }

@@ -13,7 +13,7 @@ import 'package:namer_app/component/table/basic-table/basic_table.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import 'package:namer_app/pages/button/button_controller.dart';
-import 'package:namer_app/pages/population/population_controller.dart';
+import 'package:namer_app/pages/population/controller.dart';
 
 class PopulationPage extends StatelessWidget {
   final ButtonController btn_controller = Get.put(ButtonController());
@@ -62,8 +62,7 @@ class PopulationPage extends StatelessWidget {
                 ),
                 Accordion(),
                 FilterButton(children: [
-                  DropdownButtonWidget(list: ['10개', '30개', '50개', '100개'])
-                      .Widget(),
+                  DropdownButtonWidget(list: ['10개', '30개', '50개']),
                   ButtonWidget("초기화", () {}).blue(),
                   ButtonWidget("조회", () {}).blue(),
                   ButtonWidget("XLSX", () {

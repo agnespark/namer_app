@@ -23,10 +23,8 @@ class FrameWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // depth 넣기
-                  DepthWidget(title).buildWidget(),
-                  // profile 넣기
-                  ProfileWidget().Widget(),
+                  DepthWidget(title),
+                  ProfileWidget(),
                 ],
               ),
               decoration: BoxDecoration(

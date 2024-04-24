@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/shimmer/loading.dart';
-import 'package:namer_app/pages/dashboard/detail/detail_controller.dart';
-import 'package:namer_app/pages/dashboard/detail/log_detail.dart';
+import 'package:namer_app/pages/dashboard/detail/controller.dart';
+import 'package:namer_app/pages/dashboard/detail/pages/log_detail.dart';
 
 class DashboardDetailWidget extends StatelessWidget {
   DashboardDetailWidget({super.key});

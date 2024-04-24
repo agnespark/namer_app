@@ -24,10 +24,8 @@ class ToastWidget {
       maxWidth: 480,
       snackPosition: SnackPosition.TOP,
       backgroundColor: color,
-      // colorText: Colors.white, // 텍스트 색상
       duration: Duration(seconds: 3), // 스낵바가 표시되는 시간
       isDismissible: true, // 사용자가 스낵바를 스와이프하여 닫을 수 있는지 여부
-      // dismissDirection: DismissDirection.horizontal, // 닫는 방향
       forwardAnimationCurve: Curves.easeOut, // 애니메이션
     );
   }

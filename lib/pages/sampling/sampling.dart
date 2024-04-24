@@ -4,7 +4,7 @@ import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
 import 'package:namer_app/pages/sampling/detail/controller.dart';
-import 'package:namer_app/pages/sampling/detail/main.dart';
+import 'package:namer_app/pages/sampling/detail/layout.dart';
 
 class SamplingPage extends StatelessWidget {
   final SamplingDetailController controller =
