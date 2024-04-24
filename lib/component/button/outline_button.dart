@@ -15,7 +15,7 @@ class ButtonWidget {
         ),
         overlayColor: MaterialStateProperty.resolveWith<Color>(
           (states) => Colors.transparent,
-        ), // Splash 효과 제거
+        ),
       ),
       child: Text(
         text,

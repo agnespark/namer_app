@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PaginatedTableController extends DataGridSource {
-  PaginatedTableController(
-      {required this.header,
-      required this.datas,
-      required this.rowsPerPage,
-      required this.totalPage,
-      required this.onPageClicked,
-      required this.showLoadingIndicator}) {
+  PaginatedTableController({
+    required this.header,
+    required this.datas,
+    required this.rowsPerPage,
+    required this.totalPage,
+    required this.onPageClicked,
+  }) {
     dataPerPage = datas.getRange(0, rowsPerPage).toList();
     buildPaginatedDataGridRows(header);
   }
@@ -21,9 +21,11 @@ class PaginatedTableController extends DataGridSource {
   List<dynamic> datas = [];
   List<dynamic> dataPerPage = [];
   late Function(int) onPageClicked;
-  RxBool showLoadingIndicator;
+  RxBool showLoadingIndicator = true.obs;
 
   List<DataGridRow> dataGridRows = [];
+
+  late RxMap<String, double> columnWidths;
 
   @override
   List<DataGridRow> get rows => dataGridRows;
@@ -46,6 +48,30 @@ class PaginatedTableController extends DataGridSource {
         ),
       );
     }).toList());
+  }
+
+  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
+    return header
+        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
+        .toList();
+  }
+
+  GridColumn buildColumn(
+      String columnName, String label, Map<String, double> columnWidths) {
+    return GridColumn(
+      width: columnWidths[columnName]!,
+      autoFitPadding: EdgeInsets.all(10),
+      minimumWidth: 50,
+      maximumWidth: Get.width / 2,
+      columnName: columnName,
+      label: Container(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
   }
 
   @override

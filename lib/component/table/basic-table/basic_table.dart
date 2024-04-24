@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/dialog.dart';
-import 'package:namer_app/component/table/basic-table/basic_table_controller.dart';
+import 'package:namer_app/component/shimmer/table_skeleton.dart';
+import 'package:namer_app/component/table/basic-table/controller.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -14,7 +15,7 @@ class BasicTable extends StatefulWidget {
     required this.data,
     this.detail,
     this.isCheckable = false,
-    this.isDeletable = true,
+    this.isDeletable = false,
   }) : super(key: key);
 
   final List<String> header;
@@ -30,7 +31,6 @@ class BasicTable extends StatefulWidget {
 
 class BasicTableState extends State<BasicTable> {
   late BasicTableController dataSource;
-  late RxMap<String, double> columnWidths;
   final DataGridController dataGridController = DataGridController();
 
   @override
@@ -41,14 +41,18 @@ class BasicTableState extends State<BasicTable> {
       data: widget.data,
       detail: widget.detail,
     );
-    columnWidths = <String, double>{}.obs;
+    dataSource.columnWidths = <String, double>{}.obs;
     for (int i = 0; i < widget.header.length; i++) {
-      columnWidths[widget.header[i]] = widget.width[i];
+      dataSource.columnWidths[widget.header[i]] = widget.width[i];
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    return buildDataGrid();
+  }
+
+  Widget buildDataGrid() {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Expanded(
         child: SfDataGridTheme(
@@ -63,26 +67,33 @@ class BasicTableState extends State<BasicTable> {
               columnResizeIndicatorColor: primaryMain,
               columnResizeIndicatorStrokeWidth: 2,
               gridLineColor: borderColor),
-          child: Builder(builder: (context) {
+          child: Obx(() {
             return SfDataGrid(
               allowColumnsResizing: true,
               onColumnResizeStart: (ColumnResizeStartDetails details) {
+                print(details.columnIndex);
+                if (details.columnIndex == 0 ||
+                    details.columnIndex == widget.header.length - 1) {
+                  return false;
+                }
                 return true;
               },
               onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-                columnWidths[details.column.columnName] = details.width;
+                dataSource.columnWidths[details.column.columnName] =
+                    details.width;
+                print(details.width);
                 return true;
               },
               controller: dataGridController,
-              source: dataSource,
               rowsPerPage: dataSource.data.length,
+              source: dataSource,
               shrinkWrapRows: true,
               columnWidthMode: ColumnWidthMode.fill,
               headerGridLinesVisibility: GridLinesVisibility.both,
               gridLinesVisibility: GridLinesVisibility.both,
               headerRowHeight: 40,
               rowHeight: 40,
-              columns: buildColumns(columnWidths),
+              columns: dataSource.buildColumns(dataSource.columnWidths),
               showCheckboxColumn: widget.isCheckable ? true : false,
               selectionMode: widget.isCheckable
                   ? SelectionMode.multiple
@@ -126,30 +137,5 @@ class BasicTableState extends State<BasicTable> {
               }),
         ),
     ]);
-  }
-
-  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
-    return widget.header
-        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
-        .toList();
-  }
-
-  GridColumn buildColumn(
-      String columnName, String label, Map<String, double> columnWidths) {
-    double width = columnWidths[columnName]!;
-    return GridColumn(
-      width: width,
-      autoFitPadding: EdgeInsets.all(10),
-      minimumWidth: 50,
-      maximumWidth: Get.width / 2,
-      columnName: columnName,
-      label: Container(
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:namer_app/component/dropdownbutton/dropdown_controller.dart';
+import 'package:namer_app/component/dropdownbutton/controller.dart';
 import 'package:namer_app/config/color.dart';
 
 const List<String> numberList = <String>['10개', '30개', '50개', '100개'];

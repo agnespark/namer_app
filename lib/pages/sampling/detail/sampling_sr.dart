@@ -5,7 +5,7 @@ import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/toast.dart';
-import 'package:namer_app/pages/population/detail/select_multi_log.dart';
+import 'package:namer_app/pages/population/detail/pages/select_multi_log.dart';
 import 'package:namer_app/pages/sampling/detail/sampling_srdocList.dart';
 import 'package:namer_app/pages/table/table.dart';
 

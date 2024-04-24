@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/dialog.dart';
 import 'package:namer_app/component/shimmer/table_skeleton.dart';
-import 'package:namer_app/component/table/paginated-table/paginated_table_controller.dart';
+import 'package:namer_app/component/table/paginated-table/controller.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -37,10 +37,7 @@ class PaginatedTable extends StatefulWidget {
 
 class _PaginatedTableState extends State<PaginatedTable> {
   late PaginatedTableController dataSource;
-  late RxMap<String, double> columnWidths;
   final DataGridController dataGridController = DataGridController();
-
-  RxBool showLoadingIndicator = true.obs;
 
   @override
   void initState() {
@@ -51,35 +48,27 @@ class _PaginatedTableState extends State<PaginatedTable> {
       rowsPerPage: widget.rowsPerPage,
       totalPage: widget.totalPage,
       onPageClicked: widget.onPageClicked,
-      showLoadingIndicator: showLoadingIndicator,
     );
-    columnWidths = <String, double>{}.obs;
+    dataSource.columnWidths = <String, double>{}.obs;
     for (int i = 0; i < widget.header.length; i++) {
-      columnWidths[widget.header[i]] = widget.width[i];
+      dataSource.columnWidths[widget.header[i]] = widget.width[i];
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Obx(() {
-          return Column(
-            children: [
-              Expanded(
-                child: showLoadingIndicator.value
-                    ? TableSkeleton(rows: widget.rowsPerPage).Widget()
-                    : buildDataGrid(),
-              ),
-              Container(
-                height: 60,
-                child: buildDataPager(),
-              ),
-            ],
-          );
-        });
-      },
-    );
+    return Obx(() {
+      return Column(
+        children: [
+          Expanded(
+            child: dataSource.showLoadingIndicator.value
+                ? TableSkeleton(rows: widget.rowsPerPage).Widget()
+                : buildDataGrid(),
+          ),
+          SizedBox(width: 600, child: buildDataPager()),
+        ],
+      );
+    });
   }
 
   Widget buildDataGrid() {
@@ -112,7 +101,8 @@ class _PaginatedTableState extends State<PaginatedTable> {
                 return true;
               },
               onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-                columnWidths[details.column.columnName] = details.width;
+                dataSource.columnWidths[details.column.columnName] =
+                    details.width;
                 return true;
               },
               source: dataSource,
@@ -122,7 +112,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
               gridLinesVisibility: GridLinesVisibility.both,
               headerRowHeight: 40,
               rowHeight: 40,
-              columns: buildColumns(columnWidths),
+              columns: dataSource.buildColumns(dataSource.columnWidths),
               showCheckboxColumn: widget.isCheckable ? true : false,
               selectionMode: widget.isCheckable
                   ? SelectionMode.multiple
@@ -168,51 +158,22 @@ class _PaginatedTableState extends State<PaginatedTable> {
     );
   }
 
-  List<GridColumn> buildColumns(Map<String, double> columnWidths) {
-    return widget.header
-        .map((columnName) => buildColumn(columnName, columnName, columnWidths))
-        .toList();
-  }
-
-  GridColumn buildColumn(
-      String columnName, String label, Map<String, double> columnWidths) {
-    return GridColumn(
-      width: columnWidths[columnName]!,
-      autoFitPadding: EdgeInsets.all(10),
-      minimumWidth: 50,
-      maximumWidth: Get.width / 2,
-      columnName: columnName,
-      label: Container(
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-    );
-  }
-
   Widget buildDataPager() {
-    return Container(
-      width: Get.width / 3,
-      child: Center(
-        child: SfDataPagerTheme(
-          data: SfDataPagerThemeData(
-            itemColor: Colors.white,
-            selectedItemColor: Colors.blue,
-          ),
-          child: SfDataPager(
-            delegate: dataSource,
-            pageCount: widget.totalPage.toDouble(),
-            direction: Axis.horizontal,
-            onPageNavigationStart: (int pageIndex) {
-              showLoadingIndicator.value = true;
-            },
-            onPageNavigationEnd: (int pageIndex) {
-              showLoadingIndicator.value = false;
-            },
-          ),
-        ),
+    return SfDataPagerTheme(
+      data: SfDataPagerThemeData(
+        itemColor: Colors.white,
+        selectedItemColor: Colors.blue,
+      ),
+      child: SfDataPager(
+        delegate: dataSource,
+        pageCount: widget.totalPage.toDouble(),
+        direction: Axis.horizontal,
+        onPageNavigationStart: (int pageIndex) {
+          dataSource.showLoadingIndicator.value = true;
+        },
+        onPageNavigationEnd: (int pageIndex) {
+          dataSource.showLoadingIndicator.value = false;
+        },
       ),
     );
   }
