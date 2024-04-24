@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/dialog.dart';
-import 'package:namer_app/component/shimmer/table_skeleton.dart';
 import 'package:namer_app/component/table/basic-table/controller.dart';
 import 'package:namer_app/config/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
