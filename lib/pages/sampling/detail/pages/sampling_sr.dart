@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/button/outline_button.dart';
+import 'package:namer_app/component/button/plus_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
-import 'package:namer_app/component/button/plusbutton.dart';
 import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/pages/population/detail/pages/select_multi_log.dart';
-import 'package:namer_app/pages/sampling/detail/sampling_srdocList.dart';
+import 'package:namer_app/pages/sampling/detail/pages/sampling_srdocList.dart';
 import 'package:namer_app/pages/table/table.dart';
 
 class SamplingSrDetail extends StatelessWidget {

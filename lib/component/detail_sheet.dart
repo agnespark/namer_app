@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:side_sheet/side_sheet.dart';
 
-// class DetailSheet {
-//   final Widget child;
 void DetailSheet({required Widget child}) {
   SideSheet.right(
       body: Padding(
@@ -15,4 +13,3 @@ void DetailSheet({required Widget child}) {
       context: Get.context!,
       width: Get.width * 0.6);
 }
-// }

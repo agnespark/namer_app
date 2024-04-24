@@ -7,9 +7,8 @@ import 'package:namer_app/component/frame.dart';
 import 'package:namer_app/component/toast.dart';
 import 'package:namer_app/main_controller.dart';
 import "package:get/get.dart";
-// import 'package:namer_app/controller/detailContainer.dart';
-import 'package:namer_app/pages/dashboard/detail/detail_controller.dart';
-import 'package:namer_app/pages/dashboard/detail/main.dart';
+import 'package:namer_app/pages/dashboard/detail/controller.dart';
+import 'package:namer_app/pages/dashboard/detail/layout.dart';
 
 class DashboardPage extends StatelessWidget {
   final DashboardDetailController controller =
@@ -39,7 +38,7 @@ class DashboardPage extends StatelessWidget {
                   }
                   return ElevatedButton.icon(
                     onPressed: () {
-                      // MyController.to.toggleFavorite();
+                      MyController.to.toggleFavorite();
                       DialogWidget('결재문서 매핑을 해제하시겠습니까?', () {
                         MyController.to.toggleFavorite();
                         Get.back();
@@ -58,7 +57,6 @@ class DashboardPage extends StatelessWidget {
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyController.to.toggleFavorite();
                     DialogWidget('결재문서 매핑을 해제하시겠습니까?', () {
                       MyController.to.toggleFavorite();
                       Get.back();
@@ -82,7 +80,9 @@ class DashboardPage extends StatelessWidget {
                 ),
                 SizedBox(width: 30),
                 Container(
-                  child: DropdownButtonWidget().Widget(),
+                  child: DropdownButtonWidget(
+                    list: ["hi", "hello"],
+                  ),
                 ),
               ],
             ),

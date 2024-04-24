@@ -62,8 +62,7 @@ class PopulationPage extends StatelessWidget {
                 ),
                 Accordion(),
                 FilterButton(children: [
-                  DropdownButtonWidget(list: ['10개', '30개', '50개', '100개'])
-                      .Widget(),
+                  DropdownButtonWidget(list: ['10개', '30개', '50개']),
                   ButtonWidget("초기화", () {}).blue(),
                   ButtonWidget("조회", () {}).blue(),
                   ButtonWidget("XLSX", () {

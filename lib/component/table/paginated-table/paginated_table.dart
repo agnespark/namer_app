@@ -62,7 +62,7 @@ class _PaginatedTableState extends State<PaginatedTable> {
         children: [
           Expanded(
             child: dataSource.showLoadingIndicator.value
-                ? TableSkeleton(rows: widget.rowsPerPage).Widget()
+                ? TableSkeleton(rows: widget.rowsPerPage)
                 : buildDataGrid(),
           ),
           SizedBox(width: 600, child: buildDataPager()),

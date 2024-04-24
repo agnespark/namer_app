@@ -4,10 +4,11 @@ import 'package:namer_app/pages/shimmer/constants.dart';
 
 enum _Menu { userInfo, name, team, position, Logout }
 
-class ProfileWidget {
+class ProfileWidget extends StatelessWidget {
   textfield() {}
 
-  Widget() {
+  @override
+  Widget build(BuildContext context) {
     return PopupMenuButton<_Menu>(
       padding: const EdgeInsets.all(0.0),
       icon: const Icon(
