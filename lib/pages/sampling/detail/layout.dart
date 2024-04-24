@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:namer_app/component/shimmer/loading.dart';
 import 'package:namer_app/pages/sampling/detail/controller.dart';
-import 'package:namer_app/pages/sampling/detail/sampling_log.dart';
+import 'package:namer_app/pages/sampling/detail/pages/sampling_log.dart';
 
 class SamplingDetailWidget extends StatelessWidget {
   SamplingDetailWidget({super.key});

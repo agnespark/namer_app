@@ -3,14 +3,16 @@ import 'package:get/get.dart';
 import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/button/plus_button.dart';
+import 'package:namer_app/component/detail_sheet.dart';
 import 'package:namer_app/component/toast.dart';
-import 'package:namer_app/pages/population/detail/controller.dart';
+import 'package:namer_app/pages/population/detail/pages/select_multi_log.dart';
+import 'package:namer_app/pages/sampling/detail/pages/sampling_srdocList.dart';
 import 'package:namer_app/pages/table/table.dart';
 
-class CreateMultiLog extends StatelessWidget {
-  final PopulationDetailController controller =
-      Get.put(PopulationDetailController());
+class SamplingSrDetail extends StatelessWidget {
+  final bool isBtn;
 
+  SamplingSrDetail({this.isBtn = true});
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -20,20 +22,23 @@ class CreateMultiLog extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(),
-              Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.50, color: Color(0xFF148FEF)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: ButtonWidget('완료', () {
-                    ToastWidget('결재문서 매핑이 완료되었습니다.').green();
-                    controller.pageName.value = "multi_complete";
-                  }).blue()),
-            ],
+            children: isBtn
+                ? [
+                    // 버튼 변경될 내용
+                    Container(),
+                    Container(
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                width: 1.50, color: Color(0xFF148FEF)),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: ButtonWidget('완료', () {
+                          ToastWidget("성공했습니다.").blue();
+                        }).blue()),
+                  ]
+                : [],
           ),
         ),
         SizedBox(height: 16),
@@ -77,11 +82,14 @@ class CreateMultiLog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Total: 2'),
-                        Row(children: [
-                          PlusButtonWidget(onPressed: () {
-                            controller.pageName.value = "select";
-                          }),
-                        ])
+                        Row(
+                            children: isBtn
+                                ? [
+                                    PlusButtonWidget(onPressed: () {
+                                      DetailSheet(child: SelectMultiLog());
+                                    }),
+                                  ]
+                                : [])
                       ],
                     ),
                     TablePage(),
@@ -99,11 +107,14 @@ class CreateMultiLog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Total: 2'),
-                        Row(children: [
-                          ButtonWidget('결재문서 수정', () {
-                            controller.pageName.value = "srdocList";
-                          }).blue(),
-                        ])
+                        Row(
+                            children: isBtn
+                                ? [
+                                    ButtonWidget('결재문서 수정', () {
+                                      DetailSheet(child: SamplingSrdocList());
+                                    }).blue(),
+                                  ]
+                                : [])
                       ],
                     ),
                     TablePage(),

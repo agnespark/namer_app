@@ -4,7 +4,7 @@ import 'package:namer_app/component/button/outline_button.dart';
 import 'package:namer_app/component/detail_accordion.dart';
 import 'package:namer_app/component/filter/filter-row/filter_row.dart';
 import 'package:namer_app/component/textfield/basic_textfield.dart';
-import 'package:namer_app/pages/dashboard/detail/detail_controller.dart';
+import 'package:namer_app/pages/dashboard/detail/controller.dart';
 
 class DashboardDetail extends StatelessWidget {
   final DashboardDetailController controller =
